@@ -29,7 +29,7 @@ services:
 
   tcpdump:
     image: nicolaka/netshoot
-    command: tcpdump -i any -w /tmp/capture/quic.pcap 'udp port 8080'
+    command: tcpdump -i any -w /tmp/capture/Connection_Migration.pcap 'udp port 8080'
     network_mode: "container:quic-client"
     volumes:
       - ./capture:/tmp/capture
