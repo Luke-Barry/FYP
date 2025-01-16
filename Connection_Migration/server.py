@@ -23,8 +23,8 @@ class QuicServerProtocol(QuicConnectionProtocol):
     def quic_event_received(self, event: QuicEvent) -> None:
         if isinstance(event, StreamDataReceived):
             logger.info(f"Received data: {event.data.decode()}")
-            # Echo the data back
-            self._quic.send_stream_data(event.stream_id, event.data, end_stream=True)
+            # Echo the data back without closing the stream
+            self._quic.send_stream_data(event.stream_id, event.data, end_stream=False)
 
 async def main():
     configuration = QuicConfiguration(
