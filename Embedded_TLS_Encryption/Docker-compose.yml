@@ -1,0 +1,45 @@
+version: '3'
+services:
+
+  client:
+    container_name: quic-client
+    build:
+      context: .
+      dockerfile: client.Dockerfile
+    networks:
+      quic-net:
+        ipv4_address: 172.16.238.10
+    depends_on:
+      - server
+    volumes:
+      - ./certs:/app/certs
+
+  server:
+    container_name: quic-server
+    build:
+      context: .
+      dockerfile: server.Dockerfile
+    ports:
+      - 8080:8080
+    networks:
+      quic-net:
+        ipv4_address: 172.16.238.11
+    volumes:
+      - ./certs:/app/certs
+
+  tcpdump:
+    image: nicolaka/netshoot
+    command: tcpdump -i any -w /tmp/capture/Embedded_TLS_Encryption.pcap 'udp port 8080'
+    network_mode: "container:quic-client"
+    volumes:
+      - ../capture:/tmp/capture
+    depends_on:
+      - client
+      - server
+
+networks:
+  quic-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.16.238.0/24
