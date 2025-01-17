@@ -9,21 +9,31 @@ async def run_client(host: str, port: int) -> None:
         is_client=True,
         max_datagram_frame_size=65536,
         secrets_log_file=open("/app/certs/ssl_keylog.txt", "a"),
-        verify_mode=ssl.CERT_NONE
+        verify_mode=ssl.CERT_NONE  # Skip certificate verification
     )
 
-    async with connect(host, port, configuration=configuration) as client:
+    async with connect(host, port, configuration=configuration) as protocol:
         print("Connection established with server.")
 
-        # Open a single stream and send data periodically
-        stream_id = client._quic.get_next_available_stream_id()
-        for i in range(10):
-            message = f"Hello from QUIC client! Message {i+1}"
-            client._quic.send_stream_data(stream_id, message.encode(), end_stream=False)
-            print(f"Sent: {message}")
-            await asyncio.sleep(5)  # Wait before sending the next message
+        # Create a bidirectional stream
+        reader, writer = await protocol.create_stream(is_unidirectional=False)
 
-        print("All messages sent. Closing connection.")
+        try:
+            for i in range(10):  # Send 10 messages periodically
+                message = f"Hello from QUIC client! Message {i+1}"
+                writer.write(message.encode())
+                await writer.drain()  # Ensure the data is sent
+                print(f"Sent: {message}")
+
+                # Wait before sending the next message
+                await asyncio.sleep(5)
+
+            print("All messages sent. Closing connection.")
+        except Exception as e:
+            print(f"An error occurred: {e}")
+        finally:
+            writer.close()
+            await writer.wait_closed()  # Gracefully close the stream
 
 if __name__ == "__main__":
     host = "quic-server"

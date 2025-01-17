@@ -1,13 +1,8 @@
 import asyncio
 import logging
-from typing import Dict, Optional
-import ssl
 import os
-
-from aioquic.asyncio import QuicConnectionProtocol, serve
+from aioquic.asyncio import serve
 from aioquic.quic.configuration import QuicConfiguration
-from aioquic.quic.events import QuicEvent, StreamDataReceived
-from aioquic.tls import SessionTicket
 
 logger = logging.getLogger("server")
 logging.basicConfig(level=logging.INFO)
@@ -15,16 +10,30 @@ logging.basicConfig(level=logging.INFO)
 # Set the SSL keylog file environment variable
 os.environ['SSLKEYLOGFILE'] = '/app/certs/ssl_keylog.txt'
 
-class QuicServerProtocol(QuicConnectionProtocol):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self._streams: Dict[int, asyncio.Queue[StreamDataReceived]] = {}
+async def handle_stream(reader: asyncio.StreamReader, writer: asyncio.StreamWriter) -> None:
+    """Handles bidirectional streams."""
+    try:
+        while True:
+            # Read data from the stream
+            data = await reader.read(1024)  # Adjust buffer size if needed
+            if not data:  # Connection is closed
+                break
+            message = data.decode()
+            logger.info(f"Received: {message}")
 
-    def quic_event_received(self, event: QuicEvent) -> None:
-        if isinstance(event, StreamDataReceived):
-            logger.info(f"Received data: {event.data.decode()}")
-            # Echo the data back without closing the stream
-            self._quic.send_stream_data(event.stream_id, event.data, end_stream=False)
+            # Echo the message back to the client
+            writer.write(data)
+            await writer.drain()  # Ensure the data is sent
+    except Exception as e:
+        logger.error(f"Stream error: {e}")
+    finally:
+        logger.info("Closing stream")
+        writer.close()
+        await writer.wait_closed()
+
+def stream_handler_wrapper(reader, writer):
+    """Wrapper to properly invoke the handle_stream coroutine."""
+    asyncio.ensure_future(handle_stream(reader, writer))
 
 async def main():
     configuration = QuicConfiguration(
@@ -37,15 +46,16 @@ async def main():
     # Load SSL certificate and private key
     configuration.load_cert_chain("certs/ssl_cert.pem", "certs/ssl_key.pem")
 
+    # Start the QUIC server with a stream handler
     server = await serve(
         host="0.0.0.0",
         port=8080,
         configuration=configuration,
-        create_protocol=QuicServerProtocol,
+        stream_handler=stream_handler_wrapper,  # Use the wrapper
     )
 
     logger.info("Server started on 0.0.0.0:8080")
-    await asyncio.Future()  # run forever
+    await asyncio.Future()  # Run forever
 
 if __name__ == "__main__":
     try:
