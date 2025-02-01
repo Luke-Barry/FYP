@@ -1,21 +1,41 @@
 import asyncio
 import logging
-from aioquic.asyncio import QuicConnectionProtocol, serve
+import os
+from aioquic.asyncio import serve
 from aioquic.quic.configuration import QuicConfiguration
-from aioquic.quic.events import QuicEvent, StreamDataReceived
 
 logger = logging.getLogger("server")
 logging.basicConfig(level=logging.INFO)
 
-class QuicServerProtocol(QuicConnectionProtocol):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+os.environ['SSLKEYLOGFILE'] = '/app/certs/ssl_keylog.txt'
 
-    def quic_event_received(self, event: QuicEvent) -> None:
-        if isinstance(event, StreamDataReceived):
-            logger.info(f"Received on stream {event.stream_id}: {event.data.decode()}")
-            if event.end_stream:
-                logger.info(f"Stream {event.stream_id} closed.")
+async def handle_stream(reader: asyncio.StreamReader, writer: asyncio.StreamWriter) -> None:
+    """Handles an individual stream."""
+    stream_id = writer.get_extra_info("stream_id")
+    logger.info(f"Stream {stream_id} opened")
+    
+    try:
+        while True:
+            data = await reader.read(1024)
+            if not data:
+                break
+            
+            message = data.decode()
+            logger.info(f"Stream {stream_id} received: {message}")
+            
+            # Echo the message back
+            writer.write(data)
+            await writer.drain()
+            
+    except Exception as e:
+        logger.error(f"Stream {stream_id} error: {e}")
+    finally:
+        logger.info(f"Stream {stream_id} closing")
+        writer.close()
+
+def stream_handler(reader, writer):
+    """Creates a new task for each stream."""
+    asyncio.create_task(handle_stream(reader, writer))
 
 async def main():
     configuration = QuicConfiguration(
@@ -25,14 +45,13 @@ async def main():
         secrets_log_file=open("/app/certs/ssl_keylog.txt", "a")
     )
 
-    # Load SSL certificate and private key
-    configuration.load_cert_chain("/app/certs/ssl_cert.pem", "/app/certs/ssl_key.pem")
+    configuration.load_cert_chain("certs/ssl_cert.pem", "certs/ssl_key.pem")
 
     server = await serve(
         host="0.0.0.0",
         port=8080,
         configuration=configuration,
-        create_protocol=QuicServerProtocol,
+        stream_handler=stream_handler
     )
 
     logger.info("Server started on 0.0.0.0:8080")

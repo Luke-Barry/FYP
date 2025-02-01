@@ -1,25 +1,25 @@
 import asyncio
-import json
 import ssl
-from asyncio import Queue
 from aioquic.asyncio import connect
 from aioquic.quic.configuration import QuicConfiguration
 
-async def send_from_queue(client, data_queue, stream_name):
-    """Send data from a queue to a new stream."""
-    # Get a new stream ID for each queue
-    stream_id = client._quic.get_next_available_stream_id()
-    print(f"{stream_name} Stream ID: {stream_id}")
-
-    while not data_queue.empty():
-        data = await data_queue.get()
-        client._quic.send_stream_data(stream_id, data.encode(), end_stream=False)
-        print(f"Sent on {stream_name} (stream {stream_id}): {data}")
-        await asyncio.sleep(1)  # Simulate a small delay between messages
-
-    # Close the stream after all data is sent
-    client._quic.send_stream_data(stream_id, b"", end_stream=True)
-    print(f"{stream_name} (stream {stream_id}) closed.")
+async def handle_stream_messages(writer, stream_id):
+    """Send messages on a specific stream."""
+    try:
+        for i in range(10):
+            message = f"Hello from Stream {stream_id}! Message {i+1}"
+            writer.write(message.encode())
+            await writer.drain()
+            print(f"Stream {stream_id} sent: {message}")
+            await asyncio.sleep(1)  # Wait between messages
+            
+        print(f"Stream {stream_id}: All messages sent")
+        
+        # Signal end of stream without explicit close
+        writer.write_eof()
+        
+    except Exception as e:
+        print(f"Stream {stream_id} error: {e}")
 
 async def run_client(host: str, port: int) -> None:
     configuration = QuicConfiguration(
@@ -30,33 +30,23 @@ async def run_client(host: str, port: int) -> None:
         verify_mode=ssl.CERT_NONE
     )
 
-    # Initialize data queues
-    text_queue = Queue()
-    number_queue = Queue()
-    json_queue = Queue()
-
-    # Populate the queues
-    for i in range(10):  # Text messages
-        await text_queue.put(f"Hello from QUIC client! Message {i+1}")
-    for i in range(10):  # Lists of integers
-        await number_queue.put(json.dumps(list(range(i, i + 5))))  # Example: "[0,1,2,3,4]"
-    for i in range(10):  # JSON objects
-        await json_queue.put(json.dumps({"message_id": i, "content": f"Sample JSON {i}"}))
-
-    async with connect(host, port, configuration=configuration) as client:
+    async with connect(host, port, configuration=configuration) as protocol:
         print("Connection established with server.")
 
-        # Send data concurrently from each queue
-        await asyncio.gather(
-            send_from_queue(client, text_queue, "Text Queue"),
-            send_from_queue(client, number_queue, "Number Queue"),
-            send_from_queue(client, json_queue, "JSON Queue"),
-        )
+        # Create three separate bidirectional streams
+        streams = []
+        for i in range(3):
+            reader, writer = await protocol.create_stream(is_unidirectional=False)
+            streams.append(handle_stream_messages(writer, i + 1))
 
-        print("All messages sent. Closing connection.")
+        try:
+            # Send messages on all streams concurrently
+            await asyncio.gather(*streams)
+            print("All streams completed successfully")
+        except Exception as e:
+            print(f"An error occurred: {e}")
 
 if __name__ == "__main__":
     host = "quic-server"
     port = 8080
-
     asyncio.run(run_client(host, port))
