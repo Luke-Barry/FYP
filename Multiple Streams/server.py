@@ -10,7 +10,7 @@ logging.basicConfig(level=logging.INFO)
 os.environ['SSLKEYLOGFILE'] = '/app/certs/ssl_keylog.txt'
 
 async def handle_stream(reader: asyncio.StreamReader, writer: asyncio.StreamWriter) -> None:
-    """Handles an individual stream."""
+    """Handles a single QUIC stream."""
     stream_id = writer.get_extra_info("stream_id")
     logger.info(f"Stream {stream_id} opened")
     
@@ -21,21 +21,13 @@ async def handle_stream(reader: asyncio.StreamReader, writer: asyncio.StreamWrit
                 break
             
             message = data.decode()
-            logger.info(f"Stream {stream_id} received: {message}")
-            
-            # Echo the message back
-            writer.write(data)
-            await writer.drain()
+            logger.info(f"Received on stream {stream_id}: {message}")
             
     except Exception as e:
-        logger.error(f"Stream {stream_id} error: {e}")
+        logger.error(f"Error on stream {stream_id}: {e}")
     finally:
         logger.info(f"Stream {stream_id} closing")
         writer.close()
-
-def stream_handler(reader, writer):
-    """Creates a new task for each stream."""
-    asyncio.create_task(handle_stream(reader, writer))
 
 async def main():
     configuration = QuicConfiguration(
@@ -51,7 +43,7 @@ async def main():
         host="0.0.0.0",
         port=8080,
         configuration=configuration,
-        stream_handler=stream_handler
+        stream_handler=lambda r, w: asyncio.create_task(handle_stream(r, w))
     )
 
     logger.info("Server started on 0.0.0.0:8080")
