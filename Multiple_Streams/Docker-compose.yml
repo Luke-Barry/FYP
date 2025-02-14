@@ -13,6 +13,7 @@ services:
       - server
     volumes:
       - ./certs:/app/certs
+      - ./qlogs:/app/qlogs  # Mount qlogs directory
 
   server:
     container_name: quic-server
@@ -26,6 +27,7 @@ services:
         ipv4_address: 172.16.238.11
     volumes:
       - ./certs:/app/certs
+      - ./qlogs:/app/qlogs  # Mount qlogs for server as well if needed
 
   tcpdump:
     image: nicolaka/netshoot

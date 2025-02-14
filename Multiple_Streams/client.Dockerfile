@@ -1,15 +1,11 @@
-FROM python:3.9-slim
+FROM python:3.10
 
 WORKDIR /app
-COPY requirements.txt .
-COPY client.py /app/client.py
+COPY . /app
 
-RUN apt-get update && \
-    apt-get install -y \
-    tcpdump \
-    build-essential \
-    libssl-dev \
-    && rm -rf /var/lib/apt/lists/* \
-    && pip install --no-cache-dir -r requirements.txt
+RUN pip install aioquic
+
+# Ensure directories exist for qlogs and certificates
+RUN mkdir -p /app/qlogs && mkdir -p /app/certs
 
 CMD ["python", "client.py"]
