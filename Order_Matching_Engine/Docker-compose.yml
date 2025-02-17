@@ -13,6 +13,8 @@ services:
       - server
     volumes:
       - ./certs:/app/certs
+    environment:
+      - USER_ID=LUKE_BARRY  # Generate a random uppercase string if not provided
 
   server:
     container_name: quic-server

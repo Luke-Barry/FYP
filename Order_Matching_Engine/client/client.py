@@ -1,5 +1,6 @@
 import asyncio
 import ssl
+import os
 from typing import Tuple, Optional, Callable
 from aioquic.asyncio import connect, QuicConnectionProtocol
 from aioquic.quic.configuration import QuicConfiguration
@@ -53,7 +54,8 @@ async def send_orders(order_queue: asyncio.Queue, writer: asyncio.StreamWriter):
     if not writer:
         print("Orders stream not available.")
         return
-    writer.write("establish".encode())
+    username = os.getenv("USER_ID", "DEFAULT")
+    writer.write(username.encode())
     while True:
         order = await order_queue.get()  # Wait for an order to be available
         writer.write(order.encode())
