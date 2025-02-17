@@ -1,7 +1,9 @@
 import asyncio
 import logging
 import os
+import json
 from typing import Optional, Tuple, Callable
+from enum import Enum
 from aioquic.asyncio import serve, QuicConnectionProtocol
 from aioquic.quic.configuration import QuicConfiguration
 from aioquic.quic.connection import QuicConnection, QuicFrameType, Limit
@@ -9,6 +11,12 @@ from aioquic.quic.connection import QuicConnection, QuicFrameType, Limit
 logger = logging.getLogger("server")
 logging.basicConfig(level=logging.INFO)
 os.environ['SSLKEYLOGFILE'] = '/app/certs/ssl_keylog.txt'
+user_dict = {}
+
+class Stream(Enum):
+    ORDERS = 0
+    MARKET_DATA = 4
+    NOTIFICATIONS = 8
 
 # --- Patch QuicConnection to use a custom max_streams_bidi limit if provided ---
 _original_init = QuicConnection.__init__
@@ -38,21 +46,47 @@ class MyQuicConnectionProtocol(QuicConnectionProtocol):
             return self._create_stream(stream_id)
 
 async def handle_stream(reader: asyncio.StreamReader, writer: asyncio.StreamWriter) -> None:
-    """Handles a single QUIC stream."""
     stream_id = writer.get_extra_info("stream_id")
-    logger.info(f"Stream {stream_id} opened")
     try:
         while True:
             data = await reader.read(1024)
             if not data:
-                break
+                continue
             message = data.decode()
-            logger.info(f"Received on stream {stream_id}: {message}")
+            try:
+                parsed_message = json.loads(message)
+                if stream_id == Stream.ORDERS.value:
+                    user = parsed_message['user']
+                    order = parsed_message['data']
+                    if order is None:
+                        user_dict[user] = []
+                        logger.info(f"Server established connection with user: {user}")
+                    else:
+                        user_dict[user].append(order)
+                        logger.info(f"Server received order from {user}: {order}")
+                else:
+                    user = parsed_message['user']
+                    data = parsed_message['data']
+                    if user != 'MATCHING_ENGINE':
+                        logger.info(f"{user} established connection on stream {stream_id}")
+                    elif stream_id == Stream.MARKET_DATA.value:
+                        publish_market_data(data)
+                    elif stream_id == Stream.NOTIFICATIONS.value:
+                        send_notifications(data)
+            except json.JSONDecodeError:
+                logger.error(f"Error decoding message on stream {stream_id}: {message}")
+                continue
     except Exception as e:
         logger.error(f"Error on stream {stream_id}: {e}")
     finally:
         logger.info(f"Stream {stream_id} closing")
         writer.close()
+
+def publish_market_data(market_data):
+    return
+
+def send_notifications(notification):
+    return
 
 async def main():
     configuration = QuicConfiguration(

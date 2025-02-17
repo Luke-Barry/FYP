@@ -1,10 +1,12 @@
 import asyncio
 import ssl
 import os
+import json
 from typing import Tuple, Optional, Callable
 from aioquic.asyncio import connect, QuicConnectionProtocol
 from aioquic.quic.configuration import QuicConfiguration
 from aioquic.quic.connection import QuicConnection
+username = os.getenv("USER_ID", "DEFAULT")
 
 # --- Patch QuicConnection.get_next_available_stream_id ---
 _original_get_next_available_stream_id = QuicConnection.get_next_available_stream_id
@@ -38,7 +40,11 @@ class MyQuicConnectionProtocol(QuicConnectionProtocol):
 async def handle_incoming_stream(reader: asyncio.StreamReader, writer: asyncio.StreamWriter, stream_name: str):
     """Handles incoming messages on a given stream (either for notifications or market data)"""
     try:
-        writer.write("establish".encode())
+        initial_message = {
+            "user": username,
+            "data": None
+        }
+        writer.write((json.dumps(initial_message)).encode())
         while True:
             data = await reader.read(1024)  # Wait for data
             if data:  # Process only non-empty messages
@@ -54,8 +60,11 @@ async def send_orders(order_queue: asyncio.Queue, writer: asyncio.StreamWriter):
     if not writer:
         print("Orders stream not available.")
         return
-    username = os.getenv("USER_ID", "DEFAULT")
-    writer.write(username.encode())
+    initial_message = {
+        "user": username,
+        "data": None
+    }
+    writer.write((json.dumps(initial_message)).encode())
     while True:
         order = await order_queue.get()  # Wait for an order to be available
         writer.write(order.encode())
