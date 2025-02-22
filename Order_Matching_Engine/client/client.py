@@ -6,6 +6,7 @@ from typing import Tuple, Optional, Callable
 from aioquic.asyncio import connect, QuicConnectionProtocol
 from aioquic.quic.configuration import QuicConfiguration
 from aioquic.quic.connection import QuicConnection
+
 username = os.getenv("USER_ID", "DEFAULT")
 
 # --- Patch QuicConnection.get_next_available_stream_id ---
@@ -29,22 +30,19 @@ class MyQuicConnectionProtocol(QuicConnectionProtocol):
         super().__init__(quic, stream_handler)
         self._stream_creation_lock = asyncio.Lock()
 
-    async def create_stream(self, stream_name: str) -> Tuple[asyncio.StreamReader, asyncio.StreamWriter]:
+    async def create_stream(self) -> Tuple[asyncio.StreamReader, asyncio.StreamWriter]:
         """Create a new bidirectional stream and store its reader/writer pair."""
         async with self._stream_creation_lock:
             stream_id = self._quic.get_next_available_stream_id(is_unidirectional=False)
             reader, writer = self._create_stream(stream_id)
-            print(f"Established {stream_name} stream: {stream_id}")
+            print(f"Established stream: {stream_id}")
             return reader, writer
 
-async def handle_incoming_stream(reader: asyncio.StreamReader, writer: asyncio.StreamWriter, stream_name: str):
-    """Handles incoming messages on a given stream (either for notifications or market data)"""
+async def handle_incoming_stream(reader: asyncio.StreamReader, writer: asyncio.StreamWriter):
+    """Handles incoming messages on a given stream (either for notifications or market data)."""
     try:
-        initial_message = {
-            "user": username,
-            "data": None
-        }
-        writer.write((json.dumps(initial_message)).encode())
+        writer.write(json.dumps({"user": username, "data": None}).encode())  # ✅ Fix: Encode before writing
+        stream_name = writer.get_extra_info("stream_id")
         while True:
             data = await reader.read(1024)  # Wait for data
             if data:  # Process only non-empty messages
@@ -60,17 +58,16 @@ async def send_orders(order_queue: asyncio.Queue, writer: asyncio.StreamWriter):
     if not writer:
         print("Orders stream not available.")
         return
-    initial_message = {
-        "user": username,
-        "data": None
-    }
-    writer.write((json.dumps(initial_message)).encode())
+    writer.write((json.dumps({"user": username, "data": None})).encode())
+    await writer.drain()
+    await asyncio.sleep(3)
+    writer.write((json.dumps({"user": username, "data": "order placeholer"})).encode())
     while True:
-        order = await order_queue.get()  # Wait for an order to be available
-        writer.write(order.encode())
-        await writer.drain()
-        print(f"Sent order: {order}")
-        order_queue.task_done()
+        # order = await order_queue.get()  # Wait for an order to be available
+        # writer.write((order + "\n").encode())  # Send each order separately with a newline
+        # await writer.drain()
+        # print(f"Sent order: {order}")
+        # order_queue.task_done()
         await asyncio.sleep(0.5)  # Adjust as needed to control send rate
 
 async def run_client(host: str, port: int) -> None:
@@ -86,16 +83,16 @@ async def run_client(host: str, port: int) -> None:
     async with connect(host, port, configuration=configuration, create_protocol=MyQuicConnectionProtocol) as protocol:
         protocol._sender_lock = asyncio.Lock()
         print("Connection established with server.")
+
         order_queue = asyncio.Queue()
 
-        # establish stream 0 for writing orders, streams 4 and 8 for receiving MD and Notis
-        _, orders_writer = await protocol.create_stream("orders")
-        market_reader, market_writer = await protocol.create_stream("market_data")
-        notifications_reader, notifications_writer = await protocol.create_stream("notifications")
-        # Asynchronously handle incoming MD/Notis, while dequeueing orders entered via the UI
+        _, orders_writer = await protocol.create_stream()
+        market_reader, market_writer = await protocol.create_stream()
+        notifications_reader, notifications_writer = await protocol.create_stream()
+
         tasks = [
-            asyncio.create_task(handle_incoming_stream(market_reader, market_writer, "market_data")),
-            asyncio.create_task(handle_incoming_stream(notifications_reader, notifications_writer, "notifications")),
+            asyncio.create_task(handle_incoming_stream(market_reader, market_writer)),
+            asyncio.create_task(handle_incoming_stream(notifications_reader, notifications_writer)),
             asyncio.create_task(send_orders(order_queue, orders_writer)),  # Pass the queue explicitly
         ]
         try:

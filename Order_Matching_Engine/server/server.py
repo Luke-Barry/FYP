@@ -18,7 +18,6 @@ class Stream(Enum):
     MARKET_DATA = 4
     NOTIFICATIONS = 8
 
-# --- Patch QuicConnection to use a custom max_streams_bidi limit if provided ---
 _original_init = QuicConnection.__init__
 
 def patched_init(self, *args, **kwargs):
@@ -31,10 +30,7 @@ def patched_init(self, *args, **kwargs):
         )
 
 QuicConnection.__init__ = patched_init
-# --- End patch ---
 
-# (On the server side, incoming stream IDs come from the client.)
-# If needed, you can similarly define a protocol subclass that protects stream creation.
 class MyQuicConnectionProtocol(QuicConnectionProtocol):
     def __init__(self, quic: QuicConnection, stream_handler: Optional[Callable] = None) -> None:
         super().__init__(quic, stream_handler)
@@ -52,29 +48,24 @@ async def handle_stream(reader: asyncio.StreamReader, writer: asyncio.StreamWrit
             data = await reader.read(1024)
             if not data:
                 continue
-            message = data.decode()
             try:
-                parsed_message = json.loads(message)
-                if stream_id == Stream.ORDERS.value:
-                    user = parsed_message['user']
-                    order = parsed_message['data']
-                    if order is None:
-                        user_dict[user] = []
-                        logger.info(f"Server established connection with user: {user}")
-                    else:
-                        user_dict[user].append(order)
-                        logger.info(f"Server received order from {user}: {order}")
-                else:
-                    user = parsed_message['user']
-                    data = parsed_message['data']
-                    if user != 'MATCHING_ENGINE':
-                        logger.info(f"{user} established connection on stream {stream_id}")
-                    elif stream_id == Stream.MARKET_DATA.value:
-                        publish_market_data(data)
-                    elif stream_id == Stream.NOTIFICATIONS.value:
-                        send_notifications(data)
+                parsed_message = json.loads(data.decode())
+                user = parsed_message['user']
+                nested_data = parsed_message['data']
+                if nested_data is None:
+                    user_dict[(user, stream_id)] = (reader, writer)
+                    logger.info(f"Server established connection with user: {user} on stream: {stream_id}")
+                elif stream_id == Stream.ORDERS.value:
+                    logger.info(f"Server received order from {user}: {nested_data}, forwarding to matching engine.")
+                    await forward_order(data, user, stream_id)
+                elif stream_id == Stream.MARKET_DATA.value:
+                    logger.info(f"Server received MD from matching engine, forwarding to client.")
+                    await forward_market_data(nested_data, stream_id)
+                elif stream_id == Stream.NOTIFICATIONS.value:
+                    logger.info(f"Server received Notifications from matching engine, forwarding to client.")
+                    await forward_notifications(nested_data, stream_id)
             except json.JSONDecodeError:
-                logger.error(f"Error decoding message on stream {stream_id}: {message}")
+                logger.error(f"Error decoding message on stream {stream_id}: {parsed_message}")
                 continue
     except Exception as e:
         logger.error(f"Error on stream {stream_id}: {e}")
@@ -82,11 +73,30 @@ async def handle_stream(reader: asyncio.StreamReader, writer: asyncio.StreamWrit
         logger.info(f"Stream {stream_id} closing")
         writer.close()
 
-def publish_market_data(market_data):
-    return
+async def forward_market_data(nested_data, stream_id):
+    user_to_forward_to = nested_data["user"]
+    while (user_to_forward_to, stream_id) not in user_dict:
+        logger.error(f"Error, {user_to_forward_to} wasn't found in the user dict, please wait.")
+        asyncio.sleep(1)
+    else:
+        client_writer = user_dict[(user_to_forward_to, stream_id)][1]
+        client_writer.write(("Market Data to user: " + user_to_forward_to).encode())
 
-def send_notifications(notification):
-    return
+async def forward_notifications(nested_data, stream_id):
+    user_to_forward_to = nested_data["user"]
+    while (user_to_forward_to, stream_id) not in user_dict:
+        logger.error(f"Error, {user_to_forward_to} wasn't found in the user dict, please wait.")
+        asyncio.sleep(1)
+    else:
+        client_writer = user_dict[(user_to_forward_to, stream_id)][1]
+        client_writer.write(("Notification to user: " + user_to_forward_to).encode())
+
+async def forward_order(data, user, stream_id):
+    while (user, stream_id) not in user_dict:
+        logger.error("Error, Matching engine has yet to connect to server, please wait.")
+        asyncio.sleep(1)
+    matching_engine_writer = user_dict[("MATCHING_ENGINE", stream_id)][1]
+    matching_engine_writer.write(data)
 
 async def main():
     configuration = QuicConfiguration(
@@ -97,7 +107,6 @@ async def main():
     )
     configuration.max_streams_bidi = 100
     configuration.load_cert_chain("certs/ssl_cert.pem", "certs/ssl_key.pem")
-
     server = await serve(
         host="0.0.0.0",
         port=8080,
@@ -106,7 +115,6 @@ async def main():
         create_protocol=MyQuicConnectionProtocol,
         stream_handler=lambda r, w: asyncio.create_task(handle_stream(r, w))
     )
-
     logger.info("Server started on 0.0.0.0:8080")
     await asyncio.Future()  # Run forever
 

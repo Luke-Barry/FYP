@@ -16,6 +16,21 @@ services:
     environment:
       - USER_ID=LUKE_BARRY  # Generate a random uppercase string if not provided
 
+  matching_engine:
+    container_name: quic-engine
+    build:
+      context: .
+      dockerfile: ./matching_engine/engine.Dockerfile
+    networks:
+      quic-net:
+        ipv4_address: 172.16.238.12
+    depends_on:
+      - server
+    volumes:
+      - ./certs:/app/certs
+    environment:
+      - USER_ID=MATCHING_ENGINE  # Generate a random uppercase string if not provided
+
   server:
     container_name: quic-server
     build:
@@ -32,12 +47,13 @@ services:
   tcpdump:
     image: nicolaka/netshoot
     command: tcpdump -i any -w /tmp/capture/Order_Matching_Engine.pcap 'udp port 8080'
-    network_mode: "container:quic-client"
+    network_mode: "host"
     volumes:
       - ../capture:/tmp/capture
     depends_on:
       - client
       - server
+      - matching_engine
 
 networks:
   quic-net:
