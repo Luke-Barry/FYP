@@ -2,12 +2,17 @@ import asyncio
 import ssl
 import os
 import json
+import logging
 from typing import Tuple, Optional, Callable
 from aioquic.asyncio import connect, QuicConnectionProtocol
 from aioquic.quic.configuration import QuicConfiguration
 from aioquic.quic.connection import QuicConnection
-username = os.getenv("USER_ID", "DEFAULT")
 
+# Setup logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("engine")
+
+username = os.getenv("USER_ID", "DEFAULT")
 writer_dict = {}
 
 # --- Patch QuicConnection.get_next_available_stream_id ---
@@ -36,31 +41,28 @@ class MyQuicConnectionProtocol(QuicConnectionProtocol):
         async with self._stream_creation_lock:
             stream_id = self._quic.get_next_available_stream_id(is_unidirectional=False)
             reader, writer = self._create_stream(stream_id)
-            initial_message = {
-                "user": username,
-                "data": None
-            }
+            initial_message = {"user": username, "data": None}
             writer.write((json.dumps(initial_message)).encode())
-            print(f"Established stream: {stream_id}")
+            logger.info(f"Established stream: {stream_id}")
             return reader, writer
 
 async def handle_incoming_orders(reader: asyncio.StreamReader):
     """Handles incoming messages on a given stream (either for notifications or market data)"""
     try:
         while True:
-            data = await reader.read(1024)  # Wait for data
-            if data:  # Process only non-empty messages
+            data = await reader.read(1024)
+            if data:
                 parsed_message = json.loads(data.decode())
                 user = parsed_message['user']
                 data = parsed_message['data']
-                print(f"Received order: {data} from {user}")
+                logger.info(f"Received order: {data} from {user}")
                 send_market_data(user)
                 send_notifications(user)
-            await asyncio.sleep(0.1)  # Prevent CPU-intensive busy-waiting
+            await asyncio.sleep(0.1)
     except asyncio.CancelledError:
-        print(f"Order receival task cancelled.")
+        logger.warning("Order receival task cancelled.")
     except Exception as e:
-        print(f"Error in orders stream: {e}")
+        logger.error(f"Error in orders stream: {e}")
 
 def send_market_data(user):
     market_writer = writer_dict["market_data"]
@@ -82,25 +84,22 @@ async def run_matching_engine(host: str, port: int) -> None:
 
     async with connect(host, port, configuration=configuration, create_protocol=MyQuicConnectionProtocol) as protocol:
         protocol._sender_lock = asyncio.Lock()
-        print("Connection established with server.")
-        order_queue = asyncio.Queue()
+        logger.info("Connection established with server.")
 
-        # establish stream 0 for writing orders, streams 4 and 8 for receiving MD and Notis
         orders_reader, _ = await protocol.create_stream()
         _, market_writer = await protocol.create_stream()
         _, notifications_writer = await protocol.create_stream()
+
         writer_dict["market_data"] = market_writer
         writer_dict["notifications"] = notifications_writer
 
-        tasks = [
-            asyncio.create_task(handle_incoming_orders(orders_reader))  # Pass the queue explicitly
-        ]
+        tasks = [asyncio.create_task(handle_incoming_orders(orders_reader))]
         try:
             await asyncio.gather(*tasks)
         except Exception as e:
-            print(f"Client error: {e}")
+            logger.error(f"Client error: {e}")
         finally:
-            print("Client shutting down gracefully.")
+            logger.info("Client shutting down gracefully.")
 
 if __name__ == "__main__":
     host = "quic-server"
