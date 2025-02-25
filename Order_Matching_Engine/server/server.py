@@ -50,20 +50,25 @@ async def handle_stream(reader: asyncio.StreamReader, writer: asyncio.StreamWrit
                 continue
             try:
                 parsed_message = json.loads(data.decode())
+                if 'user' not in parsed_message or 'data' not in parsed_message:
+                    logger.error(f"Received message missing required fields: {parsed_message}")
+                    continue
+
                 user = parsed_message['user']
-                nested_data = parsed_message['data']
-                if nested_data is None:
+                data = parsed_message['data']
+
+                if data is None:
                     user_dict[(user, stream_id)] = (reader, writer)
                     logger.info(f"Server established connection with user: {user} on stream: {stream_id}")
                 elif stream_id == Stream.ORDERS.value:
-                    logger.info(f"Server received order from {user}: {nested_data}, forwarding to matching engine.")
-                    await forward_order(data, user, stream_id)
+                    logger.info(f"Server received order from {user}: {data}, forwarding to matching engine.")
+                    await forward_order(data)
                 elif stream_id == Stream.MARKET_DATA.value:
-                    logger.info(f"Server received MD from matching engine, forwarding to client.")
-                    await forward_market_data(nested_data, stream_id)
+                    logger.info(f"Server received market data from {user}, forwarding to client.")
+                    await forward_market_data(user, data)
                 elif stream_id == Stream.NOTIFICATIONS.value:
-                    logger.info(f"Server received Notifications from matching engine, forwarding to client.")
-                    await forward_notifications(nested_data, stream_id)
+                    logger.info(f"Server received notification from {user}, forwarding to client.")
+                    await forward_notifications(user, data)
             except json.JSONDecodeError:
                 logger.error(f"Error decoding message on stream {stream_id}: {parsed_message}")
                 continue
@@ -73,30 +78,27 @@ async def handle_stream(reader: asyncio.StreamReader, writer: asyncio.StreamWrit
         logger.info(f"Stream {stream_id} closing")
         writer.close()
 
-async def forward_market_data(nested_data, stream_id):
-    user_to_forward_to = nested_data["user"]
-    while (user_to_forward_to, stream_id) not in user_dict:
-        logger.error(f"Error, {user_to_forward_to} wasn't found in the user dict, please wait.")
-        asyncio.sleep(1)
-    else:
-        client_writer = user_dict[(user_to_forward_to, stream_id)][1]
-        client_writer.write(("Market Data to user: " + user_to_forward_to).encode())
+async def forward_market_data(user: str, nested_data):
+    for (target_user, target_stream_id), (_, writer) in user_dict.items():
+        if target_stream_id == Stream.MARKET_DATA.value:
+            writer.write(json.dumps({"user": user, "data": nested_data}).encode())
+            await writer.drain()
 
-async def forward_notifications(nested_data, stream_id):
-    user_to_forward_to = nested_data["user"]
-    while (user_to_forward_to, stream_id) not in user_dict:
-        logger.error(f"Error, {user_to_forward_to} wasn't found in the user dict, please wait.")
-        asyncio.sleep(1)
-    else:
-        client_writer = user_dict[(user_to_forward_to, stream_id)][1]
-        client_writer.write(("Notification to user: " + user_to_forward_to).encode())
+async def forward_notifications(user: str, nested_data):
+    target_user = nested_data["target_user"]
+    message = nested_data["message"]
+    if (target_user, Stream.NOTIFICATIONS.value) in user_dict:
+        _, writer = user_dict[(target_user, Stream.NOTIFICATIONS.value)]
+        writer.write(json.dumps({"user": user, "data": message}).encode())
+        await writer.drain()
 
-async def forward_order(data, user, stream_id):
-    while (user, stream_id) not in user_dict:
+async def forward_order(order):
+    while ("MATCHING_ENGINE", 0) not in user_dict:
         logger.error("Error, Matching engine has yet to connect to server, please wait.")
-        asyncio.sleep(1)
-    matching_engine_writer = user_dict[("MATCHING_ENGINE", stream_id)][1]
-    matching_engine_writer.write(data)
+        await asyncio.sleep(1)
+    matching_engine_writer = user_dict[("MATCHING_ENGINE", 0)][1]
+    matching_engine_writer.write(json.dumps({"user": "SERVER", "data": order}).encode())
+    await matching_engine_writer.drain()
 
 async def main():
     configuration = QuicConfiguration(
@@ -111,7 +113,6 @@ async def main():
         host="0.0.0.0",
         port=8080,
         configuration=configuration,
-        # Optionally, you can use our subclass to protect any server-side stream creation:
         create_protocol=MyQuicConnectionProtocol,
         stream_handler=lambda r, w: asyncio.create_task(handle_stream(r, w))
     )

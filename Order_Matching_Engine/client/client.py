@@ -65,8 +65,44 @@ async def send_orders(order_queue: asyncio.Queue, writer: asyncio.StreamWriter):
         return
     writer.write((json.dumps({"user": username, "data": None})).encode())
     await writer.drain()
-    await asyncio.sleep(3)
-    writer.write((json.dumps({"user": username, "data": "order placeholder"})).encode())
+    await asyncio.sleep(1)
+    
+    test_orders = [
+        {  # 1. Initial Limit Order
+            "type": "limit",
+            "quantity": 100,
+            "price": 100,
+            "side": "buy",
+            "user": username
+        },
+        {  # 2. Cancel Limit Order
+            "type": "cancel",
+            "quantity": 100,
+            "price": 100,
+            "side": "buy",
+            "user": username
+        },
+        {  # 3. Re-add Limit Order
+            "type": "limit",
+            "quantity": 100,
+            "price": 100,
+            "side": "buy",
+            "user": username
+        },
+        {  # 4. Market Order
+            "type": "market",
+            "quantity": 100,
+            "price": None,
+            "side": "sell",
+            "user": username
+        }
+    ]
+
+    for idx, order in enumerate(test_orders, 1):
+        logger.info(f"Sending test order {idx}: {order['type'].upper()}")
+        writer.write(json.dumps({"user": username, "data": order}).encode())
+        await writer.drain()
+        await asyncio.sleep(1)
 
     while True:
         await asyncio.sleep(0.5)
