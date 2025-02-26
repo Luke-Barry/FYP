@@ -46,18 +46,20 @@ class OrderBook:
         matches = []
         remaining = quantity
         opposite = self.asks if side == "buy" else self.bids
-    
+
         while remaining > 0 and opposite:
             best = opposite[0]
             best_price = best[3]
-            
+
+            # Check if the prices are opposite, meaning the orders can match
             if (side == "buy" and best_price > price) or (side == "sell" and best_price < price):
-                break
+                break  # No match possible
             
             fill_qty = min(remaining, best[4])
             matches.append((best_price, fill_qty, best[5]))
             remaining -= fill_qty
             
+            # If the order is only partially filled, update its quantity and keep it in the order book
             if best[4] > fill_qty:
                 new_quantity = best[4] - fill_qty
                 new_entry = (*best[:4], new_quantity, best[5])
@@ -65,12 +67,18 @@ class OrderBook:
                 opposite.add(new_entry)
                 # Update self.orders with new quantity
                 order_side = 'sell' if opposite is self.asks else 'buy'
-                self.orders[best[2]] = (order_side, best[3], new_quantity, best[5])  # Fixed line
+                self.orders[best[2]] = (order_side, best[3], new_quantity, best[5])
             else:
+                # If the order is completely filled, remove it from the book
                 opposite.discard(best)
                 del self.orders[best[2]]
         
-        return matches
+        # If there is still remaining quantity, it means it hasn't been fully matched, so we return the unmatched order
+        if remaining > 0:
+            return matches
+        else:
+            return matches  # If matched, return the full list of matched orders
+
 
     def cancel_limit_order(self, user: str, price: int, quantity: int, side: str) -> bool:
         target_orders = self.bids if side == "buy" else self.asks

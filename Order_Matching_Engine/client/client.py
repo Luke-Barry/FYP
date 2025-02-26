@@ -3,6 +3,8 @@ import ssl
 import os
 import json
 import logging
+import threading
+from flask import Flask, request, jsonify
 from typing import Tuple, Optional, Callable
 from aioquic.asyncio import connect, QuicConnectionProtocol
 from aioquic.quic.configuration import QuicConfiguration
@@ -13,6 +15,12 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("client")
 
 username = os.getenv("USER_ID", "DEFAULT")
+app = Flask(__name__)
+
+# --- Global event loop for thread-safe operations ---
+event_loop = None
+order_queue = None
+is_initialized = False  # Flag to track initialization
 
 # --- Patch QuicConnection.get_next_available_stream_id ---
 _original_get_next_available_stream_id = QuicConnection.get_next_available_stream_id
@@ -47,6 +55,7 @@ async def handle_incoming_stream(reader: asyncio.StreamReader, writer: asyncio.S
     """Handles incoming messages on a given stream (either for notifications or market data)."""
     try:
         writer.write(json.dumps({"user": username, "data": None}).encode())  
+        await writer.drain()
         stream_name = writer.get_extra_info("stream_id")
         while True:
             data = await reader.read(1024)
@@ -58,56 +67,59 @@ async def handle_incoming_stream(reader: asyncio.StreamReader, writer: asyncio.S
     except Exception as e:
         logger.error(f"Error in {stream_name} stream: {e}")
 
+@app.route('/api/order', methods=['POST'])
+def receive_order():
+    """Receives orders via HTTP POST and adds them to the order queue."""
+    try:
+        # Log if the client is initialized
+        if not is_initialized:
+            logger.error("Client is not initialized yet.")
+            return jsonify({"error": "Client is not initialized yet."}), 503
+
+        data = request.get_json()
+        if not data:
+            logger.error("Invalid JSON received.")
+            return jsonify({"error": "Invalid JSON"}), 400
+
+        logger.info(f"Received order from web server: {data}")
+        
+        # Use the stored event loop to enqueue orders properly
+        if event_loop is None:
+            logger.error("Event loop is not available.")
+            return jsonify({"error": "Event loop is not available."}), 500
+
+        logger.info("Enqueuing order to event loop.")
+        asyncio.run_coroutine_threadsafe(order_queue.put(data), event_loop)
+
+        return jsonify({"success": True, "order": data}), 200
+
+    except Exception as e:
+        logger.error(f"Error receiving order: {e}")
+        return jsonify({"error": str(e)}), 500
+
 async def send_orders(order_queue: asyncio.Queue, writer: asyncio.StreamWriter):
-    """Processes the order queue and sends orders to the server when available."""
+    """Processes the order queue from web GUI and sends orders to server."""
     if not writer:
         logger.error("Orders stream not available.")
         return
-    writer.write((json.dumps({"user": username, "data": None})).encode())
-    await writer.drain()
-    await asyncio.sleep(1)
     
-    test_orders = [
-        {  # 1. Initial Limit Order
-            "type": "limit",
-            "quantity": 100,
-            "price": 100,
-            "side": "buy",
-            "user": username
-        },
-        {  # 2. Cancel Limit Order
-            "type": "cancel",
-            "quantity": 100,
-            "price": 100,
-            "side": "buy",
-            "user": username
-        },
-        {  # 3. Re-add Limit Order
-            "type": "limit",
-            "quantity": 100,
-            "price": 100,
-            "side": "buy",
-            "user": username
-        },
-        {  # 4. Market Order
-            "type": "market",
-            "quantity": 100,
-            "price": None,
-            "side": "sell",
-            "user": username
-        }
-    ]
-
-    for idx, order in enumerate(test_orders, 1):
-        logger.info(f"Sending test order {idx}: {order['type'].upper()}")
+    # Initial empty message to establish stream
+    writer.write(json.dumps({"user": username, "data": None}).encode())
+    await writer.drain()
+    
+    while True:
+        order = await order_queue.get()
+        logger.info(f"Sending order from queue: {order}")
         writer.write(json.dumps({"user": username, "data": order}).encode())
         await writer.drain()
-        await asyncio.sleep(1)
-
-    while True:
-        await asyncio.sleep(0.5)
 
 async def run_client(host: str, port: int) -> None:
+    global event_loop, order_queue, is_initialized
+
+    event_loop = asyncio.get_event_loop()  # Store event loop for Flask
+    order_queue = asyncio.Queue()
+    is_initialized = True  # Mark initialization as complete
+
     configuration = QuicConfiguration(
         alpn_protocols=["quic-demo"],
         is_client=True,
@@ -121,17 +133,17 @@ async def run_client(host: str, port: int) -> None:
         protocol._sender_lock = asyncio.Lock()
         logger.info("Connection established with server.")
 
-        order_queue = asyncio.Queue()
-
         _, orders_writer = await protocol.create_stream()
         market_reader, market_writer = await protocol.create_stream()
         notifications_reader, notifications_writer = await protocol.create_stream()
 
+        # Start tasks for QUIC communication
         tasks = [
             asyncio.create_task(handle_incoming_stream(market_reader, market_writer)),
             asyncio.create_task(handle_incoming_stream(notifications_reader, notifications_writer)),
-            asyncio.create_task(send_orders(order_queue, orders_writer)),
+            asyncio.create_task(send_orders(order_queue, orders_writer))
         ]
+
         try:
             await asyncio.gather(*tasks)
         except Exception as e:
@@ -139,7 +151,15 @@ async def run_client(host: str, port: int) -> None:
         finally:
             logger.info("Client shutting down gracefully.")
 
+def start_flask():
+    """Runs Flask API in a separate thread."""
+    app.run(debug=False, host='0.0.0.0', port=6060, use_reloader=False)
+
 if __name__ == "__main__":
+    # Start Flask API in a separate thread
+    flask_thread = threading.Thread(target=start_flask, daemon=True)
+    flask_thread.start()
+
     host = "quic-server"
     port = 8080
-    asyncio.run(run_client(host, port))
+    asyncio.run(run_client(host, port))  # Start the client connection and event loop
