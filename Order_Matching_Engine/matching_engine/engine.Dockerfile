@@ -3,6 +3,7 @@ FROM python:3.9-slim
 WORKDIR /app
 COPY requirements.txt .
 COPY matching_engine/engine.py /app/engine.py
+COPY matching_engine/orderbook.py /app/orderbook.py
 
 RUN apt-get update && \
     apt-get install -y \

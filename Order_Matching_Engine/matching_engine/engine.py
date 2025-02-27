@@ -7,117 +7,7 @@ from typing import Tuple, Optional, Callable
 from aioquic.asyncio import connect, QuicConnectionProtocol
 from aioquic.quic.configuration import QuicConfiguration
 from aioquic.quic.connection import QuicConnection
-from sortedcontainers import SortedList
-import uuid
-from typing import List, Tuple, Dict
-
-class OrderBook:
-    def __init__(self):
-        self.bids = SortedList()  # (-price, timestamp, order_id, original_price, quantity, user)
-        self.asks = SortedList()  # (price, timestamp, order_id, price, quantity, user)
-        self.orders: Dict[str, tuple] = {}
-        self.timestamp = 0
-
-    def add_limit_order(self, side: str, price: int, quantity: int, user: str) -> Tuple[str, List[Tuple]]:
-        if price <= 0 or quantity <= 0:
-            raise ValueError("Invalid order parameters")
-        
-        order_id = str(uuid.uuid4())
-        self.timestamp += 1
-        entry = (
-            -price if side == "buy" else price,
-            self.timestamp,
-            order_id,
-            price,
-            quantity,
-            user
-        )
-        
-        if side == "buy":
-            self.bids.add(entry)
-        else:
-            self.asks.add(entry)
-        
-        self.orders[order_id] = (side, price, quantity, user)
-        matches = self._check_immediate_matches(side, price, quantity)
-        return order_id, matches
-
-    def _check_immediate_matches(self, side: str, price: int, quantity: int) -> List[Tuple]:
-        matches = []
-        remaining = quantity
-        opposite = self.asks if side == "buy" else self.bids
-
-        while remaining > 0 and opposite:
-            best = opposite[0]
-            best_price = best[3]
-
-            # Check if the prices are opposite, meaning the orders can match
-            if (side == "buy" and best_price > price) or (side == "sell" and best_price < price):
-                break  # No match possible
-            
-            fill_qty = min(remaining, best[4])
-            matches.append((best_price, fill_qty, best[5]))
-            remaining -= fill_qty
-            
-            # If the order is only partially filled, update its quantity and keep it in the order book
-            if best[4] > fill_qty:
-                new_quantity = best[4] - fill_qty
-                new_entry = (*best[:4], new_quantity, best[5])
-                opposite.discard(best)
-                opposite.add(new_entry)
-                # Update self.orders with new quantity
-                order_side = 'sell' if opposite is self.asks else 'buy'
-                self.orders[best[2]] = (order_side, best[3], new_quantity, best[5])
-            else:
-                # If the order is completely filled, remove it from the book
-                opposite.discard(best)
-                del self.orders[best[2]]
-        
-        # If there is still remaining quantity, it means it hasn't been fully matched, so we return the unmatched order
-        if remaining > 0:
-            return matches
-        else:
-            return matches  # If matched, return the full list of matched orders
-
-
-    def cancel_limit_order(self, user: str, price: int, quantity: int, side: str) -> bool:
-        target_orders = self.bids if side == "buy" else self.asks
-        for order_id, (s, p, q, u) in list(self.orders.items()):
-            if u == user and s == side and p == price and q == quantity:
-                # Find and remove the exact entry from bids/asks
-                for entry in target_orders:
-                    if entry[2] == order_id:  # Match order_id
-                        target_orders.discard(entry)
-                        del self.orders[order_id]
-                        return True
-        return False
-
-    def match_market_order(self, side: str, quantity: int) -> List[Tuple]:
-        matches = []
-        remaining = quantity
-        opposite = self.bids if side == "sell" else self.asks
-        
-        while remaining > 0 and opposite:
-            best = opposite[0]
-            fill_qty = min(remaining, best[4])
-            matches.append((best[3], fill_qty, best[5]))
-            remaining -= fill_qty
-            
-            if best[4] > fill_qty:
-                new_entry = (*best[:4], best[4] - fill_qty, best[5])
-                opposite.discard(best)
-                opposite.add(new_entry)
-            else:
-                opposite.discard(best)
-                del self.orders[best[2]]
-        
-        return matches
-
-    def get_market_data(self) -> dict:
-        return {
-            "bids": [{"price": entry[3], "quantity": entry[4]} for entry in self.bids],
-            "asks": [{"price": entry[3], "quantity": entry[4]} for entry in self.asks]
-        }
+from orderbook import OrderBook
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
@@ -221,6 +111,7 @@ async def send_notifications(target_user: str, message: dict):
             }
         }).encode())
     logger.info("Matching engine sending notifications back to server")
+    await asyncio.sleep(0.0001)
 
 async def run_matching_engine(host: str, port: int) -> None:
     configuration = QuicConfiguration(
