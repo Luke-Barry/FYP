@@ -1,92 +1,388 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Trading GUI</title>
+    <title>Trading Interface</title>
     <style>
-        body { font-family: Arial, sans-serif; max-width: 600px; margin: 20px auto; padding: 20px; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; }
-        input, select { width: 100%; padding: 8px; margin-bottom: 10px; }
-        button { background: #4CAF50; color: white; padding: 10px 20px; border: none; cursor: pointer; }
-        #status { margin-top: 20px; padding: 10px; }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .orderbook {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .orderbook-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .bids, .asks {
+            width: 100%;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: right;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+
+        .bids td:first-child, .asks td:first-child {
+            color: #28a745;  /* Green for price */
+        }
+
+        .asks td:first-child {
+            color: #dc3545;  /* Red for price */
+        }
+
+        .order-form {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .notifications {
+            grid-column: span 2;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        input {
+            padding: 8px;
+            margin: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        select {
+            padding: 8px;
+            margin: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .buy {
+            color: #28a745;
+        }
+
+        .sell {
+            color: #dc3545;
+        }
+
+        .matched-order {
+            background-color: #dff0d8;
+        }
+
+        /* Add styles for notifications */
+        .notification-row {
+            transition: background-color 0.3s ease;
+        }
+        .notification-row.matched-order {
+            background-color: #dff0d8;
+            color: #3c763d;
+        }
+        .notification-row.limit-order {
+            background-color: #d9edf7;
+            color: #31708f;
+        }
+        .notification-row.cancelled-order {
+            background-color: #f2dede;
+            color: #a94442;
+        }
     </style>
 </head>
 <body>
-    <h1>Trading Interface</h1>
-    
-    <div class="form-group">
-        <label>Order Type:</label>
-        <select id="orderType">
-            <option value="limit">Limit Order</option>
-            <option value="market">Market Order</option>
-        </select>
-    </div>
+    <div class="container">
+        <div class="order-form">
+            <h2>Place Order</h2>
+            <form id="orderForm">
+                <div>
+                    <label for="orderType">Type:</label>
+                    <select id="orderType" name="orderType" required>
+                        <option value="limit">Limit</option>
+                        <option value="market">Market</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="orderSide">Side:</label>
+                    <select id="orderSide" name="orderSide" required>
+                        <option value="buy">Buy</option>
+                        <option value="sell">Sell</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="orderQuantity">Quantity:</label>
+                    <input type="number" id="orderQuantity" name="orderQuantity" required min="1">
+                </div>
+                <div id="priceField">
+                    <label for="orderPrice">Price:</label>
+                    <input type="number" id="orderPrice" name="orderPrice" step="0.01" min="0.01">
+                </div>
+                <button type="submit">Place Order</button>
+            </form>
+            <div id="orderError" class="error"></div>
+        </div>
 
-    <div class="form-group">
-        <label>Side:</label>
-        <select id="side">
-            <option value="buy">Buy</option>
-            <option value="sell">Sell</option>
-        </select>
-    </div>
+        <div class="orderbook">
+            <h2>Order Book</h2>
+            <div class="orderbook-container">
+                <div class="bids">
+                    <h3>Bids</h3>
+                    <table id="bids-table">
+                        <thead>
+                            <tr>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div class="asks">
+                    <h3>Asks</h3>
+                    <table id="asks-table">
+                        <thead>
+                            <tr>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
 
-    <div class="form-group">
-        <label>Quantity:</label>
-        <input type="number" id="quantity" min="1" required>
+        <div class="notifications">
+            <h2>Order Notifications</h2>
+            <table id="notifications-table">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Type</th>
+                        <th>Message</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
     </div>
-
-    <div class="form-group" id="priceField">
-        <label>Price:</label>
-        <input type="number" id="price" min="1" step="0.01">
-    </div>
-
-    <button onclick="submitOrder()">Submit Order</button>
-    <div id="status"></div>
 
     <script>
-        // Show/hide price field based on order type
-        document.getElementById('orderType').addEventListener('change', function() {
-            document.getElementById('priceField').style.display = 
-                this.value === 'limit' ? 'block' : 'none';
+        // Global variables
+        let notifications = [];
+        const maxNotifications = 50;
+
+        // Helper function to format timestamps
+        function formatTime(date) {
+            return date.toLocaleTimeString('en-US', { 
+                hour12: false, 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                second: '2-digit'
+            });
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set up form event listeners
+            const orderForm = document.getElementById('orderForm');
+            const orderType = document.getElementById('orderType');
+            const priceField = document.getElementById('priceField');
+            const orderError = document.getElementById('orderError');
+
+            // Show/hide price field based on order type
+            orderType.addEventListener('change', function() {
+                priceField.style.display = this.value === 'market' ? 'none' : 'block';
+            });
+
+            // Handle form submission
+            orderForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                orderError.textContent = '';
+
+                const formData = {
+                    type: orderType.value,
+                    side: document.getElementById('orderSide').value,
+                    quantity: parseInt(document.getElementById('orderQuantity').value)
+                };
+
+                if (orderType.value === 'limit') {
+                    formData.price = parseFloat(document.getElementById('orderPrice').value);
+                }
+
+                try {
+                    const response = await fetch('/order', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(formData)
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Failed to place order');
+                    }
+
+                    // Clear form
+                    orderForm.reset();
+                } catch (error) {
+                    orderError.textContent = error.message;
+                }
+            });
+
+            // Start polling for updates
+            pollForUpdates();
         });
 
-        async function submitOrder() {
-            const order = {
-                type: document.getElementById('orderType').value,
-                side: document.getElementById('side').value,
-                quantity: parseFloat(document.getElementById('quantity').value)
-            };
-
-            if (order.type === 'limit') {
-                order.price = parseFloat(document.getElementById('price').value);
-                if (!order.price) {
-                    showStatus('Price is required for limit orders', 'error');
-                    return;
+        // Function to aggregate orders at same price level
+        function aggregateOrders(orders) {
+            const aggregated = new Map();
+            
+            for (const order of orders) {
+                const price = parseFloat(order.price);
+                const quantity = parseInt(order.quantity);
+                
+                if (aggregated.has(price)) {
+                    aggregated.set(price, aggregated.get(price) + quantity);
+                } else {
+                    aggregated.set(price, quantity);
                 }
             }
+            
+            return Array.from(aggregated.entries()).map(([price, quantity]) => ({
+                price: price,
+                quantity: quantity
+            }));
+        }
 
-            try {
-                const response = await fetch('/order', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(order)
+        // Update orderbook display
+        function updateOrderbook(data) {
+            const bidsTable = document.getElementById('bids-table').getElementsByTagName('tbody')[0];
+            const asksTable = document.getElementById('asks-table').getElementsByTagName('tbody')[0];
+            bidsTable.innerHTML = '';
+            asksTable.innerHTML = '';
+
+            // Aggregate and sort orders
+            const aggregatedBids = aggregateOrders(data.bids || [])
+                .sort((a, b) => b.price - a.price);
+            const aggregatedAsks = aggregateOrders(data.asks || [])
+                .sort((a, b) => a.price - b.price);
+
+            // Combine and display orders
+            aggregatedBids.forEach(order => {
+                const row = bidsTable.insertRow();
+                row.insertCell(0).textContent = order.price.toFixed(2);
+                row.insertCell(1).textContent = order.quantity;
+            });
+
+            aggregatedAsks.forEach(order => {
+                const row = asksTable.insertRow();
+                row.insertCell(0).textContent = order.price.toFixed(2);
+                row.insertCell(1).textContent = order.quantity;
+            });
+        }
+
+        // Update notifications table
+        function updateNotifications(data) {
+            if (data.notifications && data.notifications.length > 0) {
+                const notificationsTable = document.getElementById('notifications-table');
+                
+                data.notifications.forEach(notification => {
+                    const row = document.createElement('tr');
+                    row.className = 'notification-row';
+                    
+                    // Add timestamp and message
+                    row.innerHTML = `
+                        <td>${notification.timestamp}</td>
+                        <td>${notification.type}</td>
+                        <td>${notification.message}</td>
+                    `;
+                    
+                    // Style based on notification type
+                    if (notification.type === 'ORDER_MATCHED') {
+                        row.classList.add('matched-order');
+                    } else if (notification.type === 'ORDER_POSTED') {
+                        row.classList.add('limit-order');
+                    } else if (notification.type === 'ORDER_CANCELLED') {
+                        row.classList.add('cancelled-order');
+                    }
+                    
+                    // Insert at the top of the table
+                    notificationsTable.insertBefore(row, notificationsTable.firstChild);
                 });
                 
-                const result = await response.json();
-                if (response.ok) {
-                    showStatus('Order submitted successfully!', 'success');
-                } else {
-                    showStatus(`Error: ${result.error}`, 'error');
+                // Limit the number of notifications shown
+                while (notificationsTable.rows.length > maxNotifications) {
+                    notificationsTable.deleteRow(-1);
                 }
-            } catch (error) {
-                showStatus(`Network error: ${error.message}`, 'error');
             }
         }
 
-        function showStatus(message, type = 'info') {
-            const statusDiv = document.getElementById('status');
-            statusDiv.textContent = message;
-            statusDiv.className = type;
+        // Polling function for updates
+        async function pollForUpdates() {
+            try {
+                // Get orderbook updates
+                const orderbookResponse = await fetch('/api/orderbook');
+                if (orderbookResponse.ok) {
+                    const orderbookData = await orderbookResponse.json();
+                    updateOrderbook(orderbookData);
+                }
+
+                // Get user orders/notifications
+                const ordersResponse = await fetch('/api/orders/LUKE_BARRY');
+                if (ordersResponse.ok) {
+                    const ordersData = await ordersResponse.json();
+                    if (ordersData.notifications) {
+                        updateNotifications(ordersData);
+                    }
+                }
+            } catch (error) {
+                console.error('Error polling for updates:', error);
+            }
+
+            // Poll again after a short delay
+            setTimeout(pollForUpdates, 1000);
         }
     </script>
 </body>

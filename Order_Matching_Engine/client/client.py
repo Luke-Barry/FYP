@@ -5,10 +5,11 @@ import json
 import logging
 import threading
 from flask import Flask, request, jsonify
-from typing import Tuple, Optional, Callable
+from typing import Tuple, Optional, Callable, Dict, List
 from aioquic.asyncio import connect, QuicConnectionProtocol
 from aioquic.quic.configuration import QuicConfiguration
 from aioquic.quic.connection import QuicConnection
+from datetime import datetime
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
@@ -17,10 +18,14 @@ logger = logging.getLogger("client")
 username = os.getenv("USER_ID", "DEFAULT")
 app = Flask(__name__)
 
-# --- Global event loop for thread-safe operations ---
+# --- Global state ---
 event_loop = None
 order_queue = None
-is_initialized = False  # Flag to track initialization
+is_initialized = False
+current_orderbook = {"bids": [], "asks": []}
+user_orders: Dict[str, List[Dict]] = {}
+notifications = []  # List to store notifications
+state_lock = threading.Lock()
 
 # --- Patch QuicConnection.get_next_available_stream_id ---
 _original_get_next_available_stream_id = QuicConnection.get_next_available_stream_id
@@ -60,12 +65,85 @@ async def handle_incoming_stream(reader: asyncio.StreamReader, writer: asyncio.S
         while True:
             data = await reader.read(1024)
             if data:
-                logger.info(f"Received on {stream_name}: {data.decode()}")
+                try:
+                    message = json.loads(data.decode())
+                    logger.info(f"Received on {stream_name}: {data.decode()}")
+                    
+                    # Update state based on message type
+                    with state_lock:
+                        if "data" in message and isinstance(message["data"], dict):
+                            if "data" in message["data"]:
+                                # Handle market data updates
+                                market_data = message["data"]["data"]
+                                if isinstance(market_data, dict) and ("bids" in market_data or "asks" in market_data):
+                                    current_orderbook["bids"] = market_data.get("bids", [])
+                                    current_orderbook["asks"] = market_data.get("asks", [])
+                                    logger.info(f"Updated orderbook: {current_orderbook}")
+                            else:
+                                # Handle notifications
+                                notification = message["data"]
+                                notifications.append(notification)
+                                logger.info(f"Added notification: {notification}")
+                                
+                except json.JSONDecodeError as e:
+                    logger.error(f"Failed to decode message: {e}")
+                except Exception as e:
+                    logger.error(f"Error processing message: {e}")
+            
             await asyncio.sleep(0.1)
     except asyncio.CancelledError:
         logger.warning(f"{stream_name} stream task cancelled.")
     except Exception as e:
         logger.error(f"Error in {stream_name} stream: {e}")
+
+@app.route('/api/orders/<user_id>')
+def get_user_orders(user_id):
+    """Returns the user's orders and latest notifications."""
+    try:
+        with state_lock:
+            # Process all available notifications
+            latest_notifications = []
+            while notifications:
+                notification = notifications.pop(0)  # Get and remove the oldest notification
+                # Format the notification for display
+                notification_type = notification.get('type', '').upper()
+                formatted_notification = {
+                    'timestamp': datetime.now().strftime('%H:%M:%S'),
+                    'type': notification_type,
+                    'message': ''
+                }
+                
+                # Format message based on notification type
+                if notification_type == 'ORDER_POSTED':
+                    formatted_notification['message'] = f"Order {notification['order_id']} posted at price {notification.get('price', 'N/A')} for quantity {notification.get('quantity', 'N/A')}"
+                elif notification_type == 'ORDER_MATCHED':
+                    formatted_notification['message'] = f"Order matched at price {notification.get('price', 'N/A')} for quantity {notification.get('quantity', 'N/A')}"
+                elif notification_type == 'ORDER_CANCELLED':
+                    formatted_notification['message'] = f"Order {notification.get('order_id', 'N/A')} cancelled"
+                elif notification_type == 'CANCEL_FAILED':
+                    formatted_notification['message'] = "Cancel failed"
+                else:
+                    formatted_notification['message'] = f"Unknown notification: {notification}"
+                
+                latest_notifications.append(formatted_notification)
+                logger.info(f"Added notification to batch: {formatted_notification}")
+
+            return jsonify({
+                "notifications": latest_notifications
+            }), 200
+    except Exception as e:
+        logger.error(f"Error getting user orders: {e}")
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/orderbook')
+def get_orderbook():
+    """Returns the current orderbook state."""
+    try:
+        with state_lock:
+            return jsonify(current_orderbook), 200
+    except Exception as e:
+        logger.error(f"Error getting orderbook: {e}")
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/api/order', methods=['POST'])
 def receive_order():
@@ -80,6 +158,20 @@ def receive_order():
         if not data:
             logger.error("Invalid JSON received.")
             return jsonify({"error": "Invalid JSON"}), 400
+
+        # Ensure all required fields are present
+        required_fields = ["type", "side", "quantity"]
+        if data.get("type") == "limit":
+            required_fields.append("price")
+            
+        if not all(field in data for field in required_fields):
+            logger.error(f"Missing required fields. Required: {required_fields}")
+            return jsonify({"error": "Missing required fields"}), 400
+
+        # Convert numeric strings to numbers
+        if "price" in data:
+            data["price"] = float(data["price"])
+        data["quantity"] = int(data["quantity"])
 
         logger.info(f"Received order from web server: {data}")
         
@@ -109,6 +201,8 @@ async def send_orders(order_queue: asyncio.Queue, writer: asyncio.StreamWriter):
     
     while True:
         order = await order_queue.get()
+        # Add username to order
+        order["user"] = username
         logger.info(f"Sending order from queue: {order}")
         writer.write(json.dumps({"user": username, "data": order}).encode())
         await writer.drain()
