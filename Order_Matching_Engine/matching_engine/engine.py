@@ -89,23 +89,21 @@ async def handle_incoming_orders(reader: asyncio.StreamReader):
                             "price": price, 
                             "quantity": quantity
                         })
-                elif type == "cancel":
-                    success = order_book.cancel_limit_order(
-                        response_user,
-                        data['price'],
-                        data['quantity'],
-                        data['side']
-                    )
+                elif type == "CANCEL_ORDER":  # Handle cancellation by order ID
+                    order_id = data['order_id']
+                    success = order_book.cancel_order_by_id(order_id, response_user)
                     if success:
                         await send_market_data({"user": username, "data": order_book.get_market_data()})
                         await send_notifications(response_user, {
-                            "type": "order_cancelled", 
-                            "price": data['price'],
-                            "quantity": data['quantity'],
-                            "side": data['side']
+                            "type": "order_cancelled",
+                            "order_id": order_id
                         })
                     else:
-                        await send_notifications(response_user, {"type": "CANCEL_FAILED"})
+                        await send_notifications(response_user, {
+                            "type": "CANCEL_FAILED",
+                            "order_id": order_id,
+                            "reason": "Order not found or unauthorized"
+                        })
                 elif type == "market":
                     matches = order_book.match_market_order(
                         data['side'],

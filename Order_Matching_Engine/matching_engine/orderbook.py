@@ -69,6 +69,7 @@ class OrderBook:
         return matches, remaining
 
     def cancel_limit_order(self, user: str, price: int, quantity: int, side: str) -> bool:
+        """Cancel a limit order."""
         target_orders = self.bids if side == "buy" else self.asks
         for order_id, (s, p, q, u) in list(self.orders.items()):
             if u == user and s == side and p == price and q == quantity:
@@ -78,6 +79,23 @@ class OrderBook:
                         target_orders.discard(entry)
                         del self.orders[order_id]
                         return True
+        return False
+
+    def cancel_order_by_id(self, order_id: str, user: str) -> bool:
+        """Cancel a limit order by its ID."""
+        if order_id not in self.orders:
+            return False
+            
+        side, price, quantity, order_user = self.orders[order_id]
+        if order_user != user:
+            return False
+            
+        target_orders = self.bids if side == "buy" else self.asks
+        for entry in target_orders:
+            if entry[2] == order_id:  # Match order_id
+                target_orders.discard(entry)
+                del self.orders[order_id]
+                return True
         return False
 
     def match_market_order(self, side: str, quantity: int) -> List[Tuple]:
