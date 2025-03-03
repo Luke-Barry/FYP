@@ -21,6 +21,7 @@ app = Flask(__name__)
 # --- Global state ---
 event_loop = None
 order_queue = None
+order_stream = None
 is_initialized = False
 current_orderbook = {"bids": [], "asks": []}
 user_orders: Dict[str, List[Dict]] = {}
@@ -49,10 +50,10 @@ class MyQuicConnectionProtocol(QuicConnectionProtocol):
         self._stream_creation_lock = asyncio.Lock()
 
     async def create_stream(self) -> Tuple[asyncio.StreamReader, asyncio.StreamWriter]:
-        """Create a new bidirectional stream and store its reader/writer pair."""
+        """Create a new bidirectional stream."""
         async with self._stream_creation_lock:
             stream_id = self._quic.get_next_available_stream_id(is_unidirectional=False)
-            reader, writer = self._create_stream(stream_id)
+            reader, writer = self._create_stream(stream_id)  
             logger.info(f"Established stream: {stream_id}")
             return reader, writer
 
@@ -62,39 +63,46 @@ async def handle_incoming_stream(reader: asyncio.StreamReader, writer: asyncio.S
         writer.write(json.dumps({"user": username, "data": None}).encode())  
         await writer.drain()
         stream_name = writer.get_extra_info("stream_id")
+        logger.info(f"Started handling stream: {stream_name}")
+        
         while True:
-            data = await reader.read(1024)
-            if data:
-                try:
-                    message = json.loads(data.decode())
-                    logger.info(f"Received on {stream_name}: {data.decode()}")
+            try:
+                data = await reader.read(1024)
+                if not data:
+                    break
                     
-                    # Update state based on message type
-                    with state_lock:
-                        if "data" in message and isinstance(message["data"], dict):
-                            if "data" in message["data"]:
-                                # Handle market data updates
-                                market_data = message["data"]["data"]
-                                if isinstance(market_data, dict) and ("bids" in market_data or "asks" in market_data):
-                                    current_orderbook["bids"] = market_data.get("bids", [])
-                                    current_orderbook["asks"] = market_data.get("asks", [])
-                                    logger.info(f"Updated orderbook: {current_orderbook}")
-                            else:
-                                # Handle notifications
-                                notification = message["data"]
-                                notifications.append(notification)
-                                logger.info(f"Added notification: {notification}")
-                                
-                except json.JSONDecodeError as e:
-                    logger.error(f"Failed to decode message: {e}")
-                except Exception as e:
-                    logger.error(f"Error processing message: {e}")
-            
+                message = json.loads(data.decode())
+                logger.info(f"Received on {stream_name}: {message}")
+                
+                # Update state based on message type
+                with state_lock:
+                    if "data" in message and isinstance(message["data"], dict):
+                        if "data" in message["data"]:
+                            # Handle market data updates
+                            market_data = message["data"]["data"]
+                            if isinstance(market_data, dict) and ("bids" in market_data or "asks" in market_data):
+                                current_orderbook["bids"] = market_data.get("bids", [])
+                                current_orderbook["asks"] = market_data.get("asks", [])
+                                logger.info(f"Updated orderbook: {current_orderbook}")
+                        else:
+                            # This is a notification - copy directly without modification
+                            notification = message["data"]
+                            logger.info(f"Received notification: {notification}")
+                            notifications.append(notification)
+                            
+            except json.JSONDecodeError as e:
+                logger.error(f"Failed to decode message: {e}")
+            except Exception as e:
+                logger.error(f"Error processing message: {e}")
+                
             await asyncio.sleep(0.1)
+            
     except asyncio.CancelledError:
         logger.warning(f"{stream_name} stream task cancelled.")
     except Exception as e:
         logger.error(f"Error in {stream_name} stream: {e}")
+    finally:
+        logger.info(f"Stream {stream_name} handler ending")
 
 @app.route('/api/orders/<user_id>')
 def get_user_orders(user_id):
@@ -103,33 +111,87 @@ def get_user_orders(user_id):
         with state_lock:
             # Process all available notifications
             latest_notifications = []
+            notification_rows = []
             while notifications:
                 notification = notifications.pop(0)  # Get and remove the oldest notification
+                
                 # Format the notification for display
                 notification_type = notification.get('type', '').upper()
+                
+                # Ensure we have sane defaults for structured data
                 formatted_notification = {
                     'timestamp': datetime.now().strftime('%H:%M:%S'),
                     'type': notification_type,
-                    'message': ''
+                    'message': '',
+                    'price': notification.get('price', 0),
+                    'quantity': notification.get('quantity', 0),
+                    'order_id': notification.get('order_id', ''),
+                    'side': notification.get('side', ''),
                 }
                 
                 # Format message based on notification type
                 if notification_type == 'ORDER_POSTED':
-                    formatted_notification['message'] = f"Order {notification['order_id']} posted at price {notification.get('price', 'N/A')} for quantity {notification.get('quantity', 'N/A')}"
+                    side = notification.get('side', 'unknown').upper()
+                    price = notification.get('price', 0)
+                    quantity = notification.get('quantity', 0)
+                    formatted_notification['message'] = f"{side} order posted: {quantity} @ {price}"
+                    
                 elif notification_type == 'ORDER_MATCHED':
-                    formatted_notification['message'] = f"Order matched at price {notification.get('price', 'N/A')} for quantity {notification.get('quantity', 'N/A')}"
+                    price = notification.get('price', 0)
+                    quantity = notification.get('quantity', 0)
+                    formatted_notification['message'] = f"Match executed: {quantity} @ {price}"
+                    
                 elif notification_type == 'ORDER_CANCELLED':
-                    formatted_notification['message'] = f"Order {notification.get('order_id', 'N/A')} cancelled"
+                    price = notification.get('price', 0)
+                    quantity = notification.get('quantity', 0)
+                    side = notification.get('side', 'unknown').upper()
+                    formatted_notification['message'] = f"{side} order cancelled: {quantity} @ {price}"
+                    
                 elif notification_type == 'CANCEL_FAILED':
                     formatted_notification['message'] = "Cancel failed"
+                    
+                elif notification_type == 'ORDER_REJECTED':
+                    reason = notification.get('reason', 'Unknown reason')
+                    formatted_notification['message'] = f"Order rejected: {reason}"
+                    formatted_notification['side'] = notification.get('side', '-')
+                    
                 else:
-                    formatted_notification['message'] = f"Unknown notification: {notification}"
+                    formatted_notification['message'] = f"Unknown notification type: {notification_type}"
                 
                 latest_notifications.append(formatted_notification)
                 logger.info(f"Added notification to batch: {formatted_notification}")
-
+                
+                # Create notification row with color coding
+                row_class = ""
+                if notification_type == "ORDER_MATCHED":
+                    row_class = "matched-order"
+                elif notification_type == "ORDER_POSTED":
+                    row_class = "limit-order"
+                elif notification_type == "ORDER_CANCELLED":
+                    row_class = "cancelled-order"
+                
+                cancel_button = ""
+                if notification_type == "ORDER_POSTED":
+                    cancel_button = f'<button class="cancel-button" onclick="cancelOrder(\'{formatted_notification["order_id"]}\')">✕</button>'
+                
+                notification_row = f"""
+                <tr class="notification-row {row_class}" data-order-id="{formatted_notification['order_id']}">
+                    <td>{formatted_notification['timestamp']}</td>
+                    <td>{formatted_notification['type']}</td>
+                    <td>{formatted_notification['side']}</td>
+                    <td>{formatted_notification['price']}</td>
+                    <td>{formatted_notification['quantity']}</td>
+                    <td>{formatted_notification['message']}</td>
+                    <td>{cancel_button}</td>
+                </tr>
+                """
+                
+                logger.info(f"Added notification: {formatted_notification['message']}")
+                notification_rows.append(notification_row)
+                
             return jsonify({
-                "notifications": latest_notifications
+                "notifications": latest_notifications,
+                "notification_html": "".join(notification_rows)
             }), 200
     except Exception as e:
         logger.error(f"Error getting user orders: {e}")
@@ -189,26 +251,55 @@ def receive_order():
         logger.error(f"Error receiving order: {e}")
         return jsonify({"error": str(e)}), 500
 
+@app.route('/api/order/<order_id>', methods=['DELETE'])
+def cancel_order(order_id):
+    """Cancel a specific order."""
+    try:
+        if not order_stream:
+            return jsonify({"error": "Order stream not initialized"}), 500
+
+        # Send cancel request through QUIC stream
+        message = {
+            "type": "CANCEL_ORDER",
+            "order_id": order_id,
+            "user": username
+        }
+        
+        # Send the cancel request through the order stream
+        order_stream.write(json.dumps({"user": username, "data": message}).encode())
+        event_loop.call_soon_threadsafe(order_stream.drain)
+        
+        return jsonify({"message": "Cancel request sent"}), 200
+        
+    except Exception as e:
+        logger.error(f"Error sending cancel request: {e}")
+        return jsonify({"error": str(e)}), 500
+
 async def send_orders(order_queue: asyncio.Queue, writer: asyncio.StreamWriter):
     """Processes the order queue from web GUI and sends orders to server."""
     if not writer:
         logger.error("Orders stream not available.")
         return
     
-    # Initial empty message to establish stream
-    writer.write(json.dumps({"user": username, "data": None}).encode())
-    await writer.drain()
-    
-    while True:
-        order = await order_queue.get()
-        # Add username to order
-        order["user"] = username
-        logger.info(f"Sending order from queue: {order}")
-        writer.write(json.dumps({"user": username, "data": order}).encode())
+    try:
+        # Initial empty message to establish stream
+        writer.write(json.dumps({"user": username, "data": None}).encode())
         await writer.drain()
+        
+        while True:
+            order = await order_queue.get()
+            # Add username to order
+            order["user"] = username
+            logger.info(f"Sending order from queue: {order}")
+            writer.write(json.dumps({"user": username, "data": order}).encode())
+            await writer.drain()
+    except Exception as e:
+        logger.error(f"Error in send_orders: {e}")
+    finally:
+        logger.info("Send orders task ending")
 
 async def run_client(host: str, port: int) -> None:
-    global event_loop, order_queue, is_initialized
+    global event_loop, order_queue, is_initialized, order_stream
 
     event_loop = asyncio.get_event_loop()  # Store event loop for Flask
     order_queue = asyncio.Queue()
@@ -218,32 +309,42 @@ async def run_client(host: str, port: int) -> None:
         alpn_protocols=["quic-demo"],
         is_client=True,
         max_datagram_frame_size=65536,
-        secrets_log_file=open("/app/certs/ssl_keylog.txt", "a"),
-        verify_mode=ssl.CERT_NONE
+        verify_mode=ssl.CERT_NONE  # Don't verify certificates
     )
     configuration.max_streams_bidi = 100
 
-    async with connect(host, port, configuration=configuration, create_protocol=MyQuicConnectionProtocol) as protocol:
-        protocol._sender_lock = asyncio.Lock()
-        logger.info("Connection established with server.")
+    try:
+        async with connect(
+            host=host,
+            port=port,
+            configuration=configuration,
+            create_protocol=MyQuicConnectionProtocol
+        ) as protocol:
+            logger.info("Connection established with server.")
 
-        _, orders_writer = await protocol.create_stream()
-        market_reader, market_writer = await protocol.create_stream()
-        notifications_reader, notifications_writer = await protocol.create_stream()
+            # Create streams for different purposes
+            order_reader, order_stream = await protocol.create_stream()
+            notification_reader, notification_writer = await protocol.create_stream()
+            market_reader, market_writer = await protocol.create_stream()
 
-        # Start tasks for QUIC communication
-        tasks = [
-            asyncio.create_task(handle_incoming_stream(market_reader, market_writer)),
-            asyncio.create_task(handle_incoming_stream(notifications_reader, notifications_writer)),
-            asyncio.create_task(send_orders(order_queue, orders_writer))
-        ]
+            # Start handlers for each stream
+            order_handler = asyncio.create_task(send_orders(order_queue, order_stream))
+            notification_handler = asyncio.create_task(handle_incoming_stream(notification_reader, notification_writer))
+            market_handler = asyncio.create_task(handle_incoming_stream(market_reader, market_writer))
 
-        try:
-            await asyncio.gather(*tasks)
-        except Exception as e:
-            logger.error(f"Client error: {e}")
-        finally:
-            logger.info("Client shutting down gracefully.")
+            try:
+                await asyncio.gather(order_handler, notification_handler, market_handler)
+            except Exception as e:
+                logger.error(f"Client error: {e}")
+            finally:
+                # Cancel all tasks
+                order_handler.cancel()
+                notification_handler.cancel()
+                market_handler.cancel()
+                
+    except Exception as e:
+        logger.error(f"Connection error: {e}")
+        raise
 
 def start_flask():
     """Runs Flask API in a separate thread."""

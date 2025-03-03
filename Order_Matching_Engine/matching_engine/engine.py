@@ -1,17 +1,20 @@
 import asyncio
-import ssl
-import os
 import json
 import logging
-from typing import Tuple, Optional, Callable
+import os
+from orderbook import OrderBook
+from typing import Dict, Optional, Tuple, Callable
 from aioquic.asyncio import connect, QuicConnectionProtocol
 from aioquic.quic.configuration import QuicConfiguration
 from aioquic.quic.connection import QuicConnection
-from orderbook import OrderBook
+from ssl import CERT_NONE
 
-# Setup logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger("engine")
+# Set up enhanced logging for Docker environment
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger("matching_engine")
 
 username = os.getenv("USER_ID", "DEFAULT")
 writer_dict = {}
@@ -55,9 +58,15 @@ async def handle_incoming_orders(reader: asyncio.StreamReader):
             data = await reader.read(1024)
             if data:
                 order_data = json.loads(data.decode())
+                # Skip empty initialization messages
+                if order_data['data'] is None:
+                    logger.info("Received initialization message, skipping")
+                    continue
+
                 data = order_data['data']
                 response_user = data['user']
                 type = data['type']
+                
                 if type == "limit":
                     order_id, matches = order_book.add_limit_order(
                         data['side'],
@@ -66,9 +75,20 @@ async def handle_incoming_orders(reader: asyncio.StreamReader):
                         response_user
                     )
                     await send_market_data({"user": username, "data": order_book.get_market_data()})
-                    await send_notifications(response_user, {"type": "order_posted", "order_id": order_id})
+                    # Send more complete order information
+                    await send_notifications(response_user, {
+                        "type": "order_posted", 
+                        "order_id": order_id,
+                        "price": data['price'],
+                        "quantity": data['quantity'],
+                        "side": data['side']
+                    })
                     for price, quantity, matched_user in matches:
-                        await send_notifications(matched_user, {"type": "order_matched", "price": price, "quantity": quantity})
+                        await send_notifications(matched_user, {
+                            "type": "order_matched", 
+                            "price": price, 
+                            "quantity": quantity
+                        })
                 elif type == "cancel":
                     success = order_book.cancel_limit_order(
                         response_user,
@@ -78,9 +98,14 @@ async def handle_incoming_orders(reader: asyncio.StreamReader):
                     )
                     if success:
                         await send_market_data({"user": username, "data": order_book.get_market_data()})
-                        await send_notifications(response_user, {"type": "order_cancelled"})
+                        await send_notifications(response_user, {
+                            "type": "order_cancelled", 
+                            "price": data['price'],
+                            "quantity": data['quantity'],
+                            "side": data['side']
+                        })
                     else:
-                        await send_notifications(response_user, {"type": "cancel_failed"})
+                        await send_notifications(response_user, {"type": "CANCEL_FAILED"})
                 elif type == "market":
                     matches = order_book.match_market_order(
                         data['side'],
@@ -88,7 +113,12 @@ async def handle_incoming_orders(reader: asyncio.StreamReader):
                     )
                     await send_market_data({"user": username, "data": order_book.get_market_data()})
                     for price, quantity, matched_user in matches:
-                        await send_notifications(matched_user, {"type": "order_matched", "price": price, "quantity": quantity})
+                        await send_notifications(matched_user, {
+                            "type": "order_matched", 
+                            "price": price, 
+                            "quantity": quantity,
+                            "side": data['side']
+                        })
 
             await asyncio.sleep(0.1)
     except asyncio.CancelledError:
@@ -102,6 +132,7 @@ async def send_market_data(data: dict):
     logger.info("Matching engine sending market data back to server")
 
 async def send_notifications(target_user: str, message: dict):
+    """Send a notification to the specified user."""
     if "notifications" in writer_dict:
         writer_dict["notifications"].write(json.dumps({
             "user": username,
@@ -110,7 +141,7 @@ async def send_notifications(target_user: str, message: dict):
                 "message": message
             }
         }).encode())
-    logger.info("Matching engine sending notifications back to server")
+        logger.info(f"Matching engine sending notification to {target_user}: {message}")
     await asyncio.sleep(0.0001)
 
 async def run_matching_engine(host: str, port: int) -> None:
@@ -119,7 +150,7 @@ async def run_matching_engine(host: str, port: int) -> None:
         is_client=True,
         max_datagram_frame_size=65536,
         secrets_log_file=open("/app/certs/ssl_keylog.txt", "a"),
-        verify_mode=ssl.CERT_NONE
+        verify_mode=CERT_NONE
     )
     configuration.max_streams_bidi = 100
 

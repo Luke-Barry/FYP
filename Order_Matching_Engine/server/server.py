@@ -8,8 +8,12 @@ from aioquic.asyncio import serve, QuicConnectionProtocol
 from aioquic.quic.configuration import QuicConfiguration
 from aioquic.quic.connection import QuicConnection, QuicFrameType, Limit
 
+# Setup enhanced logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
 logger = logging.getLogger("server")
-logging.basicConfig(level=logging.INFO)
 os.environ['SSLKEYLOGFILE'] = '/app/certs/ssl_keylog.txt'
 user_dict = {}
 
@@ -91,6 +95,9 @@ async def forward_notifications(user: str, nested_data):
         _, writer = user_dict[(target_user, Stream.NOTIFICATIONS.value)]
         writer.write(json.dumps({"user": user, "data": message}).encode())
         await writer.drain()
+        logger.info(f"Server forwarded notification to {target_user}: {message}")
+    else:
+        logger.warning(f"Cannot forward notification to {target_user}: User not connected")
 
 async def forward_order(order):
     while ("MATCHING_ENGINE", 0) not in user_dict:

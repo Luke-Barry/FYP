@@ -58,11 +58,18 @@ def place_order():
         if "price" in data:
             data["price"] = float(data["price"])
         data["quantity"] = int(data["quantity"])
+         
+        # Validate for limit orders
+        if data.get("type") == "limit":
+            if data["quantity"] == 0:
+                return jsonify({"error": "Order quantity must not be 0 for limit orders"}), 400
+            if data["price"] == 0:
+                return jsonify({"error": "Order price must not be 0 for limit orders"}), 400
         
         # Add user ID
         data["user"] = "LUKE_BARRY"
 
-        logger.info(f"Tried to send order of type: {data['type']}, price: {data.get('price')}, quantity: {data['quantity']}, side: {data['side']}")
+        logger.info(f"Trying to send order of type: {data['type']}, price: {data.get('price')}, quantity: {data['quantity']}, side: {data['side']}")
         
         # Forward the order to the QUIC client
         response = requests.post(
@@ -80,8 +87,24 @@ def place_order():
         logger.error(f"Error placing order: {e}")
         return jsonify({"error": str(e)}), 500
 
-@app.route('/order/<order_id>', methods=['DELETE'])
+@app.route('/api/order/<order_id>', methods=['DELETE'])
 def cancel_order(order_id):
+    """Cancel a specific order."""
+    try:
+        # Send cancel request to the client
+        response = requests.delete(f'http://quic-client:6060/api/order/{order_id}')
+        
+        if response.status_code != 200:
+            return jsonify({"error": "Failed to cancel order"}), response.status_code
+            
+        return jsonify({"message": "Cancel request sent"}), 200
+        
+    except Exception as e:
+        logger.error(f"Error cancelling order: {e}")
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/order/<order_id>', methods=['DELETE'])
+def cancel_order_legacy(order_id):
     try:
         # Send cancel request to QUIC client
         client_url = f"http://quic-client:6060/api/order/{order_id}"
