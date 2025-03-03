@@ -83,11 +83,19 @@ async def handle_incoming_orders(reader: asyncio.StreamReader):
                         "quantity": data['quantity'],
                         "side": data['side']
                     })
-                    for price, quantity, matched_user in matches:
+                    for price, quantity, matched_user, matched_order_id in matches:
                         await send_notifications(matched_user, {
                             "type": "order_matched", 
                             "price": price, 
-                            "quantity": quantity
+                            "quantity": quantity,
+                            "order_id": matched_order_id
+                        })
+                        # Also notify the user who placed the new order
+                        await send_notifications(response_user, {
+                            "type": "order_matched",
+                            "price": price,
+                            "quantity": quantity,
+                            "order_id": order_id
                         })
                 elif type == "CANCEL_ORDER":  # Handle cancellation by order ID
                     order_id = data['order_id']
@@ -107,13 +115,23 @@ async def handle_incoming_orders(reader: asyncio.StreamReader):
                 elif type == "market":
                     matches = order_book.match_market_order(
                         data['side'],
-                        data['quantity']
+                        data['quantity'],
+                        response_user
                     )
                     await send_market_data({"user": username, "data": order_book.get_market_data()})
-                    for price, quantity, matched_user in matches:
+                    for price, quantity, matched_user, matched_order_id in matches:
+                        # Notify the limit order owner
                         await send_notifications(matched_user, {
                             "type": "order_matched", 
                             "price": price, 
+                            "quantity": quantity,
+                            "order_id": matched_order_id,
+                            "side": data['side']
+                        })
+                        # Notify the market order owner
+                        await send_notifications(response_user, {
+                            "type": "order_matched",
+                            "price": price,
                             "quantity": quantity,
                             "side": data['side']
                         })

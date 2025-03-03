@@ -378,21 +378,22 @@
         function updateNotifications(notifications) {
             const tbody = document.getElementById('notifications-body');
             
+            // First pass: Process matches and cancellations
             notifications.forEach(notification => {
-                // Handle order cancellation first
-                if (notification.type === 'ORDER_CANCELLED') {
-                    // Find and update any existing posted order row
-                    const rows = tbody.querySelectorAll('tr');
+                if (notification.type === 'ORDER_MATCHED' || notification.type === 'ORDER_CANCELLED') {
+                    // Find and remove cancel button for matched/cancelled order
+                    const rows = tbody.querySelectorAll(`tr[data-order-id="${notification.order_id}"]`);
                     rows.forEach(row => {
-                        if (row.getAttribute('data-order-id') === notification.order_id) {
-                            const actionCell = row.querySelector('td:last-child');
-                            if (actionCell) {
-                                actionCell.innerHTML = ''; // Remove the cancel button
-                            }
+                        const actionCell = row.querySelector('td:last-child');
+                        if (actionCell) {
+                            actionCell.innerHTML = ''; // Remove cancel button
                         }
                     });
                 }
-                
+            });
+            
+            // Second pass: Add new notifications
+            notifications.forEach(notification => {
                 // Check if we already have this notification
                 const existingRow = tbody.querySelector(`tr[data-notification="${notification.type}-${notification.order_id}"]`);
                 if (existingRow) {
@@ -413,12 +414,12 @@
                     row.className = 'table-warning';
                 }
                 
-                // Create cells for each piece of information
+                // Create cells
                 const typeCell = document.createElement('td');
                 const detailsCell = document.createElement('td');
                 const actionsCell = document.createElement('td');
                 
-                // Format the notification message
+                // Format message
                 let details = '';
                 if (notification.type === 'ORDER_MATCHED') {
                     details = `Matched ${notification.quantity} units at price ${notification.price}`;
@@ -431,13 +432,21 @@
                 typeCell.textContent = notification.type;
                 detailsCell.textContent = details;
                 
-                // Add cancel button only for posted orders
+                // Add cancel button only for posted orders that haven't been matched/cancelled
                 if (notification.type === 'ORDER_POSTED') {
-                    const cancelButton = document.createElement('button');
-                    cancelButton.textContent = '❌';
-                    cancelButton.className = 'btn btn-sm btn-danger';
-                    cancelButton.onclick = () => cancelOrder(notification.order_id);
-                    actionsCell.appendChild(cancelButton);
+                    // Check if this order has any match or cancel notifications
+                    const hasMatchOrCancel = notifications.some(n => 
+                        (n.type === 'ORDER_MATCHED' || n.type === 'ORDER_CANCELLED') && 
+                        n.order_id === notification.order_id
+                    );
+                    
+                    if (!hasMatchOrCancel) {
+                        const cancelButton = document.createElement('button');
+                        cancelButton.textContent = '❌';
+                        cancelButton.className = 'btn btn-sm btn-danger';
+                        cancelButton.onclick = () => cancelOrder(notification.order_id);
+                        actionsCell.appendChild(cancelButton);
+                    }
                 }
                 
                 row.appendChild(typeCell);
@@ -446,7 +455,7 @@
                 tbody.insertBefore(row, tbody.firstChild);
             });
             
-            // Limit the number of notifications shown
+            // Limit notifications
             while (tbody.children.length > maxNotifications) {
                 tbody.removeChild(tbody.lastChild);
             }

@@ -52,7 +52,7 @@ class OrderBook:
                 break  # No match possible
             
             fill_qty = min(remaining, best[4])
-            matches.append((best_price, fill_qty, best[5]))
+            matches.append((best_price, fill_qty, best[5], best[2]))  # Include order_id in match info
             remaining -= fill_qty
 
             # Update or remove matched order
@@ -98,7 +98,7 @@ class OrderBook:
                 return True
         return False
 
-    def match_market_order(self, side: str, quantity: int) -> List[Tuple]:
+    def match_market_order(self, side: str, quantity: int, user: str) -> List[Tuple]:
         matches = []
         remaining = quantity
         opposite = self.bids if side == "sell" else self.asks
@@ -106,7 +106,7 @@ class OrderBook:
         while remaining > 0 and opposite:
             best = opposite[0]
             fill_qty = min(remaining, best[4])
-            matches.append((best[3], fill_qty, best[5]))
+            matches.append((best[3], fill_qty, best[5], best[2]))  # Include order_id in match info
             remaining -= fill_qty
             
             if best[4] > fill_qty:

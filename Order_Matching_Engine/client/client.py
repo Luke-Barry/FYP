@@ -71,27 +71,38 @@ async def handle_incoming_stream(reader: asyncio.StreamReader, writer: asyncio.S
                 if not data:
                     break
                     
-                message = json.loads(data.decode())
-                logger.info(f"Received on {stream_name}: {message}")
-                
-                # Update state based on message type
-                with state_lock:
-                    if "data" in message and isinstance(message["data"], dict):
-                        if "data" in message["data"]:
-                            # Handle market data updates
-                            market_data = message["data"]["data"]
-                            if isinstance(market_data, dict) and ("bids" in market_data or "asks" in market_data):
-                                current_orderbook["bids"] = market_data.get("bids", [])
-                                current_orderbook["asks"] = market_data.get("asks", [])
-                                logger.info(f"Updated orderbook: {current_orderbook}")
-                        else:
-                            # This is a notification - copy directly without modification
-                            notification = message["data"]
-                            logger.info(f"Received notification: {notification}")
-                            notifications.append(notification)
-                            
-            except json.JSONDecodeError as e:
-                logger.error(f"Failed to decode message: {e}")
+                # Split data into messages in case multiple were received
+                messages = data.decode().strip().split('\n')
+                for msg in messages:
+                    if not msg:
+                        continue
+                        
+                    try:
+                        message = json.loads(msg)
+                        logger.info(f"Received on {stream_name}: {message}")
+                        
+                        # Update state based on message type
+                        with state_lock:
+                            if "data" in message:
+                                if isinstance(message["data"], dict):
+                                    if "data" in message["data"]:
+                                        # Handle market data updates
+                                        market_data = message["data"]["data"]
+                                        if isinstance(market_data, dict) and ("bids" in market_data or "asks" in market_data):
+                                            current_orderbook["bids"] = market_data.get("bids", [])
+                                            current_orderbook["asks"] = market_data.get("asks", [])
+                                            logger.info(f"Updated orderbook: {current_orderbook}")
+                                    else:
+                                        # This is a notification
+                                        notification = message["data"]
+                                        if "type" in notification:
+                                            notification["type"] = notification["type"].upper()
+                                            logger.info(f"Received notification: {notification}")
+                                            notifications.append(notification)
+                    except json.JSONDecodeError as e:
+                        logger.error(f"Failed to decode message: {e}, message: {msg}")
+                        continue
+                        
             except Exception as e:
                 logger.error(f"Error processing message: {e}")
                 

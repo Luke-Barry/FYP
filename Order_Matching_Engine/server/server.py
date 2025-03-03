@@ -93,9 +93,16 @@ async def forward_notifications(user: str, nested_data):
     message = nested_data["message"]
     if (target_user, Stream.NOTIFICATIONS.value) in user_dict:
         _, writer = user_dict[(target_user, Stream.NOTIFICATIONS.value)]
-        writer.write(json.dumps({"user": user, "data": message}).encode())
-        await writer.drain()
-        logger.info(f"Server forwarded notification to {target_user}: {message}")
+        try:
+            # Ensure we're sending a clean, properly formatted message
+            writer.write(json.dumps({
+                "user": user,
+                "data": message
+            }).encode() + b"\n")  # Add newline to separate messages
+            await writer.drain()
+            logger.info(f"Server forwarded notification to {target_user}: {message}")
+        except Exception as e:
+            logger.error(f"Error forwarding notification: {e}")
     else:
         logger.warning(f"Cannot forward notification to {target_user}: User not connected")
 
