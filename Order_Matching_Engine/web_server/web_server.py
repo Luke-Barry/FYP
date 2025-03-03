@@ -38,7 +38,7 @@ def get_user_orders(user_id):
         return jsonify({"error": str(e)}), 500
 
 # API endpoint to place an order (frontend calls this)
-@app.route('/order', methods=['POST'])
+@app.route('/api/order', methods=['POST'])
 def place_order():
     """Place an order via the QUIC client."""
     try:

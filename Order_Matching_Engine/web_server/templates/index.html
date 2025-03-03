@@ -137,6 +137,18 @@
         .cancel-button:hover {
             background-color: #ffeeee;
         }
+        
+        .table-success {
+            background-color: #dff0d8;
+        }
+        
+        .table-info {
+            background-color: #d9edf7;
+        }
+        
+        .table-warning {
+            background-color: #fcf8e3;
+        }
     </style>
 </head>
 <body>
@@ -164,7 +176,7 @@
                 </div>
                 <div id="priceField">
                     <label for="orderPrice">Price:</label>
-                    <input type="number" id="orderPrice" name="orderPrice" step="0.01" min="0.01">
+                    <input type="number" id="orderPrice" name="orderPrice" required>
                 </div>
                 <button type="submit">Place Order</button>
             </form>
@@ -206,17 +218,12 @@
             <table id="notifications-table">
                 <thead>
                     <tr>
-                        <th>Timestamp</th>
                         <th>Type</th>
-                        <th>Side</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                        <th>Message</th>
+                        <th>Details</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <!-- Notifications will be dynamically inserted here -->
+                <tbody id="notifications-body">
                 </tbody>
             </table>
         </div>
@@ -260,70 +267,61 @@
             const orderForm = document.getElementById('orderForm');
             const orderType = document.getElementById('orderType');
             const priceField = document.getElementById('priceField');
-            const orderError = document.getElementById('orderError');
-
-            // Show/hide price field based on order type
+            
+            // Handle order type changes
             orderType.addEventListener('change', function() {
-                priceField.style.display = this.value === 'market' ? 'none' : 'block';
+                if (this.value === 'market') {
+                    priceField.style.display = 'none';
+                    document.getElementById('orderPrice').required = false;
+                } else {
+                    priceField.style.display = 'block';
+                    document.getElementById('orderPrice').required = true;
+                }
             });
-
-            // Handle form submission
-            orderForm.addEventListener('submit', async function(e) {
-                e.preventDefault();
-                orderError.textContent = '';
+            
+            orderForm.addEventListener('submit', function(event) {
+                event.preventDefault();
                 
-                // Get form values
-                const orderType = document.getElementById('orderType').value;
-                const side = document.getElementById('orderSide').value;
-                const quantity = parseInt(document.getElementById('orderQuantity').value);
-                let price = null;
-                
-                if (orderType === 'limit') {
-                    price = parseFloat(document.getElementById('orderPrice').value);
-                }
-                
-                // Client-side validation
-                if (quantity <= 0) {
-                    orderError.textContent = 'Order quantity must be greater than 0';
-                    return;
-                }
-                
-                if (price !== null && price <= 0) {
-                    orderError.textContent = 'Order price must be greater than 0';
-                    return;
-                }
-
                 const formData = {
-                    type: orderType,
-                    side: side,
-                    quantity: quantity
+                    type: orderType.value,
+                    side: document.getElementById('orderSide').value,
+                    quantity: parseInt(document.getElementById('orderQuantity').value),
                 };
-
-                if (orderType === 'limit') {
-                    formData.price = price;
+                
+                if (orderType.value === 'limit') {
+                    formData.price = parseFloat(document.getElementById('orderPrice').value);
                 }
-
-                try {
-                    const response = await fetch('/order', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(formData)
-                    });
-
+                
+                fetch('/api/order', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData),
+                })
+                .then(response => {
                     if (!response.ok) {
-                        const errorData = await response.json();
-                        throw new Error(errorData.error || 'Failed to place order');
+                        return response.json().then(err => {
+                            throw new Error(err.error || 'Failed to place order');
+                        });
                     }
-
-                    // Clear form
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Order placed successfully:', data);
                     orderForm.reset();
-                } catch (error) {
-                    orderError.textContent = error.message;
-                }
+                    // Reset order type to show price field again
+                    orderType.value = 'limit';
+                    priceField.style.display = 'block';
+                    document.getElementById('orderPrice').required = true;
+                    document.getElementById('orderError').textContent = '';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('orderError').textContent = error.message;
+                });
             });
-
+            
             // Start polling for updates
             pollForUpdates();
         });
@@ -377,19 +375,80 @@
         }
 
         // Update notifications table
-        function updateNotifications(data) {
-            if (data.notifications && data.notifications.length > 0) {
-                const notificationsTable = document.getElementById('notifications-table').getElementsByTagName('tbody')[0];
-                
-                // Insert the new notification at the top
-                if (data.notification_html) {
-                    notificationsTable.insertAdjacentHTML('afterbegin', data.notification_html);
+        function updateNotifications(notifications) {
+            const tbody = document.getElementById('notifications-body');
+            
+            notifications.forEach(notification => {
+                // Handle order cancellation first
+                if (notification.type === 'ORDER_CANCELLED') {
+                    // Find and update any existing posted order row
+                    const rows = tbody.querySelectorAll('tr');
+                    rows.forEach(row => {
+                        if (row.getAttribute('data-order-id') === notification.order_id) {
+                            const actionCell = row.querySelector('td:last-child');
+                            if (actionCell) {
+                                actionCell.innerHTML = ''; // Remove the cancel button
+                            }
+                        }
+                    });
                 }
                 
-                // Limit the number of notifications shown
-                while (notificationsTable.children.length > maxNotifications) {
-                    notificationsTable.removeChild(notificationsTable.lastChild);
+                // Check if we already have this notification
+                const existingRow = tbody.querySelector(`tr[data-notification="${notification.type}-${notification.order_id}"]`);
+                if (existingRow) {
+                    return; // Skip if we already have this notification
                 }
+                
+                // Create new notification row
+                const row = document.createElement('tr');
+                row.setAttribute('data-order-id', notification.order_id);
+                row.setAttribute('data-notification', `${notification.type}-${notification.order_id}`);
+                
+                // Set row color based on notification type
+                if (notification.type === 'ORDER_MATCHED') {
+                    row.className = 'table-success';
+                } else if (notification.type === 'ORDER_POSTED') {
+                    row.className = 'table-info';
+                } else if (notification.type === 'ORDER_CANCELLED') {
+                    row.className = 'table-warning';
+                }
+                
+                // Create cells for each piece of information
+                const typeCell = document.createElement('td');
+                const detailsCell = document.createElement('td');
+                const actionsCell = document.createElement('td');
+                
+                // Format the notification message
+                let details = '';
+                if (notification.type === 'ORDER_MATCHED') {
+                    details = `Matched ${notification.quantity} units at price ${notification.price}`;
+                } else if (notification.type === 'ORDER_POSTED') {
+                    details = `Posted ${notification.quantity} units at price ${notification.price} (${notification.side})`;
+                } else if (notification.type === 'ORDER_CANCELLED') {
+                    details = `Order cancelled successfully`;
+                }
+                
+                typeCell.textContent = notification.type;
+                detailsCell.textContent = details;
+                
+                // Add cancel button only for posted orders
+                if (notification.type === 'ORDER_POSTED') {
+                    const cancelButton = document.createElement('button');
+                    cancelButton.textContent = '❌';
+                    cancelButton.className = 'btn btn-sm btn-danger';
+                    cancelButton.onclick = () => cancelOrder(notification.order_id);
+                    actionsCell.appendChild(cancelButton);
+                }
+                
+                row.appendChild(typeCell);
+                row.appendChild(detailsCell);
+                row.appendChild(actionsCell);
+                tbody.insertBefore(row, tbody.firstChild);
+            });
+            
+            // Limit the number of notifications shown
+            while (tbody.children.length > maxNotifications) {
+                tbody.removeChild(tbody.lastChild);
             }
         }
 
@@ -441,7 +500,7 @@
                 return response.json();
             })
             .then(data => {
-                console.log('Order cancelled:', data);
+                console.log(`Order ${orderId} cancelled successfully`);
                 // The notification will be updated automatically via polling
             })
             .catch(error => {
@@ -464,7 +523,7 @@
                 if (ordersResponse.ok) {
                     const ordersData = await ordersResponse.json();
                     if (ordersData.notifications) {
-                        updateNotifications(ordersData);
+                        updateNotifications(ordersData.notifications);
                     }
                     if (ordersData.orders) {
                         updateOrders(ordersData);
@@ -491,7 +550,7 @@
             fetch('/api/orders/LUKE_BARRY')
                 .then(response => response.json())
                 .then(data => {
-                    updateNotifications(data);
+                    updateNotifications(data.notifications);
                 })
                 .catch(error => console.error('Error:', error));
         }, 1000);

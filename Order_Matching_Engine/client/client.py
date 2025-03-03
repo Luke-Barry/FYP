@@ -109,89 +109,25 @@ def get_user_orders(user_id):
     """Returns the user's orders and latest notifications."""
     try:
         with state_lock:
-            # Process all available notifications
+            # Convert notifications to display format without removing them
             latest_notifications = []
-            notification_rows = []
-            while notifications:
-                notification = notifications.pop(0)  # Get and remove the oldest notification
-                
+            for notification in notifications:
                 # Format the notification for display
                 notification_type = notification.get('type', '').upper()
                 
-                # Ensure we have sane defaults for structured data
+                # Create formatted notification
                 formatted_notification = {
-                    'timestamp': datetime.now().strftime('%H:%M:%S'),
                     'type': notification_type,
-                    'message': '',
+                    'order_id': notification.get('order_id', ''),
                     'price': notification.get('price', 0),
                     'quantity': notification.get('quantity', 0),
-                    'order_id': notification.get('order_id', ''),
-                    'side': notification.get('side', ''),
+                    'side': notification.get('side', '')
                 }
                 
-                # Format message based on notification type
-                if notification_type == 'ORDER_POSTED':
-                    side = notification.get('side', 'unknown').upper()
-                    price = notification.get('price', 0)
-                    quantity = notification.get('quantity', 0)
-                    formatted_notification['message'] = f"{side} order posted: {quantity} @ {price}"
-                    
-                elif notification_type == 'ORDER_MATCHED':
-                    price = notification.get('price', 0)
-                    quantity = notification.get('quantity', 0)
-                    formatted_notification['message'] = f"Match executed: {quantity} @ {price}"
-                    
-                elif notification_type == 'ORDER_CANCELLED':
-                    price = notification.get('price', 0)
-                    quantity = notification.get('quantity', 0)
-                    side = notification.get('side', 'unknown').upper()
-                    formatted_notification['message'] = f"{side} order cancelled: {quantity} @ {price}"
-                    
-                elif notification_type == 'CANCEL_FAILED':
-                    formatted_notification['message'] = "Cancel failed"
-                    
-                elif notification_type == 'ORDER_REJECTED':
-                    reason = notification.get('reason', 'Unknown reason')
-                    formatted_notification['message'] = f"Order rejected: {reason}"
-                    formatted_notification['side'] = notification.get('side', '-')
-                    
-                else:
-                    formatted_notification['message'] = f"Unknown notification type: {notification_type}"
-                
                 latest_notifications.append(formatted_notification)
-                logger.info(f"Added notification to batch: {formatted_notification}")
-                
-                # Create notification row with color coding
-                row_class = ""
-                if notification_type == "ORDER_MATCHED":
-                    row_class = "matched-order"
-                elif notification_type == "ORDER_POSTED":
-                    row_class = "limit-order"
-                elif notification_type == "ORDER_CANCELLED":
-                    row_class = "cancelled-order"
-                
-                cancel_button = ""
-                if notification_type == "ORDER_POSTED":
-                    cancel_button = f'<button class="cancel-button" onclick="cancelOrder(\'{formatted_notification["order_id"]}\')">✕</button>'
-                
-                notification_row = f"""
-                <tr class="notification-row {row_class}" data-order-id="{formatted_notification['order_id']}">
-                    <td>{formatted_notification['timestamp']}</td>
-                    <td>{formatted_notification['type']}</td>
-                    <td>{formatted_notification['side']}</td>
-                    <td>{formatted_notification['price']}</td>
-                    <td>{formatted_notification['quantity']}</td>
-                    <td>{formatted_notification['message']}</td>
-                    <td>{cancel_button}</td>
-                </tr>
-                """
-                
-                logger.info(f"Added notification: {formatted_notification['message']}")
-                notification_rows.append(notification_row)
                 
             return jsonify({
-                "notifications": latest_notifications,
-                "notification_html": "".join(notification_rows)
+                "notifications": latest_notifications
             }), 200
     except Exception as e:
         logger.error(f"Error getting user orders: {e}")
