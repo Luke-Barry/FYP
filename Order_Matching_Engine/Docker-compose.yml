@@ -1,11 +1,19 @@
 version: '3'
+
+# Shared volumes for dependency caching
+volumes:
+  pip-cache:
+    driver: local
+
 services:
 
   client:
-    container_name: quic-client
+    container_name: quic-client-trader1
     build:
       context: .
       dockerfile: ./client/client.Dockerfile
+      cache_from:
+        - quic-client-trader1
     networks:
       quic-net:
         ipv4_address: 172.16.238.10
@@ -13,16 +21,39 @@ services:
       - server
     volumes:
       - ./certs:/app/certs
+      - pip-cache:/root/.cache/pip
     environment:
-      - USER_ID=LUKE_BARRY  # Generate a random uppercase string if not provided
+      - USER_ID=TRADER1
     ports:
       - "8081:6060"
+
+  client2:
+    container_name: quic-client-trader2
+    build:
+      context: .
+      dockerfile: ./client/client.Dockerfile
+      cache_from:
+        - quic-client-trader2
+    networks:
+      quic-net:
+        ipv4_address: 172.16.238.14
+    depends_on:
+      - server
+    volumes:
+      - ./certs:/app/certs
+      - pip-cache:/root/.cache/pip
+    environment:
+      - USER_ID=TRADER2
+    ports:
+      - "8082:6060"
 
   matching_engine:
     container_name: quic-engine
     build:
       context: .
       dockerfile: ./matching_engine/engine.Dockerfile
+      cache_from:
+        - quic-engine
     networks:
       quic-net:
         ipv4_address: 172.16.238.12
@@ -30,14 +61,17 @@ services:
       - server
     volumes:
       - ./certs:/app/certs
+      - pip-cache:/root/.cache/pip
     environment:
-      - USER_ID=MATCHING_ENGINE  # Generate a random uppercase string if not provided
+      - USER_ID=MATCHING_ENGINE
 
   server:
     container_name: quic-server
     build:
       context: .
       dockerfile: ./server/server.Dockerfile
+      cache_from:
+        - quic-server
     ports:
       - 8080:8080
     networks:
@@ -45,19 +79,49 @@ services:
         ipv4_address: 172.16.238.11
     volumes:
       - ./certs:/app/certs
+      - pip-cache:/root/.cache/pip
 
   web:
-    container_name: quic-web
+    container_name: quic-web-trader1
     build:
       context: .
       dockerfile: ./web_server/web.Dockerfile
+      cache_from:
+        - quic-web-trader1
     networks:
       quic-net:
         ipv4_address: 172.16.238.13
     depends_on:
       - client
+    environment:
+      - CLIENT_HOST=quic-client-trader1
+      - CLIENT_PORT=6060
+      - USER_ID=TRADER1
+    volumes:
+      - pip-cache:/root/.cache/pip
     ports:
       - "6060:6060"
+
+  web2:
+    container_name: quic-web-trader2
+    build:
+      context: .
+      dockerfile: ./web_server/web.Dockerfile
+      cache_from:
+        - quic-web-trader2
+    networks:
+      quic-net:
+        ipv4_address: 172.16.238.15
+    depends_on:
+      - client2
+    environment:
+      - CLIENT_HOST=quic-client-trader2
+      - CLIENT_PORT=6060
+      - USER_ID=TRADER2
+    volumes:
+      - pip-cache:/root/.cache/pip
+    ports:
+      - "6061:6060"
 
   tcpdump:
     image: nicolaka/netshoot
@@ -67,6 +131,7 @@ services:
       - ../capture:/tmp/capture
     depends_on:
       - client
+      - client2
       - server
       - matching_engine
 

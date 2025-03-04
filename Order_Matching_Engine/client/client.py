@@ -24,8 +24,7 @@ order_queue = None
 order_stream = None
 is_initialized = False
 current_orderbook = {"bids": [], "asks": []}
-user_orders: Dict[str, List[Dict]] = {}
-notifications = []  # List to store notifications
+user_notifications = {}  # User-specific notification storage
 state_lock = threading.Lock()
 
 # --- Patch QuicConnection.get_next_available_stream_id ---
@@ -98,7 +97,11 @@ async def handle_incoming_stream(reader: asyncio.StreamReader, writer: asyncio.S
                                         if "type" in notification:
                                             notification["type"] = notification["type"].upper()
                                             logger.info(f"Received notification: {notification}")
-                                            notifications.append(notification)
+                                            # Store notification by user
+                                            user = notification.get("user", username)
+                                            if user not in user_notifications:
+                                                user_notifications[user] = []
+                                            user_notifications[user].append(notification)
                     except json.JSONDecodeError as e:
                         logger.error(f"Failed to decode message: {e}, message: {msg}")
                         continue
@@ -122,20 +125,22 @@ def get_user_orders(user_id):
         with state_lock:
             # Convert notifications to display format without removing them
             latest_notifications = []
-            for notification in notifications:
-                # Format the notification for display
-                notification_type = notification.get('type', '').upper()
-                
-                # Create formatted notification
-                formatted_notification = {
-                    'type': notification_type,
-                    'order_id': notification.get('order_id', ''),
-                    'price': notification.get('price', 0),
-                    'quantity': notification.get('quantity', 0),
-                    'side': notification.get('side', '')
-                }
-                
-                latest_notifications.append(formatted_notification)
+            # Get user-specific notifications
+            if user_id in user_notifications:
+                for notification in user_notifications[user_id]:
+                    # Format the notification for display
+                    notification_type = notification.get('type', '').upper()
+                    
+                    # Create formatted notification
+                    formatted_notification = {
+                        'type': notification_type,
+                        'order_id': notification.get('order_id', ''),
+                        'price': notification.get('price', 0),
+                        'quantity': notification.get('quantity', 0),
+                        'side': notification.get('side', '')
+                    }
+                    
+                    latest_notifications.append(formatted_notification)
                 
             return jsonify({
                 "notifications": latest_notifications

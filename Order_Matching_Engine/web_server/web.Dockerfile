@@ -1,10 +1,18 @@
 FROM python:3.9-slim
 
-WORKDIR /app
+# Install Python dependencies first to leverage Docker cache
+WORKDIR /deps
 COPY requirements.txt .
-COPY web_server/web_server.py /app/web_server.py
-COPY web_server/templates /app/templates
+RUN pip install --no-cache-dir -r requirements.txt && \
+    pip install --no-cache-dir Flask-Session
 
-RUN pip install --no-cache-dir -r requirements.txt
+# Set up application
+WORKDIR /app
+COPY web_server/web_server.py .
+COPY web_server/templates templates/
+
+# Create sessions directory
+RUN mkdir -p /tmp/flask_sessions && \
+    chmod 777 /tmp/flask_sessions
 
 CMD ["python", "web_server.py"]

@@ -153,6 +153,9 @@
 </head>
 <body>
     <div class="container">
+        <div class="header">
+            <h1>Trading Platform - {{ user_id }}</h1>
+        </div>
         <div class="order-form">
             <h2>Place Order</h2>
             <form id="orderForm">
@@ -250,7 +253,9 @@
         // Global variables
         let notifications = [];
         const maxNotifications = 50;
-
+        let activeOrdersByClient = {};
+        const user_id = "{{ user_id }}";
+        
         // Helper function to format timestamps
         function formatTime(date) {
             return date.toLocaleTimeString('en-US', { 
@@ -528,7 +533,7 @@
                 }
 
                 // Get user orders/notifications
-                const ordersResponse = await fetch('/api/orders/LUKE_BARRY');
+                const ordersResponse = await fetch(`/api/orders/${user_id}`);
                 if (ordersResponse.ok) {
                     const ordersData = await ordersResponse.json();
                     if (ordersData.notifications) {
@@ -556,7 +561,7 @@
 
         // Fetch notifications periodically
         setInterval(function() {
-            fetch('/api/orders/LUKE_BARRY')
+            fetch(`/api/orders/${user_id}`)
                 .then(response => response.json())
                 .then(data => {
                     updateNotifications(data.notifications);
