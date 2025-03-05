@@ -8,6 +8,14 @@ services:
       dockerfile: client.Dockerfile
       args:
         BUILDKIT_INLINE_CACHE: 1
+    environment:
+      - NUM_STREAMS=${NUM_STREAMS:-3}  # Default to 3 if not set
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+        reservations:
+          memory: 512M
     networks:
       quic-net:
         ipv4_address: 172.16.238.10
@@ -24,6 +32,12 @@ services:
       dockerfile: server.Dockerfile
       args:
         BUILDKIT_INLINE_CACHE: 1
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+        reservations:
+          memory: 512M
     ports:
       - 8080:8080
     networks:

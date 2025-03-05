@@ -77,19 +77,29 @@ class ThroughputTester:
         """Send messages on a single stream for the test duration"""
         writer = stream_info['writer']
         stream_id = stream_info['stream_id']
-        base_message = b'X' * (message_size - 20)  # Leave room for message number
         
+        # Create base message once and reuse
+        base_message = b'X' * (message_size - 20)  # Leave room for message number
         messages_sent = 0
         bytes_sent = 0
         end_time = time.time() + self.test_duration
         
         while time.time() < end_time:
-            message = f"{messages_sent}:".encode() + base_message
-            async with stream_info['lock']:
-                writer.write(message)
-                await writer.drain()
-                messages_sent += 1
-                bytes_sent += len(message)
+            try:
+                message = f"{messages_sent:010d}".encode() + base_message[:message_size-10]
+                async with stream_info['lock']:
+                    writer.write(message)
+                    await writer.drain()  # Wait for buffer to be sent
+                    messages_sent += 1
+                    bytes_sent += len(message)
+                
+                # Add a tiny sleep to prevent overwhelming the system
+                if messages_sent % 100 == 0:
+                    await asyncio.sleep(0.001)
+                    
+            except Exception as e:
+                logger.error(f"Error sending message on stream {stream_id}: {e}")
+                break
         
         return {
             'stream_id': stream_id,
@@ -112,12 +122,12 @@ class ThroughputTester:
 # Global throughput tester
 throughput_tester = ThroughputTester()
 
-async def run_client(host: str, port: int) -> None:
+async def run_client(host: str, port: int, num_streams: int) -> None:
     os.makedirs("/app/qlogs", exist_ok=True)
     logger.info("Created directory /app/qlogs")
 
     # Create the specified number of queues
-    queues = {f'queue{i}': Queue() for i in range(1, 4)}
+    queues = {f'queue{i}': Queue() for i in range(1, num_streams + 1)}
 
     configuration = QuicConfiguration(
         alpn_protocols=["quic-demo"],
@@ -168,4 +178,9 @@ async def run_client(host: str, port: int) -> None:
 if __name__ == "__main__":
     host = "quic-server"
     port = 8080
-    asyncio.run(run_client(host, port))
+
+    # Get number of streams from environment variable, default to 3 if not set
+    num_streams = int(os.getenv('NUM_STREAMS', 3))
+    print(f"Starting client with {num_streams} streams")
+    
+    asyncio.run(run_client(host, port, num_streams))

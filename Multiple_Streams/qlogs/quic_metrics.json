@@ -1,35 +1,51 @@
 {
-  "total_duration_seconds": 90.0170361995697,
-  "total_messages": 1138,
-  "total_bytes": 1310326,
-  "total_messages_per_second": 12.642051416545526,
-  "total_bytes_per_second": 14556.422376481927,
-  "total_mbits_per_second": 0.11645137901185543,
-  "number_of_streams": 3,
+  "total_duration_seconds": 88.69244146347046,
+  "total_messages": 5228,
+  "total_bytes": 6074107,
+  "total_messages_per_second": 58.94527102575301,
+  "total_bytes_per_second": 68485.05802494712,
+  "total_mbits_per_second": 0.5478804641995769,
+  "number_of_streams": 5,
   "streams": {
     "0": {
-      "messages_received": 380,
-      "bytes_received": 437607,
-      "duration_seconds": 63.050074100494385,
-      "messages_per_second": 6.026955644720176,
-      "bytes_per_second": 6940.626260050163,
-      "mbits_per_second": 0.05552501008040131
+      "messages_received": 1046,
+      "bytes_received": 1215571,
+      "duration_seconds": 31.572932720184326,
+      "messages_per_second": 33.129643333110465,
+      "bytes_per_second": 38500.41460427574,
+      "mbits_per_second": 0.3080033168342059
     },
     "4": {
-      "messages_received": 379,
-      "bytes_received": 437315,
-      "duration_seconds": 62.99975943565369,
-      "messages_per_second": 6.015895987461678,
-      "bytes_per_second": 6941.534442630089,
-      "mbits_per_second": 0.05553227554104071
+      "messages_received": 1053,
+      "bytes_received": 1214826,
+      "duration_seconds": 31.568236112594604,
+      "messages_per_second": 33.35631412044243,
+      "bytes_per_second": 38482.54288478689,
+      "mbits_per_second": 0.3078603430782951
     },
     "8": {
-      "messages_received": 379,
-      "bytes_received": 435404,
-      "duration_seconds": 63.00237774848938,
-      "messages_per_second": 6.015645973124996,
-      "bytes_per_second": 6910.913771193973,
-      "mbits_per_second": 0.05528731016955179
+      "messages_received": 1039,
+      "bytes_received": 1212853,
+      "duration_seconds": 31.56681799888611,
+      "messages_per_second": 32.91430894417876,
+      "bytes_per_second": 38421.76934155345,
+      "mbits_per_second": 0.30737415473242763
+    },
+    "12": {
+      "messages_received": 1033,
+      "bytes_received": 1213835,
+      "duration_seconds": 31.564037799835205,
+      "messages_per_second": 32.72711832848563,
+      "bytes_per_second": 38456.26493345339,
+      "mbits_per_second": 0.30765011946762716
+    },
+    "16": {
+      "messages_received": 1057,
+      "bytes_received": 1217022,
+      "duration_seconds": 31.543389797210693,
+      "messages_per_second": 33.50939790540419,
+      "bytes_per_second": 38582.47346984941,
+      "mbits_per_second": 0.30865978775879527
     }
   }
 }
