@@ -100,7 +100,7 @@ class ThroughputTester:
     def save_aggregate_results(self, all_results: list):
         aggregate_results = {
             'test_duration': self.test_duration,
-            'number_of_streams': len(self.results),
+            'number_of_streams': len(all_results[0]['per_stream_results']) if all_results else 0,
             'message_size_results': all_results,
             'total_test_duration': time.time() - self.start_time
         }
