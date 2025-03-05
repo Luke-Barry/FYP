@@ -1,11 +1,37 @@
-FROM python:3.10
+# Build stage
+FROM python:3.10-slim as builder
 
 WORKDIR /app
-COPY . /app
 
-RUN pip install aioquic
+# Install build dependencies
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    build-essential \
+    libssl-dev \
+    python3-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-# Ensure directories exist for qlogs and certificates
-RUN mkdir -p /app/qlogs && mkdir -p /app/certs
+# Copy requirements first to leverage Docker cache
+COPY requirements.txt .
+
+# Build wheels
+RUN pip wheel --no-cache-dir --wheel-dir /app/wheels -r requirements.txt
+
+# Final stage
+FROM python:3.10-slim
+
+WORKDIR /app
+
+# Create directories
+RUN mkdir -p /app/qlogs /app/certs
+
+# Copy wheels and install
+COPY --from=builder /app/wheels /wheels
+COPY --from=builder /app/requirements.txt .
+RUN pip install --no-cache-dir --find-links=/wheels -r requirements.txt && \
+    rm -rf /wheels
+
+# Copy application files
+COPY client.py .
 
 CMD ["python", "client.py"]

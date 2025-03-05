@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 services:
 
   client:
@@ -6,42 +6,44 @@ services:
     build:
       context: .
       dockerfile: client.Dockerfile
+      args:
+        BUILDKIT_INLINE_CACHE: 1
     networks:
       quic-net:
         ipv4_address: 172.16.238.10
     depends_on:
       - server
     volumes:
-      - ./certs:/app/certs
-      - ./qlogs:/app/qlogs  # Mount qlogs directory
+      - ./certs:/app/certs:rw
+      - ./qlogs:/app/qlogs:rw
 
   server:
     container_name: quic-server
     build:
       context: .
       dockerfile: server.Dockerfile
+      args:
+        BUILDKIT_INLINE_CACHE: 1
     ports:
       - 8080:8080
     networks:
       quic-net:
-        ipv4_address: 172.16.238.11
+        ipv4_address: 172.16.238.20
     volumes:
-      - ./certs:/app/certs
-      - ./qlogs:/app/qlogs  # Mount qlogs for server as well if needed
+      - ./certs:/app/certs:rw
+      - ./qlogs:/app/qlogs:rw
 
   tcpdump:
     image: nicolaka/netshoot
-    command: tcpdump -i any -w /tmp/capture/Multiple_Streams.pcap 'udp port 8080'
-    network_mode: "container:quic-client"
+    command: tcpdump -i any -w /tmp/quic.pcap
+    network_mode: "service:server"
     volumes:
-      - ../capture:/tmp/capture
-    depends_on:
-      - client
-      - server
+      - ./pcap:/tmp:rw
 
 networks:
   quic-net:
     driver: bridge
     ipam:
+      driver: default
       config:
         - subnet: 172.16.238.0/24

@@ -1,0 +1,38 @@
+{
+  "stream_id": 8,
+  "queue_name": "queue3",
+  "results": [
+    {
+      "size": 1024,
+      "duration": 5.000004053115845,
+      "messages_sent": 155014,
+      "bytes_sent": 156608044,
+      "throughput_mbps": 250.5726672799904,
+      "messages_per_sec": 31002.77486843239
+    },
+    {
+      "size": 4096,
+      "duration": 5.000070810317993,
+      "messages_sent": 60094,
+      "bytes_sent": 245292598,
+      "throughput_mbps": 392.4625987197168,
+      "messages_per_sec": 12018.629791400526
+    },
+    {
+      "size": 16384,
+      "duration": 5.000102519989014,
+      "messages_sent": 18989,
+      "bytes_sent": 310838820,
+      "throughput_mbps": 497.3319147075136,
+      "messages_per_sec": 3797.72213151376
+    },
+    {
+      "size": 65527,
+      "duration": 5.001540422439575,
+      "messages_sent": 3497,
+      "bytes_sent": 229094354,
+      "throughput_mbps": 366.43807251407696,
+      "messages_per_sec": 699.1845920729932
+    }
+  ]
+}

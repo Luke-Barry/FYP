@@ -3,6 +3,7 @@ import logging
 import os
 import time
 import json
+import signal
 from typing import Optional, Tuple, Callable, Dict
 from aioquic.asyncio import serve, QuicConnectionProtocol
 from aioquic.quic.configuration import QuicConfiguration
@@ -16,6 +17,7 @@ class MetricsManager:
     def __init__(self):
         self.metrics = {}
         self.start_time = time.time()
+        self.last_save_time = time.time()
         os.makedirs("/app/qlogs", exist_ok=True)
         
     def init_stream(self, stream_id: int):
@@ -25,14 +27,18 @@ class MetricsManager:
             "start_time": time.time(),
             "last_message_time": None
         }
-        self._save_metrics()
         
     def record_message(self, stream_id: int, size: int):
         if stream_id in self.metrics:
             self.metrics[stream_id]["messages_received"] += 1
             self.metrics[stream_id]["bytes_received"] += size
             self.metrics[stream_id]["last_message_time"] = time.time()
-            self._save_metrics()
+            
+            # Save metrics every 5 seconds
+            current_time = time.time()
+            if current_time - self.last_save_time >= 5:
+                self.save_metrics_to_file()
+                self.last_save_time = current_time
             
     def get_stream_metrics(self, stream_id: int):
         if stream_id not in self.metrics:
@@ -51,27 +57,39 @@ class MetricsManager:
         }
         
     def get_aggregate_metrics(self):
+        if not self.metrics:
+            return {
+                "total_duration_seconds": 0,
+                "average_messages": 0,
+                "average_bytes": 0,
+                "average_messages_per_second": 0,
+                "average_bytes_per_second": 0,
+                "average_mbits_per_second": 0,
+                "streams": {}
+            }
+            
         total_duration = time.time() - self.start_time
         total_messages = sum(m["messages_received"] for m in self.metrics.values())
         total_bytes = sum(m["bytes_received"] for m in self.metrics.values())
         
         return {
             "total_duration_seconds": total_duration,
-            "total_messages": total_messages,
-            "total_bytes": total_bytes,
-            "total_messages_per_second": total_messages / total_duration if total_duration > 0 else 0,
-            "total_bytes_per_second": total_bytes / total_duration if total_duration > 0 else 0,
-            "total_mbits_per_second": (total_bytes * 8 / 1_000_000) / total_duration if total_duration > 0 else 0,
+            "average_messages": total_messages / len(self.metrics) if self.metrics else 0,
+            "average_bytes": total_bytes / len(self.metrics) if self.metrics else 0,
+            "average_messages_per_second": total_messages / total_duration if total_duration > 0 else 0,
+            "average_bytes_per_second": total_bytes / total_duration if total_duration > 0 else 0,
+            "average_mbits_per_second": (total_bytes * 8 / 1_000_000) / total_duration if total_duration > 0 else 0,
             "streams": {
                 str(stream_id): self.get_stream_metrics(stream_id)
                 for stream_id in self.metrics
             }
         }
         
-    def _save_metrics(self):
+    def save_metrics_to_file(self):
         metrics = self.get_aggregate_metrics()
         with open("/app/qlogs/quic_metrics.json", "w") as f:
             json.dump(metrics, f, indent=2)
+        logger.info("Metrics saved to file")
 
 # --- Patch QuicConnection to use a custom max_streams_bidi limit if provided ---
 _original_init = QuicConnection.__init__
@@ -109,14 +127,10 @@ async def handle_stream(reader: asyncio.StreamReader, writer: asyncio.StreamWrit
     logger.info(f"Stream {stream_id} opened")
     try:
         while True:
-            data = await reader.read(1024)
+            data = await reader.read(65536)
             if not data:
                 break
                 
-            # Original functionality - decode and log message
-            message = data.decode()
-            logger.info(f"Received on stream {stream_id}: {message}")
-            
             # Track metrics without modifying the data flow
             metrics_manager.record_message(stream_id, len(data))
             
@@ -130,7 +144,26 @@ async def handle_stream(reader: asyncio.StreamReader, writer: asyncio.StreamWrit
         logger.info(f"Stream {stream_id} closing")
         writer.close()
 
+async def shutdown(signal, loop):
+    """Cleanup tasks tied to the service's shutdown."""
+    logger.info(f"Received exit signal {signal.name}...")
+    logger.info("Saving final metrics...")
+    metrics_manager.save_metrics_to_file()
+    tasks = [t for t in asyncio.all_tasks() if t is not asyncio.current_task()]
+    [task.cancel() for task in tasks]
+    logger.info(f"Cancelling {len(tasks)} outstanding tasks")
+    await asyncio.gather(*tasks, return_exceptions=True)
+    loop.stop()
+
 async def main():
+    # Setup signal handlers
+    loop = asyncio.get_running_loop()
+    signals = (signal.SIGTERM, signal.SIGINT)
+    for s in signals:
+        loop.add_signal_handler(
+            s, lambda s=s: asyncio.create_task(shutdown(s, loop))
+        )
+
     configuration = QuicConfiguration(
         alpn_protocols=["quic-demo"],
         is_client=False,
@@ -149,10 +182,16 @@ async def main():
     )
 
     logger.info("Server started on 0.0.0.0:8080")
-    await asyncio.Future()  # Run forever
+    
+    try:
+        await asyncio.Future()  # run forever
+    finally:
+        metrics_manager.save_metrics_to_file()
+        server.close()
 
 if __name__ == "__main__":
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
-        pass
+        logger.info("Received keyboard interrupt")
+        metrics_manager.save_metrics_to_file()
