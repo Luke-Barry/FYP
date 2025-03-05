@@ -1,34 +1,35 @@
 {
-  "total_duration_seconds": 92.79495406150818,
-  "average_messages": 146.66666666666666,
-  "average_bytes": 168396.66666666666,
-  "average_messages_per_second": 4.741637133721199,
-  "average_bytes_per_second": 5444.15378087412,
-  "average_mbits_per_second": 0.04355323024699296,
+  "total_duration_seconds": 93.28148746490479,
+  "total_messages": 1456,
+  "total_bytes": 1697696,
+  "total_messages_per_second": 15.60867048295933,
+  "total_bytes_per_second": 18199.709783130576,
+  "total_mbits_per_second": 0.14559767826504463,
+  "number_of_streams": 3,
   "streams": {
     "0": {
-      "messages_received": 147,
-      "bytes_received": 167407,
-      "duration_seconds": 46.4154314994812,
-      "messages_per_second": 3.167050165237461,
-      "bytes_per_second": 3606.709979672841,
-      "mbits_per_second": 0.02885367983738273
+      "messages_received": 493,
+      "bytes_received": 568702,
+      "duration_seconds": 66.78076696395874,
+      "messages_per_second": 7.3823650492973485,
+      "bytes_per_second": 8515.954905203855,
+      "mbits_per_second": 0.06812763924163084
     },
     "4": {
-      "messages_received": 147,
-      "bytes_received": 168807,
-      "duration_seconds": 46.40732407569885,
-      "messages_per_second": 3.167603453287159,
-      "bytes_per_second": 3637.507728837044,
-      "mbits_per_second": 0.029100061830696352
+      "messages_received": 471,
+      "bytes_received": 565747,
+      "duration_seconds": 66.77162599563599,
+      "messages_per_second": 7.053894419626434,
+      "bytes_per_second": 8472.865405988103,
+      "mbits_per_second": 0.06778292324790482
     },
     "8": {
-      "messages_received": 146,
-      "bytes_received": 168976,
-      "duration_seconds": 46.40553569793701,
-      "messages_per_second": 3.146176373231492,
-      "bytes_per_second": 3641.289718103867,
-      "mbits_per_second": 0.029130317744830932
+      "messages_received": 492,
+      "bytes_received": 563247,
+      "duration_seconds": 66.7664361000061,
+      "messages_per_second": 7.368972027547761,
+      "bytes_per_second": 8436.080056097955,
+      "mbits_per_second": 0.06748864044878364
     }
   }
 }

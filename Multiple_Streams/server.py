@@ -60,11 +60,11 @@ class MetricsManager:
         if not self.metrics:
             return {
                 "total_duration_seconds": 0,
-                "average_messages": 0,
-                "average_bytes": 0,
-                "average_messages_per_second": 0,
-                "average_bytes_per_second": 0,
-                "average_mbits_per_second": 0,
+                "total_messages": 0,
+                "total_bytes": 0,
+                "total_messages_per_second": 0,
+                "total_bytes_per_second": 0,
+                "total_mbits_per_second": 0,
                 "streams": {}
             }
             
@@ -74,11 +74,12 @@ class MetricsManager:
         
         return {
             "total_duration_seconds": total_duration,
-            "average_messages": total_messages / len(self.metrics) if self.metrics else 0,
-            "average_bytes": total_bytes / len(self.metrics) if self.metrics else 0,
-            "average_messages_per_second": total_messages / total_duration if total_duration > 0 else 0,
-            "average_bytes_per_second": total_bytes / total_duration if total_duration > 0 else 0,
-            "average_mbits_per_second": (total_bytes * 8 / 1_000_000) / total_duration if total_duration > 0 else 0,
+            "total_messages": total_messages,
+            "total_bytes": total_bytes,
+            "total_messages_per_second": total_messages / total_duration if total_duration > 0 else 0,
+            "total_bytes_per_second": total_bytes / total_duration if total_duration > 0 else 0,
+            "total_mbits_per_second": (total_bytes * 8 / 1_000_000) / total_duration if total_duration > 0 else 0,
+            "number_of_streams": len(self.metrics),
             "streams": {
                 str(stream_id): self.get_stream_metrics(stream_id)
                 for stream_id in self.metrics

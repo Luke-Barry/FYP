@@ -3,12 +3,17 @@ import ssl
 import os
 import json
 import time
+import logging
 from asyncio import Queue
 from typing import Tuple, Optional, Callable
 from aioquic.asyncio import connect, QuicConnectionProtocol
 from aioquic.quic.configuration import QuicConfiguration
 from aioquic.quic.connection import QuicConnection
 from aioquic.quic.logger import QuicFileLogger
+
+# Set up logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("client")
 
 # Maximum QUIC packet size (1200 bytes is default, we'll use max allowed)
 MAX_DATAGRAM_SIZE = 65527  # Maximum allowed by QUIC
@@ -40,73 +45,79 @@ class MyQuicConnectionProtocol(QuicConnectionProtocol):
             stream_id = self._quic.get_next_available_stream_id(is_unidirectional=is_unidirectional)
             return self._create_stream(stream_id)
 
-async def send_from_queue(protocol: MyQuicConnectionProtocol, queue: Queue, queue_name: str) -> None:
-    reader, writer = await protocol.create_stream(is_unidirectional=False)
-    stream_id = writer.get_extra_info("stream_id")
-    print(f"Created stream {stream_id} for {queue_name}")
-
-    # Create messages of different sizes to test throughput
-    message_sizes = [1024, 4096, 16384, 65527]  # 1KB, 4KB, 16KB, Max QUIC
-    results = []
-    
-    for size in message_sizes:
-        base_message = b'X' * (size - 20)  # Leave room for message number
-        start_time = time.time()
-        bytes_sent = 0
-        messages_sent = 0
+class ThroughputTester:
+    def __init__(self):
+        self.results = {}
+        self.start_time = time.time()
+        self.test_duration = 5  # Test duration in seconds
+        self.message_sizes = [1024, 4096, 16384, 65527]  # 1KB, 4KB, 16KB, Max QUIC
         
-        # Send messages for 5 seconds for each size
-        end_time = start_time + 5
+    async def run_size_test(self, size: int, streams: list):
+        """Run throughput test with a specific message size across all streams concurrently"""
+        start_time = time.time()
+        tasks = [self.send_messages(stream, size) for stream in streams]
+        results = await asyncio.gather(*tasks)
+        
+        # Aggregate results for this message size
+        total_messages = sum(r['messages_sent'] for r in results)
+        total_bytes = sum(r['bytes_sent'] for r in results)
+        duration = time.time() - start_time
+        
+        return {
+            'size': size,
+            'duration': duration,
+            'total_messages': total_messages,
+            'total_bytes': total_bytes,
+            'total_throughput_mbps': (total_bytes * 8 / 1_000_000) / duration,
+            'messages_per_second': total_messages / duration,
+            'per_stream_results': results
+        }
+    
+    async def send_messages(self, stream_info: dict, message_size: int):
+        """Send messages on a single stream for the test duration"""
+        writer = stream_info['writer']
+        stream_id = stream_info['stream_id']
+        base_message = b'X' * (message_size - 20)  # Leave room for message number
+        
+        messages_sent = 0
+        bytes_sent = 0
+        end_time = time.time() + self.test_duration
         
         while time.time() < end_time:
             message = f"{messages_sent}:".encode() + base_message
-            async with protocol._sender_lock:
+            async with stream_info['lock']:
                 writer.write(message)
                 await writer.drain()
-                bytes_sent += len(message)
                 messages_sent += 1
+                bytes_sent += len(message)
         
-        duration = time.time() - start_time
-        throughput_mbps = (bytes_sent * 8 / 1_000_000) / duration
-        messages_per_sec = messages_sent / duration
-        
-        results.append({
-            'size': size,
-            'duration': duration,
-            'messages_sent': messages_sent,
-            'bytes_sent': bytes_sent,
-            'throughput_mbps': throughput_mbps,
-            'messages_per_sec': messages_per_sec
-        })
-        
-        print(f"\nStream {stream_id} results for {size} byte messages:")
-        print(f"Throughput: {throughput_mbps:.2f} Mbps")
-        print(f"Messages/sec: {messages_per_sec:.2f}")
-        print(f"Total messages: {messages_sent}")
-        
-        # Small pause between different message sizes
-        await asyncio.sleep(1)
-    
-    # Save results to a file
-    results_file = f"/app/qlogs/throughput_results_{stream_id}.json"
-    with open(results_file, "w") as f:
-        json.dump({
+        return {
             'stream_id': stream_id,
-            'queue_name': queue_name,
-            'results': results
-        }, f, indent=2)
+            'messages_sent': messages_sent,
+            'bytes_sent': bytes_sent
+        }
     
-    print(f"Queue {queue_name} on stream {stream_id} finished")
-    writer.close()
+    def save_aggregate_results(self, all_results: list):
+        aggregate_results = {
+            'test_duration': self.test_duration,
+            'number_of_streams': len(self.results),
+            'message_size_results': all_results,
+            'total_test_duration': time.time() - self.start_time
+        }
+        
+        with open("/app/qlogs/aggregate_throughput_results.json", "w") as f:
+            json.dump(aggregate_results, f, indent=2)
+            logger.info("Aggregate results saved to /app/qlogs/aggregate_throughput_results.json")
+
+# Global throughput tester
+throughput_tester = ThroughputTester()
 
 async def run_client(host: str, port: int) -> None:
     os.makedirs("/app/qlogs", exist_ok=True)
+    logger.info("Created directory /app/qlogs")
 
-    queues = {
-        'queue1': Queue(),
-        'queue2': Queue(),
-        'queue3': Queue()
-    }
+    # Create the specified number of queues
+    queues = {f'queue{i}': Queue() for i in range(1, 4)}
 
     configuration = QuicConfiguration(
         alpn_protocols=["quic-demo"],
@@ -119,12 +130,40 @@ async def run_client(host: str, port: int) -> None:
 
     async with connect(host, port, configuration=configuration, create_protocol=MyQuicConnectionProtocol) as protocol:
         protocol._sender_lock = asyncio.Lock()
-        print("Connection established with server.")
+        logger.info("Connection established with server.")
 
-        tasks = [asyncio.create_task(send_from_queue(protocol, queue, queue_name)) 
-                for queue_name, queue in queues.items()]
-        await asyncio.gather(*tasks)
-        print("All streams completed successfully")
+        # Create all streams first
+        streams = []
+        for queue_name in queues:
+            reader, writer = await protocol.create_stream(is_unidirectional=False)
+            stream_id = writer.get_extra_info("stream_id")
+            streams.append({
+                'stream_id': stream_id,
+                'writer': writer,
+                'reader': reader,
+                'lock': asyncio.Lock(),
+                'queue_name': queue_name
+            })
+            logger.info(f"Created stream {stream_id} for {queue_name}")
+
+        # Run tests for each message size across all streams concurrently
+        all_results = []
+        for size in throughput_tester.message_sizes:
+            logger.info(f"\nStarting concurrent test with message size {size} bytes across all streams")
+            result = await throughput_tester.run_size_test(size, streams)
+            all_results.append(result)
+            logger.info(f"Completed test for {size} bytes:")
+            logger.info(f"Total throughput: {result['total_throughput_mbps']:.2f} Mbps")
+            logger.info(f"Total messages/sec: {result['messages_per_second']:.2f}")
+            await asyncio.sleep(1)  # Short pause between size tests
+
+        # Save final results
+        throughput_tester.save_aggregate_results(all_results)
+        logger.info("All throughput tests completed successfully")
+
+        # Clean up streams
+        for stream in streams:
+            stream['writer'].close()
 
 if __name__ == "__main__":
     host = "quic-server"
