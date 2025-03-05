@@ -1,7 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Trading Interface</title>
+    <title>Trading Platform</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/chart.css">
+    
+    <!-- Include Apache ECharts library instead of Lightweight Charts -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <script src="/static/js/chart.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -149,6 +155,35 @@
         .table-warning {
             background-color: #fcf8e3;
         }
+        
+        .chart {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .chart-toolbar {
+            margin-bottom: 10px;
+        }
+        
+        .interval-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+        
+        .interval-button:hover {
+            background-color: #0056b3;
+        }
+        
+        .interval-button.active {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
@@ -156,6 +191,19 @@
         <div class="header">
             <h1>Trading Platform - {{ user_id }}</h1>
         </div>
+        
+        <div class="chart">
+            <div class="chart-toolbar">
+                <button class="interval-button" data-interval="15s">15s</button>
+                <button class="interval-button" data-interval="30s">30s</button>
+                <button class="interval-button" data-interval="1m">1m</button>
+                <button class="interval-button" data-interval="5m">5m</button>
+                <button class="interval-button" data-interval="15m">15m</button>
+                <button class="interval-button" data-interval="1h">1h</button>
+            </div>
+            <div id="chart-container"></div>
+        </div>
+
         <div class="order-form">
             <h2>Place Order</h2>
             <form id="orderForm">
@@ -264,6 +312,39 @@
                 minute: '2-digit', 
                 second: '2-digit'
             });
+        }
+
+        // Initialize chart when DOM is loaded
+        window.addEventListener('DOMContentLoaded', () => {
+            console.log("DOM loaded, initializing chart...");
+            initializeChart();
+            setupIntervalButtons();
+            loadExistingTradeData();
+        });
+
+        // Load existing trade data for chart initialization
+        async function loadExistingTradeData() {
+            try {
+                console.log("Loading existing trade data...");
+                const response = await fetch(`/api/orders/${user_id}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.notifications) {
+                        // Ensure all notifications have timestamps
+                        data.notifications.forEach(notification => {
+                            if (!notification.timestamp) {
+                                notification.timestamp = Date.now();
+                            }
+                        });
+                        
+                        console.log(`Processing ${data.notifications.length} existing notifications for chart`);
+                        // Update chart with existing trade data
+                        updateChartFromNotifications(data.notifications);
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading existing trade data:', error);
+            }
         }
 
         // Initialize the page
@@ -464,6 +545,9 @@
             while (tbody.children.length > maxNotifications) {
                 tbody.removeChild(tbody.lastChild);
             }
+            
+            // Update the chart with matched order data
+            updateChartFromNotifications(notifications);
         }
 
         // Update orders table
@@ -537,7 +621,23 @@
                 if (ordersResponse.ok) {
                     const ordersData = await ordersResponse.json();
                     if (ordersData.notifications) {
+                        // Ensure all notifications have timestamps
+                        ordersData.notifications.forEach(notification => {
+                            if (!notification.timestamp) {
+                                notification.timestamp = Date.now();
+                            }
+                        });
+                        
                         updateNotifications(ordersData.notifications);
+                        
+                        // Debug output matched orders
+                        const matchedOrders = ordersData.notifications.filter(n => n.type === 'ORDER_MATCHED');
+                        if (matchedOrders.length > 0) {
+                            console.log(`Found ${matchedOrders.length} matched orders:`, matchedOrders);
+                        }
+                        
+                        // Update chart with matched order data
+                        updateChartFromNotifications(ordersData.notifications);
                     }
                     if (ordersData.orders) {
                         updateOrders(ordersData);
@@ -559,15 +659,8 @@
             }
         });
 
-        // Fetch notifications periodically
-        setInterval(function() {
-            fetch(`/api/orders/${user_id}`)
-                .then(response => response.json())
-                .then(data => {
-                    updateNotifications(data.notifications);
-                })
-                .catch(error => console.error('Error:', error));
-        }, 1000);
+        // Fetch notifications once at startup and then periodically
+        pollForUpdates();
     </script>
 </body>
 </html>

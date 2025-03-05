@@ -1,0 +1,49 @@
+.chart {
+    grid-column: span 2;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    height: 400px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+#chart-container {
+    width: 100%;
+    height: 350px;
+    position: relative;
+    display: block;
+    flex-grow: 1;
+}
+
+.chart-toolbar {
+    margin-bottom: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.interval-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 5px;
+    transition: background-color 0.2s ease;
+}
+
+.interval-button:hover {
+    background-color: #0056b3;
+}
+
+.interval-button.active {
+    background-color: #0056b3;
+    font-weight: bold;
+}

@@ -10,6 +10,7 @@ RUN pip install --no-cache-dir -r requirements.txt && \
 WORKDIR /app
 COPY web_server/web_server.py .
 COPY web_server/templates templates/
+COPY web_server/static static/
 
 # Create sessions directory
 RUN mkdir -p /tmp/flask_sessions && \
