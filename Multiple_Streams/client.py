@@ -123,18 +123,17 @@ class ThroughputTester:
 throughput_tester = ThroughputTester()
 
 async def run_client(host: str, port: int, num_streams: int) -> None:
-    os.makedirs("/app/qlogs", exist_ok=True)
-    logger.info("Created directory /app/qlogs")
-
-    # Create the specified number of queues
-    queues = {f'queue{i}': Queue() for i in range(1, num_streams + 1)}
+    qlog_dir = "/app/qlogs"
+    os.makedirs(qlog_dir, exist_ok=True)  # Ensure qlog directory exists
+    quic_logger = QuicFileLogger(qlog_dir)  # Pass directory, NOT file path
 
     configuration = QuicConfiguration(
         alpn_protocols=["quic-demo"],
         is_client=True,
-        max_datagram_frame_size=MAX_DATAGRAM_SIZE,
+        max_datagram_frame_size=65536,
         secrets_log_file=open("/app/certs/ssl_keylog.txt", "a"),
-        verify_mode=ssl.CERT_NONE
+        verify_mode=ssl.CERT_NONE,
+        quic_logger=quic_logger
     )
     configuration.max_streams_bidi = 100
 
@@ -144,7 +143,7 @@ async def run_client(host: str, port: int, num_streams: int) -> None:
 
         # Create all streams first
         streams = []
-        for queue_name in queues:
+        for i in range(1, num_streams + 1):
             reader, writer = await protocol.create_stream(is_unidirectional=False)
             stream_id = writer.get_extra_info("stream_id")
             streams.append({
@@ -152,9 +151,9 @@ async def run_client(host: str, port: int, num_streams: int) -> None:
                 'writer': writer,
                 'reader': reader,
                 'lock': asyncio.Lock(),
-                'queue_name': queue_name
+                'queue_name': f'queue{i}'
             })
-            logger.info(f"Created stream {stream_id} for {queue_name}")
+            logger.info(f"Created stream {stream_id} for queue{i}")
 
         # Run tests for each message size across all streams concurrently
         all_results = []

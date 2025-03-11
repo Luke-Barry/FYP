@@ -37,7 +37,7 @@ class MetricsManager:
             # Save metrics every 5 seconds
             current_time = time.time()
             if current_time - self.last_save_time >= 5:
-                self.save_metrics_to_file()
+                self.save_performance_metrics()
                 self.last_save_time = current_time
             
     def get_stream_metrics(self, stream_id: int):
@@ -65,6 +65,7 @@ class MetricsManager:
                 "total_messages_per_second": 0,
                 "total_bytes_per_second": 0,
                 "total_mbits_per_second": 0,
+                "number_of_streams": 0,
                 "streams": {}
             }
             
@@ -86,11 +87,32 @@ class MetricsManager:
             }
         }
         
-    def save_metrics_to_file(self):
+    def save_performance_metrics(self):
         metrics = self.get_aggregate_metrics()
-        with open("/app/qlogs/quic_metrics.json", "w") as f:
-            json.dump(metrics, f, indent=2)
-        logger.info("Metrics saved to file")
+        # Reformatting metrics to match the old structure with packet size breakdown
+        formatted_metrics = {
+            "test_duration": metrics["total_duration_seconds"],
+            "number_of_streams": metrics["number_of_streams"],
+            "message_size_results": [],
+            "total_test_duration": metrics["total_duration_seconds"]
+        }
+
+        # Group metrics by message size
+        for size, data in metrics["streams"].items():
+            message_size_result = {
+                "size": size,
+                "duration": data["duration_seconds"],
+                "total_messages": data["messages_received"],
+                "total_bytes": data["bytes_received"],
+                "total_throughput_mbps": data["mbits_per_second"],
+                "messages_per_second": data["messages_per_second"],
+                "per_stream_results": data
+            }
+            formatted_metrics["message_size_results"].append(message_size_result)
+
+        with open("/app/qlogs/aggregate_throughput_results.json", "w") as f:
+            json.dump(formatted_metrics, f, indent=2)
+            logger.info("Performance metrics saved to /app/qlogs/aggregate_throughput_results.json")
 
 # --- Patch QuicConnection to use a custom max_streams_bidi limit if provided ---
 _original_init = QuicConnection.__init__
@@ -149,7 +171,7 @@ async def shutdown(signal, loop):
     """Cleanup tasks tied to the service's shutdown."""
     logger.info(f"Received exit signal {signal.name}...")
     logger.info("Saving final metrics...")
-    metrics_manager.save_metrics_to_file()
+    metrics_manager.save_performance_metrics()
     tasks = [t for t in asyncio.all_tasks() if t is not asyncio.current_task()]
     [task.cancel() for task in tasks]
     logger.info(f"Cancelling {len(tasks)} outstanding tasks")
@@ -187,7 +209,7 @@ async def main():
     try:
         await asyncio.Future()  # run forever
     finally:
-        metrics_manager.save_metrics_to_file()
+        metrics_manager.save_performance_metrics()
         server.close()
 
 if __name__ == "__main__":
@@ -195,4 +217,4 @@ if __name__ == "__main__":
         asyncio.run(main())
     except KeyboardInterrupt:
         logger.info("Received keyboard interrupt")
-        metrics_manager.save_metrics_to_file()
+        metrics_manager.save_performance_metrics()

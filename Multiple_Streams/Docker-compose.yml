@@ -49,7 +49,7 @@ services:
 
   tcpdump:
     image: nicolaka/netshoot
-    command: tcpdump -i any -w /tmp/quic.pcap
+    command: tcpdump -i any -w /tmp/Multiple_Streams.pcap 'udp port 8080'
     network_mode: "service:server"
     volumes:
       - ./pcap:/tmp:rw
