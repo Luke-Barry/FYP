@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="en"                              class="pb-page"          data-request-id="ea690fb252804b4f9ed098be8fcc0899"  
+>    <head data-pb-dropzone="head"><meta charset="UTF-8">
+
+<title>Evaluating the Benefits | Proceedings of the 2023 Applied Networking Research Workshop</title>
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    <link rel="stylesheet" href="/products/acm/releasedAssets/css/build-0534e9ee3d2adc180cd7.css"/><link rel="stylesheet" href="/products/acm/releasedAssets/css/print-0534e9ee3d2adc180cd7.css" media="print"/>
+
+<link rel="schema.DC" href="http://purl.org/DC/elements/1.0/"></link><meta name="dc.Format" content="text/HTML"></meta><meta name="dc.Identifier" scheme="acm-id" content="3606474"></meta><meta name="dc.Identifier" scheme="doi" content="10.1145/3606464.3606474"></meta><meta name="dc.Language" content="EN"></meta><meta name="dc.Coverage" content="world"></meta>
+
+
+
+
+
+
+<style id="pb-theme">
+.theme {
+
+}
+</style>
+
+<meta charset="UTF-8">
+<meta name="robots" content="noarchive"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+        <meta property="og:title" content="Evaluating the Benefits | Proceedings of the 2023 Applied Networking Research Workshop"/>
+    
+    
+
+
+
+    
+        <meta property="og:type" content="Chapter"/>
+    
+    
+
+
+
+    
+        <meta property="og:url" content="https://dl.acm.org/doi/10.1145/3606464.3606474"/>
+    
+    
+
+
+    
+        <meta property="og:image" content="https://dl.acm.org/cms/asset/c5a86c23-5aee-489a-b5b8-75afa919388b/3606464.cover.jpg" />
+        
+            <meta property="og:image:width" content="132" />
+            <meta property="og:image:height" content="171" />
+        
+    
+    
+
+
+
+    
+        <meta property="og:site_name" content="ACM Conferences"/>
+    
+    
+
+
+
+    
+    
+
+<meta name="viewport" content="width=device-width,initial-scale=1"><meta name="publication_doi" content="10.1145/3606464.3606474"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link rel="stylesheet" href="/pb-assets/styles/acm-custom-1734366969897.css">
+<link rel="stylesheet" href="/pb-assets/styles/journals-colors-1735686057753.css">
+<link rel="stylesheet" href="/pb-assets/styles/conferences-colors-1729017983273.css">
+<link rel="stylesheet" href="/pb-assets/styles/magazines-colors-1728490688780.css">
+<link rel="stylesheet" href="/pb-assets/styles/sigs-colors-1729017983417.css">
+<script defer src="https://scholar.google.com/scholar_js/casa.js" async nonce="ea690fb252804b4f9ed098be8fcc0899"></script>
+<script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="d5e9e377-b0f2-49fd-b006-d86d5073d17e" data-blockingmode="auto" type="text/javascript" nonce="ea690fb252804b4f9ed098be8fcc0899"></script>
+<script type="text/javascript" nonce="ea690fb252804b4f9ed098be8fcc0899">
+    window.heap=window.heap||[],heap.load=function(e,t){window.heap.appid=e,window.heap.config=t=t||{};var r=t.forceSSL||"https:"===document.location.protocol,a=document.createElement("script");a.type="text/javascript",a.async=!0,a.src=(r?"https:":"http:")+"//cdn.heapanalytics.com/js/heap-"+e+".js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(a,n);for(var o=function(e){return function(){heap.push([e].concat(Array.prototype.slice.call(arguments,0)))}},p=["addEventProperties","addUserProperties","clearEventProperties","identify","resetIdentity","removeEventProperty","setEventProperties","track","unsetEventProperty"],c=0;c<p.length;c++)heap[p[c]]=o(p[c])};
+      heap.load("1083010732");
+</script>
+<link rel="apple-touch-icon" sizes="180x180" href="/pb-assets/head-metadata/apple-touch-icon-1574252172393.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/pb-assets/head-metadata/favicon-32x32-1574252172003.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/pb-assets/head-metadata/favicon-16x16-1574252172937.png">
+<link rel="manifest" href="/pb-assets/head-metadata/site-1574252171130.webmanifest" crossorigin="use-credentials">
+<link rel="mask-icon" href="/pb-assets/head-metadata/safari-pinned-tab-1574252171193.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="#00a300">
+<meta name="theme-color" content="#ffffff">
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v652eace1692a40cfa3763df669d7439c1639079717194" integrity="sha512-Gi7xpJR8tSkrpF7aordPZQlW2DLtzUlZcumS8dMQjwDHEnw9I7ZLyiOj/6tZStRBGtGgN6ceN6cMH8z7etPGlw==" data-cf-beacon='{"rayId":"6e539318ac0a38db","token":"b7f168b3cd354a55a4dd51b513830799","version":"2021.12.0","si":100}' crossorigin="anonymous" nonce="ea690fb252804b4f9ed098be8fcc0899"></script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8b253dfea2ab4077af8c6f58422dfbfd1689876627854" integrity="sha512-bjgnUKX4azu3dLTVtie9u6TKqgx29RBwfj3QXYt5EKfWM/9hPSAI/4qcV5NACjwAo8UtTeWefx6Zq5PHcMm7Tg==" data-cf-beacon='{"rayId":"7f51c78ba8dacf41","token":"3bb0add5452d43a2b5d4b3d6c628944c","version":"2023.8.0","si":100}' crossorigin="anonymous" nonce="ea690fb252804b4f9ed098be8fcc0899"></script>
+<!-- Google Tag Manager -->
+    <script nonce="ea690fb252804b4f9ed098be8fcc0899">(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;var n=d.querySelector('[nonce]');n&&j.setAttribute('nonce',n.nonce||n.getAttribute('nonce'));f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-NFGCMX');</script>
+    <!-- End Google Tag Manager -->
+
+
+
+
+
+<meta name="pbContext" content=";taxonomy:taxonomy:conference-collections;wgroup:string:ACM Publication Websites;groupTopic:topic:acm-pubtype&gt;proceeding;ctype:string:Book Content;issue:issue:doi\:10.1145/3606464;page:string:Article/Chapter View;subPage:string:Abstract;topic:topic:conference-collections&gt;comm;article:article:doi\:10.1145/3606464.3606474;csubtype:string:Conference Proceedings;website:website:dl-site;journal:journal:acmconferences;pageGroup:string:Publication Pages"/></head>
+        <body class="pb-ui website-dl-site">
+
+<!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NFGCMX" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+
+
+
+
+
+
+
+
+<a href="#skip-to-main-content" class="sr-only-focusable">skip to main content</a>
+    <div id="pb-page-content" data-ng-non-bindable>
+        <div data-pb-dropzone="main" data-pb-dropzone-name="Main">
+
+
+
+
+        
+        
+
+
+
+
+
+
+
+
+
+    
+    
+        <header data-widget-def="ux3-layout-widget" data-widget-id="88f434fd-b4d9-4f0e-b7b6-cde0fadcc9ef" class="header base comm">
+        
+
+
+
+        
+        <div class="header__fixed-items fixed fixed-element">
+
+
+
+
+
+
+
+
+
+    
+    
+        <div data-widget-def="ux3-layout-widget" data-widget-id="c844bab8-b1d5-4df4-8bea-71f6156459e4" class="container header--first-row">
+        
+
+
+
+        
+        <nav class="pull-left">
+
+
+
+        
+        <ul class="rlist--inline">
+    <li class="header__logo1">
+        <a href="/" title="">
+            <img alt="ACM Digital Library home" src="/specs/products/acm/releasedAssets/images/acm-dl-logo-white-1ecfb82271e5612e8ca12aa1b1737479.png" loading="eager">
+        </a>
+    </li>
+    <li class="header__logo2 hidden-xs">
+        <a href="https://www.acm.org" title="external site link">
+            <img alt="ACM Association for Computing Machinery corporate logo" src="specs/products/acm/releasedAssets/images/acm-logo-1-ad466e729c8e2a97780337b76715e5cf.png" loading="eager">
+        </a>
+    </li>
+</ul> 
+</nav><div class="pull-right">
+
+
+
+
+
+
+
+
+
+    
+    
+        <nav data-widget-def="ux3-layout-widget" data-widget-id="ab4ba9a1-6e57-4b90-b9c2-fc7914d9a3a1" class="header__quick-menu text-onDark">
+        
+
+
+
+        
+        <ul class="rlist--inline"><li class="advanced-search-link hidden-lg hidden-md hidden-sm">
+
+
+
+        
+        <a href="/search/advanced" >Advanced Search</a>
+</li><li class="show-on-mobile">
+
+
+
+        
+        <a href="/browse/" title="browse the Digital Library by publication title or publisher">Browse</a>
+</li><li class="show-on-mobile">
+
+
+
+        
+        <a href="/about" title="About the ACM Digital Library">About</a>
+</li><li class="login-list">
+
+
+
+        
+        
+
+
+
+
+    
+
+
+
+
+
+
+
+
+    
+    
+        
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+<div class="dropBlock loginBar login-open">
+    <ul class="rlist--inline">
+        <li class="login-link">
+            <a href="/action/showLogin?redirectUri=%2Fdoi%2Fabs%2F10.1145%2F3606464.3606474%3Fcasa_token%3D6kQVTjhnJDsAAAAA%253AirF7MX4fGH8IW8stekS-S0mw-H0MaV_uI7VDtlM3qwUN4fAwBdCmpxojy92seO_a1m-X2VXYjarR7Q">
+                Sign in
+            </a>
+        </li>
+        <li class="register-link">
+            
+                
+                
+                    <a href="https://accounts.acm.org?redirectUri=%2Fdoi%2Fabs%2F10.1145%2F3606464.3606474%3Fcasa_token%3D6kQVTjhnJDsAAAAA%253AirF7MX4fGH8IW8stekS-S0mw-H0MaV_uI7VDtlM3qwUN4fAwBdCmpxojy92seO_a1m-X2VXYjarR7Q" class="btn" title="Register">
+                        Register
+                    </a>
+                
+            
+        </li>
+    </ul>
+</div>
+
+
+
+    
+
+
+</li></ul>
+
+        </nav>
+    
+
+</div>
+
+        </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+        <div data-widget-def="menuWidget" data-widget-id="13da1316-80a7-4370-a291-8968cd9cb35e" class="container header--second-row">
+        
+
+
+
+        
+        <div class="responsive-menu-container clearfix"><div class="left-section pull-left"></div><div class="menu-section"><div class="main-nav responsive-menu-nav"><a href="#global-menu" data-target="global-menu" data-toggle="nav" title="menu drawer"><span class="drawer__icons-box"><span class="drawer__icons-controls"></span></span></a><nav role="navigation" id="global-menu" data-ctrl-res="screen-sm" aria-label="Main Navigation" class="drawer__nav container gutterless hidden-sm hidden-xs"><ul id="menubar" class="menubar rlist--inline"><li class="hidden-lg hidden-md"><div data-toggle="transplant" data-target-class="hidden-xs hidden-sm" data-target=".header--second-row .quick-search--form" data-direction="from" data-transplant="self" class="quick-search-mobile"></div></li><!--    li.hidden-lg.hidden-md--><!--        div(data-toggle="transplant" data-target-class="hidden-xs hidden-sm"  data-target=".header__quick-menu .advanced-search-link" data-direction="from" data-transplant="self")--><li id="menu-item-global-menu-0" class="menu-item mobile-menu-item"><a href="/search/advanced"><span>Advanced Search</span></a></li><li id="menu-item-global-menu-1" class="menu-item"><a href="/journals"><span>Journals</span></a></li><li id="menu-item-global-menu-2" class="menu-item"><a href="/magazines"><span>Magazines</span></a></li><li id="menu-item-global-menu-3" class="menu-item"><a href="/proceedings"><span>Proceedings</span></a></li><li id="menu-item-global-menu-4" class="menu-item"><a href="/acmbooks"><span>Books</span></a></li><li id="menu-item-global-menu-5" class="menu-item"><a href="/sigs"><span>SIGs</span></a></li><li id="menu-item-global-menu-6" class="menu-item"><a href="/conferences"><span>Conferences</span></a></li><li id="menu-item-global-menu-7" class="menu-item"><a href="/people"><span>People</span></a></li><li class="hidden-lg hidden-md"><div data-toggle="transplant" data-target-class="hidden-xs hidden-sm" data-target=".header__quick-menu .show-on-mobile" data-direction="from" data-transplant="self"></div></li><li aria-haspopup="true" aria-label="More" class="dropdown-more hidden dropdown menu-parent"><a href="#" title="More" data-toggle="dropdown" class="dropdown__toggle"><span>More</span><i aria-hidden="true" class="icon-section_arrow_d pull-right hidden-sm hidden-xs"></i></a><ul aria-labelledby="main0-1" aria-hidden="true" class="rlist dropdown__menu"></ul></li><li class="menubar__extra-mob-links"></li></ul></nav></div></div><div class="right-section pull-right">
+
+
+
+        
+        <div class="quickSearchFormContainer"><div class="quick-search"><div aria-live="assertive" class="advanced-search__autocomplete__announcer sr-only"></div><div class="clearfix quick-search__clearfix"><form action="/action/doSearch" name="defaultQuickSearch" method="get" title="Quick Search" class="quick-search--form"><div class="quick-search--input"><div class="input-group option-0"><label for="AllFieldf73847c0-d936-48ec-9bf9-139b3828507f" class="sr-only">Search ACM Digital Library</label><input type="search" autocomplete="off" id="AllFieldf73847c0-d936-48ec-9bf9-139b3828507f" name="AllField" placeholder="Search ACM Digital Library" data-auto-complete-max-words="7" data-auto-complete-max-chars="32" data-contributors-conf="3" data-topics-conf="3" data-publication-titles-conf="3" data-history-items-conf="3" data-group-titles-conf="3" value="" class="auto-complete quick-search__input"/></div></div><div class="quick-search--button"><button type="submit" title="Search" aria-label="Search" class="btn quick-search__button icon-Icon_Search"><span class="sr-only">Search</span><span>Search</span></button></div></form></div>
+
+
+
+        
+        <a class="quick-search__advancedHeader" title="link to Advanced Search form" href="/search/advanced">Advanced Search</a>
+</div></div>
+</div></div><div class="header__dropzone"></div>
+
+        </div>
+    
+
+
+
+
+
+        
+        <span style="display: none;">10.1145/3606464.3606474</span><span style="display: none;">acmconferences</span><span style="display: none;">Article/Chapter View</span><span style="display: none;">Abstract</span><span style="display: none;">Publication Pages</span><span style="display: none;">comm</span><span style="display: none;">Conference Proceedings</span><span style="display: none;">conference-collections</span><div class="sub-nav fixed-element"><a href="#" data-db-target-for="sub-nav__items" data-more="false" data-lines="1" style="text-transform: uppercase;" class="sub-nav__toggle hidden-lg truncate-text-css">comm</a><div class="sub-nav__container"><div class="container"><div data-ctrl-res="screen-md" class="responsive-menu-container"><div class="left-section pull-left"></div><div class="menu-section"><div style="display: block" class="responsive-menu-nav"><nav id="sub-nav__items" data-db-target-of="sub-nav__items" class="sub-nav__holder drawer__nav"><ul class="rlist--inline menubar"><li><a href="/conference/comm" class="sub-nav__item">Conference</a></li><li><a href="/conference/comm/proceedings" class="sub-nav__item">Proceedings</a></li><li><a href="/conference/comm/upcoming" class="sub-nav__item">Upcoming Events</a></li><li><a href="/conference/comm/authors" class="sub-nav__item">Authors</a></li><li><a href="/conference/comm/affiliations" class="sub-nav__item">Affiliations</a></li><li><a href="/conference/comm/award-winners" class="sub-nav__item">Award Winners</a></li><li aria-haspopup="true" aria-label="More" class="dropdown-more hidden dropdown menu-parent"><a href="#" title="More" data-toggle="dropdown" class="dropdown__toggle hidden-md hidden-sm hidden-xs"><span>More</span><i aria-hidden="true" class="icon-section_arrow_d"></i></a><ul aria-labelledby="main0-1" aria-hidden="true" class="rlist dropdown__menu visible-md visible-sm visible-xs"></ul></li></ul></nav></div></div><div class="right-section hidden-md hidden-sm hidden-xs"></div></div></div></div><div class="hidden-xs hidden-sm"><div class="progress-bar--wrapper"><div style="width: 0.116818%;" class="progress-bar"></div></div></div></div>
+</div><div></div><div class="banner conference-landing"></div><div class="header-breadcrumb">
+
+
+
+
+
+
+
+
+
+    
+    
+        <div data-widget-def="ux3-layout-widget" data-widget-id="f5f275c5-a862-48bf-8119-8528d04615da" class="container">
+        
+
+
+
+        
+        <div>
+
+
+
+        
+        
+
+
+
+        
+        <nav aria-label="Breadcrumbs" class="article__breadcrumbs separator"><ul><li><a href="https://dl.acm.org/" class="article__tocHeading">Home</a></li><li><a href="/conferences" class="article__tocHeading">Conferences</a></li><li><a href="/conference/comm" class="article__tocHeading">COMM</a></li><li><a href="/conference/comm/proceedings" class="article__tocHeading">Proceedings</a></li><li><a href="/doi/proceedings/10.1145/3606464" class="article__tocHeading">ANRW '23</a></li><li><a href="/doi/abs/10.1145/3606464.3606474?casa_token=6kQVTjhnJDsAAAAA%3AirF7MX4fGH8IW8stekS-S0mw-H0MaV_uI7VDtlM3qwUN4fAwBdCmpxojy92seO_a1m-X2VXYjarR7Q" aria-current="page" class="article__tocHeading">Evaluating the Benefits: Quantifying the Effects of TCP Options, QUIC, and CDNs on Throughput</a></li></ul></nav>
+
+</div>
+
+        </div>
+    
+
+</div>
+
+        </header>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+        <div data-widget-def="ux3-layout-widget" data-widget-id="84fac94e-a290-4bf2-9ff9-7edc8316a494" id="skip-to-main-content">
+        
+
+
+
+        
+        <main class="content comm loi-page no-margin">
+
+
+
+        
+        <div role="dialog" aria-labelledby="exportCitationsPopup" class="ux-modal-container"><div id="exportCitation" class="modal"><div class="modal__dialog"><div class="modal__header"><button type="button" data-dismiss="modal" class="close"><i aria-hidden="true" aria-label="close popup" class="icon-close_thin"></i></button><h2 id="exportCitationsPopup">Export Citations</h2></div><div class="modal__body"><div class="exportCitation__tabs"><div class="tab"><ul role="tablist" class="rlist tab__nav"></ul></div><div class="csl-wrapper copy__text-wrapper"><form action="/action/exportCiteProcCitation" method="post" target="_blank"><input type="hidden" name="content" value=""/><input type="hidden" name="dois" value=""/><input type="hidden" name="format" value=""/><fieldset class="input-group"><label for="citation-format" class="visibility-hidden">Select Citation format</label><select id="citation-format" data-csl-doi="10.1145/3606464.3606474" aria-label="Select Citation format"><option value="bibtex" data-format="bibTex">BibTeX</option><option value="endNote" data-format="endNote">EndNote</option><option value="acm" data-format="text">ACM Ref</option></select><span class="select-arrow"><i class="icon-bottom-arrow"></i></span></fieldset><ul class="rlist tab__content"><li id="allResultstab" aria-labelledby="allResults" role="tabpanel" class="tab__pane"><div class="all-results-tab-container"><div class="hidden warning-message mb-2">Please download or close your previous search result export first before starting a new bulk export.</div><div class="desc-text"><div class="bold">Preview is not available.</div>By clicking download,<b class="ml-1">a status dialog</b> will open to start the export process. The process may take<b class="ml-1">a few minutes</b> but once it finishes a file will be downloadable from your browser. You may continue to browse the DL while the export process is in progress.</div></div></li><li id="selectedTab" aria-labelledby="selected" role="tabpanel" class="tab__pane active"><div class="csl-wrapper copy__text-wrapper"><pre class="copy__text csl-response"></pre><div id="export-warning"></div><div class="pull-right"><ul role="menu" class="rlist--inline separator"><li><a href="javascript:void(0)" role="menuitem" title="Download citation" class="download__btn disabled"><label class="visibility-hidden">Download citation</label><i aria-hidden="true" class="icon-Icon_Download"></i></a></li><li><input type="hidden" id="doisLimitNumber" value="1000"/><a href="javascript:void(0)" role="menuitem" title="Copy citation" class="copy__btn disabled"><label class="visibility-hidden">Copy citation</label><i aria-hidden="true" class="icon-pages"></i></a></li></ul></div></div></li></ul></form></div></div></div></div></div></div>
+
+
+
+
+        
+        <link id="build-style-article" rel="stylesheet" type="text/css" href="/products/acm/releasedAssets/css/build-article-0534e9ee3d2adc180cd7.css"/><article xmlns="http://www.w3.org/1999/xhtml" data-design="pill" data-theme="conference-proceedings" data-type="chapter" vocab="http://schema.org/" typeof="Chapter" lang="en" dir="ltr"><header data-extent="frontmatter"><div class="core-container"><div data-article-access="no" data-article-access-type="other" class="meta-panel"><div class="meta-panel__left-content"><div class="meta-panel__type"><span>research-article</span></div></div><div class="meta-panel__right-content"><div class="meta-panel__share">
+
+
+
+        
+        <!-- Go to https://www.addtoany.com/buttons/customize/ to customize your tools --><script type="text/javascript" defer="defer" src="https://static.addtoany.com/menu/page.js"></script><script type="text/javascript">var a2a_config = a2a_config || {};
+a2a_config.thanks = {
+    postShare: false,
+    ad: false,
+};</script><div class="share__block share__inline-links"><div class="pb-dropzone" data-pb-dropzone="shareBlock" title="shareBlock"></div><span class="sr-only">Share on</span><ul class="rlist--inline a2a a2a_kit a2a_kit_size_32"><li class="a2a_listitem_custom"><a role="link" title="share on X" class="a2a_button_x"><i aria-hidden="true" class="at-icon-wrapper icon-x"></i></a></li><li class="a2a_listitem_custom"><a role="link" title="share on LinkedIn" class="a2a_button_linkedin"><i aria-hidden="true" class="at-icon-wrapper icon-linkedin"></i></a></li><li class="a2a_listitem_custom"><a role="link" title="share on Reddit" class="a2a_button_reddit"><i aria-hidden="true" class="at-icon-wrapper icon-riddit-filled"></i></a></li><li class="a2a_listitem_custom"><a role="link" title="share on Facebook" class="a2a_button_facebook"><i aria-hidden="true" class="at-icon-wrapper icon-Icon_Facebook"></i></a></li><li class="a2a_listitem_custom"><a role="link" title="share via email" class="a2a_button_email"><i aria-hidden="true" class="at-icon-wrapper icon-Icon_mail"></i></a></li><li><div class="pb-dropzone" data-pb-dropzone="share-additional-links" title="share-additional-links"></div></li></ul></div>
+</div></div></div><h1 property="name">Evaluating the Benefits: <span class="subtitle">Quantifying the Effects of TCP Options, QUIC, and CDNs on Throughput</span></h1><div class="core-relations my-3"></div><div class="contributors"><span class="authors"><span class="heading">Authors</span>: <span role="list"><span property="author" typeof="Person" role="listitem"><a href="#artseq-00001"><img src="/pb-assets/icons/DOs/default-profile-1543932446943.svg" class="core-profile-image" role="presentation" /><span property="givenName">Simon</span> <span property="familyName">Bauer</span></a></span>, <span property="author" typeof="Person" role="listitem"><a href="#artseq-00002"><img src="/pb-assets/icons/DOs/default-profile-1543932446943.svg" class="core-profile-image" role="presentation" /><span property="givenName">Patrick</span> <span property="familyName">Sattler</span></a></span>, <span property="author" typeof="Person" role="listitem"><a href="#artseq-00003"><img src="/pb-assets/icons/DOs/default-profile-1543932446943.svg" class="core-profile-image" role="presentation" /><span property="givenName">Johannes</span> <span property="familyName">Zirngibl</span></a></span>, <span property="author" typeof="Person" role="listitem"><a href="#artseq-00004"><img src="/pb-assets/icons/DOs/default-profile-1543932446943.svg" class="core-profile-image" role="presentation" /><span property="givenName">Christoph</span> <span property="familyName">Schwarzenberg</span></a></span>, <span property="author" typeof="Person" role="listitem"><a href="#artseq-00005"><img src="/pb-assets/icons/DOs/default-profile-1543932446943.svg" class="core-profile-image" role="presentation" /><span property="givenName">Georg</span> <span property="familyName">Carle</span></a></span></span></span><a href="#tab-contributors" class="to-authors-affiliations" data-id="article-authors-viewall">Authors Info &amp; Claims</a></div><div class="core-self-citation"><div property="isPartOf" typeof="Book"><a href="/doi/proceedings/10.1145/3606464" property="name">ANRW '23: Proceedings of the 2023 Applied Networking Research Workshop</a></div><div property="pagination">Pages <span property="pageStart">27</span> - <span property="pageEnd">33</span></div><div class="doi"><a href="https://doi.org/10.1145/3606464.3606474" property="sameAs">https://doi.org/10.1145/3606464.3606474</a></div></div><div class="core-published"><span class="label">Published</span>: <span class="core-date-published">22 July 2023</span> <a href="#core-history">Publication History</a><a data-target="crossmark" href="#" title="Check for updates on crossmark" data-doi="10.1145/3606464.3606474" data-id="article-info-crossmark" class="crossmark__link"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 290 58" height="27px" role="presentation"><path fill="url(#horizontal_crossmark)" stroke="#948F8F" stroke-miterlimit="10" stroke-width=".75" d="M287 1H3a2 2 0 0 0-2 2v52a2 2 0 0 0 2 2h284a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2Z"></path><path fill="#535353" d="M80.3 23.58a6.395 6.395 0 0 0-.55-1.43 3.92 3.92 0 0 0-2.19-1.86 5.099 5.099 0 0 0-1.71-.29 5 5 0 0 0-2.46.58 4.831 4.831 0 0 0-1.69 1.54 6.921 6.921 0 0 0-1 2.19 10.16 10.16 0 0 0 0 5 6.921 6.921 0 0 0 1 2.19 4.83 4.83 0 0 0 1.69 1.5 5 5 0 0 0 2.46.58 4.44 4.44 0 0 0 1.85-.36 4.12 4.12 0 0 0 1.38-1c.39-.436.695-.942.9-1.49A7.094 7.094 0 0 0 80.4 29h3a8.46 8.46 0 0 1-.69 2.92 7.179 7.179 0 0 1-1.59 2.29 7 7 0 0 1-2.35 1.49 8.14 8.14 0 0 1-3 .52 8.43 8.43 0 0 1-3.59-.74 7.88 7.88 0 0 1-2.69-2 9.001 9.001 0 0 1-1.69-3 11.41 11.41 0 0 1 0-7.23 9.001 9.001 0 0 1 1.69-3 8.001 8.001 0 0 1 2.69-2 8.3 8.3 0 0 1 3.59-.75 9.44 9.44 0 0 1 2.83.41c.866.242 1.68.642 2.4 1.18A6.229 6.229 0 0 1 82.65 21a6.66 6.66 0 0 1 .78 2.58H80.3ZM85.9 17.9h2.85v6.63h.05a4.15 4.15 0 0 1 1.56-1.46 4.61 4.61 0 0 1 2.31-.59 4.83 4.83 0 0 1 3.33 1.1 4.21 4.21 0 0 1 1.22 3.3v8.88H94.4v-8.13a3.51 3.51 0 0 0-.65-2.21 2.36 2.36 0 0 0-1.87-.69 3.1 3.1 0 0 0-1.3.26 2.821 2.821 0 0 0-1 .73A3.41 3.41 0 0 0 89 26.8a3.88 3.88 0 0 0-.23 1.33v7.63H85.9V17.9ZM102.47 30c-.002.491.069.98.21 1.45.131.448.348.866.64 1.23a3.08 3.08 0 0 0 1.08.84 3.543 3.543 0 0 0 1.55.31 3.431 3.431 0 0 0 2-.54c.541-.402.94-.966 1.14-1.61h2.7A5.349 5.349 0 0 1 109.7 35a5.715 5.715 0 0 1-1.74.85 7 7 0 0 1-2 .29 6.848 6.848 0 0 1-2.7-.5 5.577 5.577 0 0 1-2-1.4A5.953 5.953 0 0 1 100 32a8.748 8.748 0 0 1-.41-2.75 7.768 7.768 0 0 1 .44-2.61 6.67 6.67 0 0 1 1.25-2.17 5.863 5.863 0 0 1 4.56-2 5.79 5.79 0 0 1 2.74.64c.783.41 1.466.986 2 1.69a6.824 6.824 0 0 1 1.16 2.41c.264.905.352 1.852.26 2.79h-9.53Zm6.65-1.87a4.605 4.605 0 0 0-.29-1.3c-.148-.4-.368-.77-.65-1.09a3.22 3.22 0 0 0-1-.75 3 3 0 0 0-1.31-.29 3.431 3.431 0 0 0-1.36.26 3.108 3.108 0 0 0-1 .73 3.594 3.594 0 0 0-.7 1.09 3.798 3.798 0 0 0-.29 1.35h6.65-.05ZM122.88 27.15a2.666 2.666 0 0 0-1-1.81 3.14 3.14 0 0 0-2-.61c-.4.005-.798.07-1.18.19-.435.136-.83.376-1.15.7a3.92 3.92 0 0 0-.87 1.43 6.783 6.783 0 0 0-.35 2.39c.002.539.065 1.076.19 1.6.113.509.316.993.6 1.43.273.41.635.752 1.06 1a3 3 0 0 0 1.58.39 2.872 2.872 0 0 0 2.06-.77 3.596 3.596 0 0 0 1-2.18h2.85a6.26 6.26 0 0 1-1.91 3.86 5.83 5.83 0 0 1-4 1.34 6.61 6.61 0 0 1-2.69-.51 5.695 5.695 0 0 1-2-1.4 6.001 6.001 0 0 1-1.21-2.11 8.279 8.279 0 0 1-.41-2.65 8.987 8.987 0 0 1 .4-2.72 6.237 6.237 0 0 1 1.2-2.21 5.614 5.614 0 0 1 2-1.47 6.7 6.7 0 0 1 2.79-.54 7.801 7.801 0 0 1 2.14.29 5.634 5.634 0 0 1 1.8.86c.529.386.969.88 1.29 1.45a5 5 0 0 1 .6 2.07h-2.85l.06-.02ZM128.13 17.9H131V28l5.15-5.22h3.5l-5 4.75 5.42 8.17h-3.47l-4-6.27-1.6 1.7v4.63h-2.85V17.9h-.02ZM147.15 22.83h2.13v-1.08a5.505 5.505 0 0 1 .3-2c.161-.456.436-.862.8-1.18.33-.273.721-.462 1.14-.55.44-.094.89-.141 1.34-.14a8.158 8.158 0 0 1 2 .18v2.24a4.113 4.113 0 0 0-.59-.11 6.343 6.343 0 0 0-.74 0 1.74 1.74 0 0 0-1 .27 1.204 1.204 0 0 0-.41 1.08v1.33h2.42V25h-2.42v10.8h-2.85V25h-2.12v-2.17ZM162.23 36.1a6.999 6.999 0 0 1-2.76-.51 5.877 5.877 0 0 1-2-1.41 5.998 5.998 0 0 1-1.33-2.18 8.775 8.775 0 0 1 0-5.48 6.008 6.008 0 0 1 1.27-2.15 5.894 5.894 0 0 1 2-1.41A7.71 7.71 0 0 1 165 23a5.894 5.894 0 0 1 2 1.41 6.003 6.003 0 0 1 1.28 2.15c.585 1.78.585 3.7 0 5.48a5.99 5.99 0 0 1-3.28 3.54 7.002 7.002 0 0 1-2.77.52Zm0-2.25a3.268 3.268 0 0 0 1.65-.4c.447-.262.83-.621 1.12-1.05.304-.444.528-.938.66-1.46a6.581 6.581 0 0 0 0-3.31 4.416 4.416 0 0 0-.66-1.46 3.526 3.526 0 0 0-1.15-1 3.6 3.6 0 0 0-3.3 0 3.526 3.526 0 0 0-1.15 1 4.414 4.414 0 0 0-.66 1.46 6.558 6.558 0 0 0 0 3.31c.132.522.356 1.016.66 1.46a3.47 3.47 0 0 0 1.15 1.05 3.26 3.26 0 0 0 1.68.4ZM171.13 22.83h2.67v2.5c.097-.362.264-.701.49-1 .251-.341.547-.647.88-.91a4.404 4.404 0 0 1 1.14-.66 3.41 3.41 0 0 1 1.28-.25c.23-.013.46-.013.69 0h.39v2.79l-.61-.09a5.173 5.173 0 0 0-.61 0 3.278 3.278 0 0 0-1.36.29 3.131 3.131 0 0 0-1.11.85 4.171 4.171 0 0 0-.75 1.39 6 6 0 0 0-.28 1.9v6.15h-2.85V22.83h.03ZM198.22 35.75h-2.8V34a3.907 3.907 0 0 1-1.56 1.56 4.25 4.25 0 0 1-2.11.59 4.742 4.742 0 0 1-3.75-1.31 5.537 5.537 0 0 1-1.12-3.84v-8.2h2.85v7.92a3.503 3.503 0 0 0 .65 2.4 2.38 2.38 0 0 0 1.83.7 3.599 3.599 0 0 0 1.5-.27 2.66 2.66 0 0 0 1-.74c.259-.326.444-.705.54-1.11a5.79 5.79 0 0 0 .16-1.4v-7.5h2.85v12.95h-.04ZM201.3 22.83h2.7v1.75a3.523 3.523 0 0 1 1.72-1.58 5.568 5.568 0 0 1 2.33-.49 6.17 6.17 0 0 1 2.66.54 5.246 5.246 0 0 1 1.89 1.47c.515.65.899 1.394 1.13 2.19.257.87.385 1.773.38 2.68.001.851-.114 1.7-.34 2.52a6.568 6.568 0 0 1-1 2.16 5.002 5.002 0 0 1-4.21 2.06c-.419 0-.837-.036-1.25-.11a5.39 5.39 0 0 1-1.2-.36A4.737 4.737 0 0 1 205 35a3.567 3.567 0 0 1-.81-.91v6.45h-2.89V22.83Zm10 6.47c0-.574-.078-1.146-.23-1.7a4.606 4.606 0 0 0-.67-1.46 3.475 3.475 0 0 0-1.12-1 3.06 3.06 0 0 0-1.55-.39A3.141 3.141 0 0 0 205 26a5.518 5.518 0 0 0-1 3.3c-.004.611.077 1.22.24 1.81.138.523.38 1.012.71 1.44a3.55 3.55 0 0 0 1.14 1 3.242 3.242 0 0 0 1.54.35 3.18 3.18 0 0 0 1.65-.4c.438-.25.817-.59 1.11-1 .299-.44.513-.931.63-1.45a7.38 7.38 0 0 0 .23-1.75h.05ZM228.67 35.75H226V34a3.38 3.38 0 0 1-1.67 1.61 5.668 5.668 0 0 1-2.33.49 6.17 6.17 0 0 1-2.66-.54 5.307 5.307 0 0 1-1.89-1.46 6.254 6.254 0 0 1-1.12-2.19 9.48 9.48 0 0 1-.37-2.71 8.67 8.67 0 0 1 .47-3 6.058 6.058 0 0 1 1.26-2.1 4.89 4.89 0 0 1 1.8-1.21 5.738 5.738 0 0 1 2.06-.39c.412 0 .824.037 1.23.11.413.073.815.194 1.2.36.38.166.736.381 1.06.64.32.255.594.562.81.91V17.9h2.85v17.85h-.03Zm-10-6.33c-.001.55.069 1.098.21 1.63.13.511.35.996.65 1.43.288.414.668.757 1.11 1a3.241 3.241 0 0 0 1.6.38 3.199 3.199 0 0 0 1.64-.4 3.398 3.398 0 0 0 1.13-1.05c.297-.447.517-.94.65-1.46.14-.542.211-1.1.21-1.66a5.227 5.227 0 0 0-1-3.35 3.175 3.175 0 0 0-2.61-1.2 3.23 3.23 0 0 0-1.69.41 3.478 3.478 0 0 0-1.12 1.07 4.494 4.494 0 0 0-.62 1.5 7.871 7.871 0 0 0-.11 1.7h-.05ZM242.6 32.88c-.018.258.03.516.14.75a.577.577 0 0 0 .54.23h.3c.135-.002.269-.019.4-.05v2l-.39.11-.49.08-.5.08h-.42a2.75 2.75 0 0 1-1.45-.35 1.731 1.731 0 0 1-.75-1.23 4.998 4.998 0 0 1-2.09 1.2 8.224 8.224 0 0 1-2.39.38 5.861 5.861 0 0 1-1.67-.24 4.394 4.394 0 0 1-1.41-.7 3.35 3.35 0 0 1-1-1.18 3.624 3.624 0 0 1-.36-1.66 3.84 3.84 0 0 1 .44-2 3.246 3.246 0 0 1 1.15-1.17 5.195 5.195 0 0 1 1.6-.61c.593-.127 1.19-.223 1.79-.29a14.77 14.77 0 0 1 1.47-.21 6.896 6.896 0 0 0 1.24-.21c.318-.077.611-.236.85-.46a1.286 1.286 0 0 0 .31-.94 1.458 1.458 0 0 0-.26-.9A1.759 1.759 0 0 0 239 25a2.807 2.807 0 0 0-.86-.25 6.941 6.941 0 0 0-.9-.06 3.58 3.58 0 0 0-2 .5 2 2 0 0 0-.87 1.55h-2.85c.021-.73.227-1.442.6-2.07.338-.54.797-.996 1.34-1.33a5.475 5.475 0 0 1 1.84-.7c.692-.134 1.395-.2 2.1-.2.632 0 1.262.067 1.88.2a5.337 5.337 0 0 1 1.66.65 3.6 3.6 0 0 1 1.19 1.16c.314.525.47 1.129.45 1.74v6.65l.02.04Zm-2.85-3.6a3.45 3.45 0 0 1-1.6.51c-.667.06-1.3.147-1.9.26a6.137 6.137 0 0 0-.87.21 2.64 2.64 0 0 0-.75.38c-.22.164-.395.38-.51.63a2.129 2.129 0 0 0-.19.94c-.011.29.085.575.27.8.182.215.407.388.66.51.269.128.555.216.85.26.277.05.558.076.84.08a4.63 4.63 0 0 0 1-.12 3.418 3.418 0 0 0 1-.43 2.73 2.73 0 0 0 .81-.76 1.93 1.93 0 0 0 .32-1.14v-2.14l.07.01ZM244.37 22.83h2.15V19h2.85v3.88h2.58V25h-2.58v6.9a7.064 7.064 0 0 0 0 .77c.016.194.074.381.17.55a.84.84 0 0 0 .41.34 2 2 0 0 0 .75.11h.6c.203-.01.404-.04.6-.09v2.2l-.93.1a8.403 8.403 0 0 1-.92 0 6.33 6.33 0 0 1-1.81-.21 2.421 2.421 0 0 1-1.08-.62 2.15 2.15 0 0 1-.52-1 7.791 7.791 0 0 1-.16-1.42V25h-2.15v-2.17h.04ZM256.22 30c-.002.491.069.98.21 1.45.131.448.348.866.64 1.23a3.08 3.08 0 0 0 1.08.84 3.543 3.543 0 0 0 1.55.31 3.431 3.431 0 0 0 2-.54c.541-.402.94-.966 1.14-1.61h2.7a5.352 5.352 0 0 1-2.1 3.26 5.715 5.715 0 0 1-1.74.85 7 7 0 0 1-2 .29 6.848 6.848 0 0 1-2.7-.5 5.577 5.577 0 0 1-2-1.4 5.947 5.947 0 0 1-1.21-2.18 8.754 8.754 0 0 1-.41-2.75 7.758 7.758 0 0 1 .44-2.61 6.67 6.67 0 0 1 1.25-2.17 5.863 5.863 0 0 1 4.56-2 5.79 5.79 0 0 1 2.74.64c.783.41 1.466.986 2 1.69a6.824 6.824 0 0 1 1.16 2.41c.243.916.308 1.87.19 2.81h-9.5V30Zm6.65-1.87a4.605 4.605 0 0 0-.29-1.3c-.148-.4-.368-.77-.65-1.09a3.22 3.22 0 0 0-1-.75 3 3 0 0 0-1.31-.29 3.431 3.431 0 0 0-1.36.26 3.108 3.108 0 0 0-1 .73 3.575 3.575 0 0 0-.7 1.09 3.798 3.798 0 0 0-.29 1.35h6.65-.05ZM270 31.6a2.154 2.154 0 0 0 .95 1.75c.607.35 1.3.524 2 .5.304-.002.608-.022.91-.06a3.943 3.943 0 0 0 1-.24c.286-.105.54-.28.74-.51a1.23 1.23 0 0 0 .26-.89 1.261 1.261 0 0 0-.4-.9 2.779 2.779 0 0 0-1-.56 9.315 9.315 0 0 0-1.34-.36l-1.5-.33a14.219 14.219 0 0 1-1.54-.42 4.937 4.937 0 0 1-1.33-.68 3.12 3.12 0 0 1-.94-1.09 3.472 3.472 0 0 1-.35-1.64 2.94 2.94 0 0 1 .51-1.76 3.913 3.913 0 0 1 1.3-1.15 5.66 5.66 0 0 1 1.75-.61 10.316 10.316 0 0 1 1.84-.17 8.418 8.418 0 0 1 1.91.21 5.19 5.19 0 0 1 1.65.69c.496.318.916.741 1.23 1.24.341.559.55 1.188.61 1.84h-3a1.783 1.783 0 0 0-.94-1.37 3.892 3.892 0 0 0-1.69-.35 6.093 6.093 0 0 0-.71 0 3.327 3.327 0 0 0-.78.19 1.642 1.642 0 0 0-.61.4 1 1 0 0 0-.25.69 1.093 1.093 0 0 0 .36.85c.294.245.634.428 1 .54.437.153.885.274 1.34.36l1.55.33a20.9 20.9 0 0 1 1.53.42c.479.157.931.386 1.34.68.41.277.751.643 1 1.07.255.494.379 1.045.36 1.6a3.48 3.48 0 0 1-.52 2 4.15 4.15 0 0 1-1.36 1.3 6.19 6.19 0 0 1-1.86.73 9.435 9.435 0 0 1-2 .23 8.823 8.823 0 0 1-2.26-.27 5.265 5.265 0 0 1-1.8-.84 4 4 0 0 1-1.2-1.4 4.445 4.445 0 0 1-.46-2h2.7v-.02Z"></path><path fill="#C72914" d="m21.94 38.74 18.12-12.08v-14.5H21.94v26.58Z"></path><path fill="#EF3340" d="M40.06 38.74 21.94 26.66v-14.5h18.12v26.58Z"></path><path fill="#3EB1C8" d="M31 9a20 20 0 1 0 0 40 20 20 0 0 0 0-40Zm0 35.1a15.1 15.1 0 1 1 0-30.2 15.1 15.1 0 0 1 0 30.2Z"></path><path fill="#FFC72C" d="M42.09 39.23A15.09 15.09 0 0 1 17 23.38l-4.2-2.64a20 20 0 0 0 33.49 21.14l-4.2-2.65Z"></path><defs><linearGradient id="horizontal_crossmark" x1="145" x2="145" y1="7.33" y2="56.82" gradientUnits="userSpaceOnUse"><stop stop-color="#fff"></stop><stop offset="1" stop-color="#c4c4c4"></stop></linearGradient></defs></svg></a></div><div class="core-related-do"></div><div class="info-panel"><div class="info-panel__left-content"><div class="info-panel__metrics info-panel__item">
+
+
+
+        
+        <div class="pub-metrics"><div class="issue-item__footer-info"><button tabindex="0" aria-haspopup="dialog" aria-expanded="false" aria-controls="metrics-tooltip-body-z0e" title="Click to stay open" class="tooltip metrics-toggle"><span class="citation"><i aria-hidden="true" class="icon-quote"></i><span>3</span><span class="sr-only">citation</span></span><span class="metric"><i aria-hidden="true" class="icon-metric"></i><span>229</span></span><span class="sr-only">Downloads</span></button><div id="metrics-tooltip-body-z0e" class="tooltip__body metrics-tooltip-body"><span class="arrow"></span><div class="left-bordered-title">Metrics</div><a href="#tab-citations" title="See Citations pane" class="tab-link"><div class="citation">Total Citations<span class="bold">3</span></div></a><a href="#tab-metrics-inner" title="See Bibliometrics pane" class="tab-link"><div class="metric">Total Downloads<span class="bold">229</span></div></a><div class="info">Last 12 Months<span class="bold">111</span></div><div class="info">Last 6 weeks<span class="bold">14</span></div></div></div></div>
+</div></div><div class="info-panel__right-content"><div class="info-panel__article_tools info-panel__item">
+
+
+
+        
+        <button id="manageAlert__crtl" href="/action/addCitationAlert?doi=10.1145/3606464.3606474" data-toggle="modal" data-title="Get Citation Alerts" data-target="#manageAlert" aria-label="get citation alerts" title="Get Citation Alerts" class="article-actionbar__btn btn btn--icon simple-tooltip__block--b btn--slim"><i aria-hidden="true" class="icon-Icon_Alerts"></i><span class="visibility-hidden">Get Citation Alerts</span></button><div role="dialog" aria-labelledby="id-hatemile-navigation-6073290063892647-6" class="ux-modal-container"><div id="manageAlert" class="modal"><div class="modal__dialog"><div class="modal__dialog--success hidden"><div class="modal__header"><button type="button" data-dismiss="modal" aria-label="close popup" class="close"><i aria-hidden="true" class="icon-close_thin"></i></button><a id="id-hatemile-navigation-6073290063892647-7" name="id-hatemile-navigation-6073290063892647-7" data-headinganchorfor="id-hatemile-navigation-6073290063892647-6" class="heading-anchor"></a><h2 id="id-hatemile-navigation-6073290063892647-6">New Citation Alert added!</h2></div><div class="modal__body"><p>This alert has been successfully added and will be sent to:<span class="email"></span></p><p>You will be notified whenever a record that you have chosen has been cited.</p></div><div class="modal__footer"><p>To manage your alert preferences, click on the button below.</p><a href="/action/showPreferences?menuTab=Alerts" title="Manage my Alerts" id="id-hatemile-display-1019331959102511-5" class="btn blue big stretched manageAlert__btn"><span data-attributetitleof="id-hatemile-display-1019331959102511-5" class="force-read-before">Manage my Alerts</span></a></div></div><div class="modal__dialog--error hidden"><div class="modal__header"><button type="button" data-dismiss="modal" aria-label="close popup" class="close"><i aria-hidden="true" class="icon-close_thin"></i></button><a id="id-hatemile-navigation-6073290063892647-9" name="id-hatemile-navigation-6073290063892647-9" data-headinganchorfor="id-hatemile-navigation-6073290063892647-8" class="heading-anchor"></a><h2 id="id-hatemile-navigation-6073290063892647-8">New Citation Alert!</h2></div><div class="modal__body"><p>Please <a href="/action/showLogin?redirectUri=/doi/abs/10.1145/3606464.3606474?casa_token=6kQVTjhnJDsAAAAA%3AirF7MX4fGH8IW8stekS-S0mw-H0MaV_uI7VDtlM3qwUN4fAwBdCmpxojy92seO_a1m-X2VXYjarR7Q" title="Sign In" class="link">log in to your account</a></p></div></div></div></div></div>
+</div><div class="info-panel__binder info-panel__item"><button data-title="Save to Binder" data-db-target-for="save-to-binder" data-link="/action/binderList?doi=10.1145/3606464.3606474" aria-label="save to binder" title="Save to Binder" class="article-actionbar__btn btn btn--icon simple-tooltip__block--b btn--slim saveToBinders"><i aria-hidden="true" class="icon-add-folder"></i></button></div><div class="info-panel__citations info-panel__item"><button data-title="Export Citation" data-target="#exportCitation" data-toggle="modal" aria-label="Export Citations" title="Export Citation" class="article-actionbar__btn btn btn--icon simple-tooltip__block--b btn--slim"><i aria-hidden="true" class="icon-quote"></i><input type="hidden" name="doiVal" value="10.1145/3606464.3606474"/></button></div><div class="info-panel__formats info-panel__item"><a href="#core-collateral-purchase-access" class="btn btn--access" aria-label="Go to purchase options" title="Go to purchase options"><i aria-hidden="true" class="icon-get-access"></i><span>Get Access</span></a></div></div></div></div></header><div data-core-nav="header" data-extent="frontmatter"><div class="core-nav-wrapper core-container" aria-label="Article navigation"><div><button data-id="article-toolbar-showhide" aria-controls="article_sections_menu" aria-expanded="false" aria-label="Toggle section navigation menu"><i class="icon-burger" aria-hidden="true"></i><span>Contents</span></button><nav id="article_sections_menu" aria-label="Contents" data-core-nav="article"><header><div class="core-self-citation"><div property="isPartOf" typeof="Book"><a href="/doi/proceedings/10.1145/3606464" property="name">ANRW '23: Proceedings of the 2023 Applied Networking Research Workshop</a></div><div class="core-publication-title" property="name">Evaluating the Benefits: <span class="subtitle">Quantifying the Effects of TCP Options, QUIC, and CDNs on Throughput</span></div><div property="pagination">Pages <span property="pageStart">27</span> - <span property="pageEnd">33</span></div></div><div class="content-navigation"><a href="/doi/10.1145/3606464.3606473" aria-label="Previous chapter" aria-disabled="false" class="content-navigation__prev"><div aria-hidden="true" class="content-navigation__hint"><div class="content-navigation__hint__content"><h6>PREVIOUS CHAPTER</h6><div>Lowering the Barriers to Working with Public RIR-Level Data</div></div></div><i aria-hidden="true" class="icon-Arrow-Stroke"></i><span>Previous</span></a><a href="/doi/10.1145/3606464.3606478" aria-label="Next chapter" aria-disabled="false" class="content-navigation__next"><div aria-hidden="true" class="content-navigation__hint"><div class="content-navigation__hint__content"><h6>NEXT CHAPTER</h6><div>Gotta Query 'Em All, Again!</div></div></div><span>Next</span><i aria-hidden="true" class="icon-Arrow-Stroke"></i></a></div></header><ul><li><a href="#abstract">Abstract</a></li><li><a href="#bibliography">References</a></li></ul><footer>
+
+
+
+        
+        <div class="logo">
+    <img alt="ACM Digital Library" src="/specs/products/acm/releasedAssets/images/footer-logo1-45ae33115db81394d8bd25be65853b77.png" height="26" width="110" role="presentation" loading="eager">
+</div>
+</footer></nav></div><nav id="article_collateral_menu"><ul data-core-nav="collateral" class="collateral-pill"><li><a href="#core-collateral-info" data-id="article-nav-menubar-info" disabled="true" aria-disabled="true" title="Information & Contributors" tabindex="-1"><i aria-hidden="true" class="icon-Icon_Information"></i><span class="sr-only">Information &amp; Contributors</span></a></li><li><a href="#core-collateral-metrics" data-id="article-nav-menubar-metrics" disabled="true" aria-disabled="true" title="Bibliometrics & Citations" tabindex="-1"><i aria-hidden="true" class="icon-metric"></i><span class="sr-only">Bibliometrics &amp; Citations</span></a></li><li><a href="#core-collateral-purchase-access" data-id="article-nav-menubar-purchaseAccess" disabled="true" aria-disabled="true" title="Get Access" tabindex="-1"><i aria-hidden="true" class="icon-get-access"></i><span class="sr-only">Get Access</span></a></li><li><a href="#core-collateral-references" data-id="article-nav-menubar-references" disabled="true" aria-disabled="true" title="References" tabindex="-1"><i aria-hidden="true" class="icon-Icon_Links-References"></i><span class="sr-only">References</span></a></li><li><a href="#core-collateral-figures" data-id="article-nav-menubar-figures" disabled="true" aria-disabled="true" title="Figures" tabindex="-1"><i aria-hidden="true" class="icon-Icon_Images"></i><span class="sr-only">Figures</span></a></li><li><a href="#core-collateral-tables" data-id="article-nav-menubar-tables" disabled="true" aria-disabled="true" title="Tables" tabindex="-1"><i aria-hidden="true" class="icon-table"></i><span class="sr-only">Tables</span></a></li><li><a href="#core-collateral-media" data-id="article-nav-menubar-media" disabled="true" aria-disabled="true" title="Media" tabindex="-1"><i aria-hidden="true" class="icon-play_circle_filled"></i><span class="sr-only">Media</span></a></li><li><a href="#core-collateral-share" data-id="article-nav-menubar-share" disabled="true" aria-disabled="true" title="Share" tabindex="-1"><i aria-hidden="true" class="icon-Icon_Share"></i><span class="sr-only">Share</span></a></li></ul></nav></div></div><div id="abstracts" data-extent="frontmatter"><div class="core-container"><section id="abstract" data-type="main" property="abstract" typeof="Text" role="doc-abstract"><h2 property="name">Abstract</h2><div role="paragraph">To keep up with increasing demands on quality of experience, assessing and understanding the performance of network connections is crucial for web service providers. While different measures, like TCP options, alternative transport layer protocols like QUIC, or the hosting of services in CDNs, are expected to improve connection performance, no studies are quantifying such impacts on connections on the Internet.</div><div role="paragraph">This paper introduces an active Internet measurement approach to assess the impacts of mentioned measures on connection performance. We conduct downloads from public web servers considering different vantage points, extract performance indicators like throughput, RTT, and retransmission rate, and survey speed-ups due to TCP option usage. Further, we compare the performance of QUIC-based downloads to TCP-based downloads considering different option configurations.</div><div role="paragraph">Next to significant throughput improvements due to TCP option usage, in particular TCP window scaling, and QUIC, our study shows significantly increased performance for connections to domains hosted by different giant CDNs.</div></section></div></div><section id="backmatter" data-extent="backmatter"><div class="core-container"><section id="bibliography" role="doc-bibliography"><h2>References</h2><div role="list"><div role="listitem" data-has="label"><div class="label">[1]</div><div id="ref-00001" class="citations"><div class="citation"><div class="citation-content">S. Bauer, B.Jaeger, F. Helfert, P. Barias, and G. Carle, "On the Evolution of Internet Flow Characteristics," in Proceedings of the Applied Networking Research Workshop, Jul. 2021.</div><div class="external-links"><div class="core-xlink-google-scholar"><a href="https://scholar.google.com/scholar?q=S.+Bauer%2C+B.Jaeger%2C+F.+Helfert%2C+P.+Barias%2C+and+G.+Carle%2C+%22On+the+Evolution+of+Internet+Flow+Characteristics%2C%22+in+Proceedings+of+the+Applied+Networking+Research+Workshop%2C+Jul.+2021.">Google Scholar</a></div></div></div></div></div><div role="listitem" data-has="label"><div class="label">[2]</div><div id="ref-00002" class="citations"><div class="citation"><div class="citation-content">J. Mücke, M. Nawrocki, R. Hiesgen, P. Sattler, J. Zirngibl, G. Carle, T. C. Schmidt, and M. Wählisch, "Waiting for QUIC: On the Opportunities of Passive Measurements to Understand QUIC Deployments," arXiv e-prints, pp. arXiv--2209, 2022.</div><div class="external-links"><div class="core-xlink-google-scholar"><a href="https://scholar.google.com/scholar?q=J.+M%C3%BCcke%2C+M.+Nawrocki%2C+R.+Hiesgen%2C+P.+Sattler%2C+J.+Zirngibl%2C+G.+Carle%2C+T.+C.+Schmidt%2C+and+M.+W%C3%A4hlisch%2C+%22Waiting+for+QUIC%3A+On+the+Opportunities+of+Passive+Measurements+to+Understand+QUIC+Deployments%2C%22+arXiv+e-prints%2C+pp.+arXiv--2209%2C+2022.">Google Scholar</a></div></div></div></div></div><div role="listitem" data-has="label"><div class="label">[3]</div><div id="ref-00003" class="citations"><div class="citation"><div class="citation-content">A. Gerber and R. Doverspike, "Traffic types and growth in backbone networks," in Optical Fiber Communication Conference. Optica Publishing Group, 2011.</div><div class="external-links"><div class="core-xlink-google-scholar"><a href="https://scholar.google.com/scholar?q=A.+Gerber+and+R.+Doverspike%2C+%22Traffic+types+and+growth+in+backbone+networks%2C%22+in+Optical+Fiber+Communication+Conference.+Optica+Publishing+Group%2C+2011.">Google Scholar</a></div></div></div></div></div><div role="listitem" data-has="label"><div class="label">[4]</div><div id="ref-00004" class="citations"><div class="citation"><div class="citation-content">I. Poese, B. Frank, B. Ager, G. Smaragdakis, and A. Feldmann, "Improving content delivery using provider-aided distance information," in Proceedings of the 10th ACM SIGCOMM conference on Internet measurement, 2010, pp. 22--34.</div><div class="external-links"><div class="core-xlink-google-scholar"><a href="https://scholar.google.com/scholar?q=I.+Poese%2C+B.+Frank%2C+B.+Ager%2C+G.+Smaragdakis%2C+and+A.+Feldmann%2C+%22Improving+content+delivery+using+provider-aided+distance+information%2C%22+in+Proceedings+of+the+10th+ACM+SIGCOMM+conference+on+Internet+measurement%2C+2010%2C+pp.+22--34.">Google Scholar</a></div></div></div></div></div><div role="listitem" data-has="label"><div class="label">[5]</div><div id="ref-00005" class="citations"><div class="citation"><div class="citation-content">P. Gigis, M. Calder, L. Manassakis, G. Nomikos, V. Kotronis, X. Dimitropoulos, E. Katz-Bassett, and G. Smaragdakis, "Seven Years in the Life of Hypergiants' off-Nets," in Proc. ACM SIGCOMM, Virtual Event, USA, 2021.</div><div class="external-links"><div class="core-xlink-digital-library"><a href="/doi/10.1145/3452296.3472928">Digital Library</a></div><div class="core-xlink-google-scholar"><a href="https://scholar.google.com/scholar_lookup?doi=10.1145%2F3452296.3472928">Google Scholar</a></div></div></div></div></div><div role="listitem" data-has="label"><div class="label">[6]</div><div id="ref-00006" class="citations"><div class="citation"><div class="citation-content">L. Zembruzki, R. Sommese, L. Z. Granville, A. Selle Jacobs, M. Jonker, and G. C. M. Moura, "Hosting Industry Centralization and Consolidation," in 2022 IEEE/IFIP Network Operations and Management Symposium (NOMS 2022). IEEE Press, 2022, p. 1--9.</div><div class="external-links"><div class="core-xlink-google-scholar"><a href="https://scholar.google.com/scholar?q=L.+Zembruzki%2C+R.+Sommese%2C+L.+Z.+Granville%2C+A.+Selle+Jacobs%2C+M.+Jonker%2C+and+G.+C.+M.+Moura%2C+%22Hosting+Industry+Centralization+and+Consolidation%2C%22+in+2022+IEEE%2FIFIP+Network+Operations+and+Management+Symposium+%28NOMS+2022%29.+IEEE+Press%2C+2022%2C+p.+1--9.">Google Scholar</a></div></div></div></div></div><div role="listitem" data-has="label"><div class="label">[7]</div><div id="ref-00007" class="citations"><div class="citation"><div class="citation-content">M. Kühlewind, S. Neuner, and B. Trammell, "On the State of ECN and TCP Options on the Internet," in Passive and Active Measurement: 14th International Conference, PAM 2013, Hong Kong, China, March 18-19, 2013. Proceedings 14. Springer, 2013, pp. 135--144.</div><div class="external-links"><div class="core-xlink-google-scholar"><a href="https://scholar.google.com/scholar?q=M.+K%C3%BChlewind%2C+S.+Neuner%2C+and+B.+Trammell%2C+%22On+the+State+of+ECN+and+TCP+Options+on+the+Internet%2C%22+in+Passive+and+Active+Measurement%3A+14th+International+Conference%2C+PAM+2013%2C+Hong+Kong%2C+China%2C+March+18-19%2C+2013.+Proceedings+14.+Springer%2C+2013%2C+pp.+135--144.">Google Scholar</a></div></div></div></div></div><div role="listitem" data-has="label"><div class="label">[8]</div><div id="ref-00008" class="citations"><div class="citation"><div class="citation-content">D. Murray, T. Koziniec, S. Zander, M. Dixon, and P. Koutsakis, "An analysis of changing enterprise network traffic characteristics," in 2017 23rd Asia-Pacific Conference on Communications (APCC). IEEE, 2017, pp. 1--6.</div><div class="external-links"><div class="core-xlink-google-scholar"><a href="https://scholar.google.com/scholar?q=D.+Murray%2C+T.+Koziniec%2C+S.+Zander%2C+M.+Dixon%2C+and+P.+Koutsakis%2C+%22An+analysis+of+changing+enterprise+network+traffic+characteristics%2C%22+in+2017+23rd+Asia-Pacific+Conference+on+Communications+%28APCC%29.+IEEE%2C+2017%2C+pp.+1--6.">Google Scholar</a></div></div></div></div></div><div role="listitem" data-has="label"><div class="label">[9]</div><div id="ref-00009" class="citations"><div class="citation"><div class="citation-content">H. Lim, S. Kim, J. Sippe, J. Kim, G. White, C.-H. Lee, E. Wustrow, K. Lee, D. Grunwald, and S. Ha, "A Fresh Look at ECN Traversal in the Wild," arXiv preprint arXiv:2208.14523, 2022.</div><div class="external-links"><div class="core-xlink-google-scholar"><a href="https://scholar.google.com/scholar?q=H.+Lim%2C+S.+Kim%2C+J.+Sippe%2C+J.+Kim%2C+G.+White%2C+C.-H.+Lee%2C+E.+Wustrow%2C+K.+Lee%2C+D.+Grunwald%2C+and+S.+Ha%2C+%22A+Fresh+Look+at+ECN+Traversal+in+the+Wild%2C%22+arXiv+preprint+arXiv%3A2208.14523%2C+2022.">Google Scholar</a></div></div></div></div></div><div role="listitem" data-has="label"><div class="label">[10]</div><div id="ref-00010" class="citations"><div class="citation"><div class="citation-content">K. Nepomuceno, I. N. de Oliveira, R. R. Aschoff, D. Bezerra, M. S. Ito, W. Melo, D. Sadok, and G. Szabó, "QUIC and TCP: A performance evaluation," in 2018 IEEE Symposium on Computers and Communications (ISCC). IEEE, 2018, pp. 00 045--00 051.</div><div class="external-links"><div class="core-xlink-google-scholar"><a href="https://scholar.google.com/scholar?q=K.+Nepomuceno%2C+I.+N.+de+Oliveira%2C+R.+R.+Aschoff%2C+D.+Bezerra%2C+M.+S.+Ito%2C+W.+Melo%2C+D.+Sadok%2C+and+G.+Szab%C3%B3%2C+%22QUIC+and+TCP%3A+A+performance+evaluation%2C%22+in+2018+IEEE+Symposium+on+Computers+and+Communications+%28ISCC%29.+IEEE%2C+2018%2C+pp.+00+045--00+051.">Google Scholar</a></div></div></div></div></div><div role="listitem" data-has="label"><div class="label">[11]</div><div id="ref-00011" class="citations"><div class="citation"><div class="citation-content">P. Biswal and O. Gnawali, "Does quic make the web faster?" in 2016 IEEE Global Communications Conference (GLOBECOM). IEEE, 2016, pp. 1--6.</div><div class="external-links"><div class="core-xlink-google-scholar"><a href="https://scholar.google.com/scholar?q=P.+Biswal+and+O.+Gnawali%2C+%22Does+quic+make+the+web+faster%3F%22+in+2016+IEEE+Global+Communications+Conference+%28GLOBECOM%29.+IEEE%2C+2016%2C+pp.+1--6.">Google Scholar</a></div></div></div></div></div><div role="listitem" data-has="label"><div class="label">[12]</div><div id="ref-00012" class="citations"><div class="citation"><div class="citation-content">K. Wolsing, J. Rüth, K. Wehrle, and O. Hohlfeld, "A performance perspective on web optimized protocol stacks: TCP+ TLS+ HTTP/2 vs. QUIC," in Proceedings of the Applied Networking Research Workshop, 2019, pp. 1--7.</div><div class="external-links"><div class="core-xlink-google-scholar"><a href="https://scholar.google.com/scholar?q=K.+Wolsing%2C+J.+R%C3%BCth%2C+K.+Wehrle%2C+and+O.+Hohlfeld%2C+%22A+performance+perspective+on+web+optimized+protocol+stacks%3A+TCP%2B+TLS%2B+HTTP%2F2+vs.+QUIC%2C%22+in+Proceedings+of+the+Applied+Networking+Research+Workshop%2C+2019%2C+pp.+1--7.">Google Scholar</a></div></div></div></div></div><div role="listitem" data-has="label"><div class="label">[13]</div><div id="ref-00013" class="citations"><div class="citation"><div class="citation-content">D. A. Borman, R. T. Braden, and V. Jacobson, "TCP Extensions for High Performance," RFC 1323, May 1992. [Online]. Available: https://www.rfc-editor.org/info/rfc1323</div><div class="external-links"><div class="core-xlink-google-scholar"><a href="https://scholar.google.com/scholar?q=D.+A.+Borman%2C+R.+T.+Braden%2C+and+V.+Jacobson%2C+%22TCP+Extensions+for+High+Performance%2C%22+RFC+1323%2C+May+1992.+%5BOnline%5D.+Available%3A+https%3A%2F%2Fwww.rfc-editor.org%2Finfo%2Frfc1323">Google Scholar</a></div></div></div></div></div><div role="listitem" data-has="label"><div class="label">[14]</div><div id="ref-00014" class="citations"><div class="citation"><div class="citation-content">S. Floyd, J. Mahdavi, M. Mathis, and D. A. Romanow, "TCP Selective Acknowledgment Options," RFC 2018, Oct. 1996. [Online]. Available: https://www.rfc-editor.org/info/rfc2018</div><div class="external-links"><div class="core-xlink-google-scholar"><a href="https://scholar.google.com/scholar?q=S.+Floyd%2C+J.+Mahdavi%2C+M.+Mathis%2C+and+D.+A.+Romanow%2C+%22TCP+Selective+Acknowledgment+Options%2C%22+RFC+2018%2C+Oct.+1996.+%5BOnline%5D.+Available%3A+https%3A%2F%2Fwww.rfc-editor.org%2Finfo%2Frfc2018">Google Scholar</a></div></div></div></div></div><div role="listitem" data-has="label"><div class="label">[15]</div><div id="ref-00015" class="citations"><div class="citation"><div class="citation-content">S. Floyd, D. K. K. Ramakrishnan, and D. L. Black, "The Addition of Explicit Congestion Notification (ECN) to IP," RFC 3168, Sep. 2001. [Online]. Available: https://www.rfc-editor.org/info/rfc3168</div><div class="external-links"><div class="core-xlink-google-scholar"><a href="https://scholar.google.com/scholar?q=S.+Floyd%2C+D.+K.+K.+Ramakrishnan%2C+and+D.+L.+Black%2C+%22The+Addition+of+Explicit+Congestion+Notification+%28ECN%29+to+IP%2C%22+RFC+3168%2C+Sep.+2001.+%5BOnline%5D.+Available%3A+https%3A%2F%2Fwww.rfc-editor.org%2Finfo%2Frfc3168">Google Scholar</a></div></div></div></div></div><div role="listitem" data-has="label"><div class="label">[16]</div><div id="ref-00016" class="citations"><div class="citation"><div class="citation-content">Y. Cheng, J. Chu, S. Radhakrishnan, and A. Jain, "TCP Fast Open," RFC 7413, Dec. 2014. [Online]. Available: https://www.rfc-editor.org/info/rfc7413</div><div class="external-links"><div class="core-xlink-google-scholar"><a href="https://scholar.google.com/scholar?q=Y.+Cheng%2C+J.+Chu%2C+S.+Radhakrishnan%2C+and+A.+Jain%2C+%22TCP+Fast+Open%2C%22+RFC+7413%2C+Dec.+2014.+%5BOnline%5D.+Available%3A+https%3A%2F%2Fwww.rfc-editor.org%2Finfo%2Frfc7413">Google Scholar</a></div></div></div></div></div><div role="listitem" data-has="label"><div class="label">[17]</div><div id="ref-00017" class="citations"><div class="citation"><div class="citation-content">J. Iyengar and M. Thomson, "QUIC: A UDP-Based Multiplexed and Secure Transport," RFC 9000, May 2021. [Online]. Available: https://www.rfc-editor.org/info/rfc9000</div><div class="external-links"><div class="core-xlink-digital-library"><a href="/doi/10.17487/RFC9000">Digital Library</a></div><div class="core-xlink-google-scholar"><a href="https://scholar.google.com/scholar_lookup?doi=10.17487%2FRFC9000">Google Scholar</a></div></div></div></div></div><div role="listitem" data-has="label"><div class="label">[18]</div><div id="ref-00018" class="citations"><div class="citation"><div class="citation-content">M. Thomson and S. Turner, "Using TLS to Secure QUIC," RFC 9001, May 2021. [Online]. Available: https://www.rfc-editor.org/info/rfc9001</div><div class="external-links"><div class="core-xlink-digital-library"><a href="/doi/10.17487/RFC9001">Digital Library</a></div><div class="core-xlink-google-scholar"><a href="https://scholar.google.com/scholar_lookup?doi=10.17487%2FRFC9001">Google Scholar</a></div></div></div></div></div><div role="listitem" data-has="label"><div class="label">[19]</div><div id="ref-00019" class="citations"><div class="citation"><div class="citation-content">J. Iyengar and I. Swett, "QUIC Loss Detection and Congestion Control," RFC 9002, May 2021. [Online]. Available: https://www.rfc-editor.org/info/rfc9002</div><div class="external-links"><div class="core-xlink-digital-library"><a href="/doi/10.17487/RFC9002">Digital Library</a></div><div class="core-xlink-google-scholar"><a href="https://scholar.google.com/scholar_lookup?doi=10.17487%2FRFC9002">Google Scholar</a></div></div></div></div></div><div role="listitem" data-has="label"><div class="label">[20]</div><div id="ref-00020" class="citations"><div class="citation"><div class="citation-content">M. Allman, "A web server's view of the transport layer," ACM SIGCOMM Computer Communication Review, vol. 30, no. 5, pp. 10--20, 2000.</div><div class="external-links"><div class="core-xlink-digital-library"><a href="/doi/10.1145/505672.505674">Digital Library</a></div><div class="core-xlink-google-scholar"><a href="https://scholar.google.com/scholar_lookup?doi=10.1145%2F505672.505674">Google Scholar</a></div></div></div></div></div><div role="listitem" data-has="label"><div class="label">[21]</div><div id="ref-00021" class="citations"><div class="citation"><div class="citation-content">K. Pentikousis and H. Badr, "Quantifying the deployment of TCP options - a comparative study," IEEE Communications Letters, vol. 8, no. 10, pp. 647--649, 2004.</div><div class="external-links"><div class="core-xlink-crossref"><a href="https://doi.org/10.1109/LCOMM.2004.835308">Crossref</a></div><div class="core-xlink-google-scholar"><a href="https://scholar.google.com/scholar_lookup?doi=10.1109%2FLCOMM.2004.835308">Google Scholar</a></div></div></div></div></div><div role="listitem" data-has="label"><div class="label">[22]</div><div id="ref-00022" class="citations"><div class="citation"><div class="citation-content">A. Medina, M. Allman, and S. Floyd, "Measuring interactions between transport protocols and middleboxes," in Proceedings of the 4th ACM SIGCOMM conference on Internet measurement, 2004, pp. 336--341.</div><div class="external-links"><div class="core-xlink-google-scholar"><a href="https://scholar.google.com/scholar?q=A.+Medina%2C+M.+Allman%2C+and+S.+Floyd%2C+%22Measuring+interactions+between+transport+protocols+and+middleboxes%2C%22+in+Proceedings+of+the+4th+ACM+SIGCOMM+conference+on+Internet+measurement%2C+2004%2C+pp.+336--341.">Google Scholar</a></div></div></div></div></div><div role="listitem" data-has="label"><div class="label">[23]</div><div id="ref-00023" class="citations"><div class="citation"><div class="citation-content">C.-X. Chen and K. Nagaoka, "Analysis of the State of ECN on the Internet," IEICE TRANSACTIONS on Information and Systems, vol. 102, no. 5, pp. 910--919, 2019.</div><div class="external-links"><div class="core-xlink-crossref"><a href="https://doi.org/10.1587/transinf.2018NTP0006">Crossref</a></div><div class="core-xlink-google-scholar"><a href="https://scholar.google.com/scholar_lookup?doi=10.1587%2Ftransinf.2018NTP0006">Google Scholar</a></div></div></div></div></div><div role="listitem" data-has="label"><div class="label">[24]</div><div id="ref-00024" class="citations"><div class="citation"><div class="citation-content">M. Honda, Y. Nishida, C. Raiciu, A. Greenhalgh, M. Handley, and H. Tokuda, "Is it still possible to extend tcp?" in Proceedings of the 2011 ACM SIGCOMM conference on Internet measurement conference, 2011, pp. 181--194.</div><div class="external-links"><div class="core-xlink-google-scholar"><a href="https://scholar.google.com/scholar?q=M.+Honda%2C+Y.+Nishida%2C+C.+Raiciu%2C+A.+Greenhalgh%2C+M.+Handley%2C+and+H.+Tokuda%2C+%22Is+it+still+possible+to+extend+tcp%3F%22+in+Proceedings+of+the+2011+ACM+SIGCOMM+conference+on+Internet+measurement+conference%2C+2011%2C+pp.+181--194.">Google Scholar</a></div></div></div></div></div><div role="listitem" data-has="label"><div class="label">[25]</div><div id="ref-00025" class="citations"><div class="citation"><div class="citation-content">K. Edeline and B. Donnet, "Evaluating the Impact of Path Brokenness on TCP Options," in Proceedings of the Applied Networking Research Workshop, 2020, pp. 38--44.</div><div class="external-links"><div class="core-xlink-digital-library"><a href="/doi/10.1145/3404868.3406662">Digital Library</a></div><div class="core-xlink-google-scholar"><a href="https://scholar.google.com/scholar_lookup?doi=10.1145%2F3404868.3406662">Google Scholar</a></div></div></div></div></div><div role="listitem" data-has="label"><div class="label">[26]</div><div id="ref-00026" class="citations"><div class="citation"><div class="citation-content">Usage statistics of QUIC for websites. [Online]. Available: https://w3techs.com/technologies/details/ce-quic</div><div class="external-links"><div class="core-xlink-google-scholar"><a href="https://scholar.google.com/scholar?q=Usage+statistics+of+QUIC+for+websites.+%5BOnline%5D.+Available%3A+https%3A%2F%2Fw3techs.com%2Ftechnologies%2Fdetails%2Fce-quic">Google Scholar</a></div></div></div></div></div><div role="listitem" data-has="label"><div class="label">[27]</div><div id="ref-00027" class="citations"><div class="citation"><div class="citation-content">T. Shreedhar, R. Panda, S. Podanev, and V. Bajpai, "Evaluating QUIC Performance Over Web, Cloud Storage, and Video Workloads," IEEE Transactions on Network and Service Management, vol. 19, no. 2, pp. 1366--1381, 2021.</div><div class="external-links"><div class="core-xlink-digital-library"><a href="/doi/10.1109/TNSM.2021.3134562">Digital Library</a></div><div class="core-xlink-google-scholar"><a href="https://scholar.google.com/scholar_lookup?doi=10.1109%2FTNSM.2021.3134562">Google Scholar</a></div></div></div></div></div><div role="listitem" data-has="label"><div class="label">[28]</div><div id="ref-00028" class="citations"><div class="citation"><div class="citation-content">Y. Yu, M. Xu, and Y. Yang, "When QUIC meets TCP: An experimental study," in 2017 IEEE 36th International Performance Computing and Communications Conference (IPCCC). IEEE, 2017, pp. 1--8.</div><div class="external-links"><div class="core-xlink-google-scholar"><a href="https://scholar.google.com/scholar?q=Y.+Yu%2C+M.+Xu%2C+and+Y.+Yang%2C+%22When+QUIC+meets+TCP%3A+An+experimental+study%2C%22+in+2017+IEEE+36th+International+Performance+Computing+and+Communications+Conference+%28IPCCC%29.+IEEE%2C+2017%2C+pp.+1--8.">Google Scholar</a></div></div></div></div></div><div role="listitem" data-has="label"><div class="label">[29]</div><div id="ref-00029" class="citations"><div class="citation"><div class="citation-content">T. Mangla, E. Halepovic, M. Ammar, and E. Zegura, "emimic: Estimating http-based video qoe metrics from encrypted network traffic," in 2018 Network Traffic Measurement and Analysis Conference (TMA). IEEE, 2018, pp. 1--8.</div><div class="external-links"><div class="core-xlink-google-scholar"><a href="https://scholar.google.com/scholar?q=T.+Mangla%2C+E.+Halepovic%2C+M.+Ammar%2C+and+E.+Zegura%2C+%22emimic%3A+Estimating+http-based+video+qoe+metrics+from+encrypted+network+traffic%2C%22+in+2018+Network+Traffic+Measurement+and+Analysis+Conference+%28TMA%29.+IEEE%2C+2018%2C+pp.+1--8.">Google Scholar</a></div></div></div></div></div><div role="listitem" data-has="label"><div class="label">[30]</div><div id="ref-00030" class="citations"><div class="citation"><div class="citation-content">C. López, D. Morato, E. Magana, and M. Izal, "Effective analysis of secure web response time," in 2019 Network Traffic Measurement and Analysis Conference (TMA). IEEE, 2019, pp. 145--152.</div><div class="external-links"><div class="core-xlink-google-scholar"><a href="https://scholar.google.com/scholar?q=C.+L%C3%B3pez%2C+D.+Morato%2C+E.+Magana%2C+and+M.+Izal%2C+%22Effective+analysis+of+secure+web+response+time%2C%22+in+2019+Network+Traffic+Measurement+and+Analysis+Conference+%28TMA%29.+IEEE%2C+2019%2C+pp.+145--152.">Google Scholar</a></div></div></div></div></div><div role="listitem" data-has="label"><div class="label">[31]</div><div id="ref-00031" class="citations"><div class="citation"><div class="citation-content">S. C. Madanapalli, H. H. Gharakhieli, and V. Sivaraman, "Inferring netflix user experience from broadband network measurement," in 2019 Network Traffic Measurement and Analysis Conference (TMA). IEEE, 2019, pp. 41--48.</div><div class="external-links"><div class="core-xlink-google-scholar"><a href="https://scholar.google.com/scholar?q=S.+C.+Madanapalli%2C+H.+H.+Gharakhieli%2C+and+V.+Sivaraman%2C+%22Inferring+netflix+user+experience+from+broadband+network+measurement%2C%22+in+2019+Network+Traffic+Measurement+and+Analysis+Conference+%28TMA%29.+IEEE%2C+2019%2C+pp.+41--48.">Google Scholar</a></div></div></div></div></div><div role="listitem" data-has="label"><div class="label">[32]</div><div id="ref-00032" class="citations"><div class="citation"><div class="citation-content">B. Jun, M. Varvello, Y. Zaki, and F. E. Bustamante, "WebTune: A Distributed Platform for Web Performance Measurements," in 2021 Network Traffic Measurement and Analysis Conference (TMA). IFIP, 2021.</div><div class="external-links"><div class="core-xlink-google-scholar"><a href="https://scholar.google.com/scholar?q=B.+Jun%2C+M.+Varvello%2C+Y.+Zaki%2C+and+F.+E.+Bustamante%2C+%22WebTune%3A+A+Distributed+Platform+for+Web+Performance+Measurements%2C%22+in+2021+Network+Traffic+Measurement+and+Analysis+Conference+%28TMA%29.+IFIP%2C+2021.">Google Scholar</a></div></div></div></div></div><div role="listitem" data-has="label"><div class="label">[33]</div><div id="ref-00033" class="citations"><div class="citation"><div class="citation-content">N. Zilberman, J. Woodruff, M. Ramanujam, A. W. Moore, Y. Tokusashi, D. A. Popescu, B. Cooper, P. Bressana, and S. Galea, "NRG: A Network Perspective on Applications' Performance," 2021.</div><div class="external-links"><div class="core-xlink-google-scholar"><a href="https://scholar.google.com/scholar?q=N.+Zilberman%2C+J.+Woodruff%2C+M.+Ramanujam%2C+A.+W.+Moore%2C+Y.+Tokusashi%2C+D.+A.+Popescu%2C+B.+Cooper%2C+P.+Bressana%2C+and+S.+Galea%2C+%22NRG%3A+A+Network+Perspective+on+Applications%27+Performance%2C%22+2021.">Google Scholar</a></div></div></div></div></div><div role="listitem" data-has="label"><div class="label">[34]</div><div id="ref-00034" class="citations"><div class="citation"><div class="citation-content">University of Oregon Route Views Project. [Online]. Available: https://www.routeviews.org/routeviews/</div><div class="external-links"><div class="core-xlink-google-scholar"><a href="https://scholar.google.com/scholar?q=University+of+Oregon+Route+Views+Project.+%5BOnline%5D.+Available%3A+https%3A%2F%2Fwww.routeviews.org%2Frouteviews%2F">Google Scholar</a></div></div></div></div></div><div role="listitem" data-has="label"><div class="label">[35]</div><div id="ref-00035" class="citations"><div class="citation"><div class="citation-content">A. Arturi, E. Carisimo, and F. E. Bustamante, "As2org+: Enriching AS-to-Organization Mappings With PeeringDB," in Proc. Passive and Active Measurement (PAM), 2023, p. 400--428.</div><div class="external-links"><div class="core-xlink-digital-library"><a href="/doi/10.1007/978-3-031-28486-1_17">Digital Library</a></div><div class="core-xlink-google-scholar"><a href="https://scholar.google.com/scholar_lookup?doi=10.1007%2F978-3-031-28486-1_17">Google Scholar</a></div></div></div></div></div><div role="listitem" data-has="label"><div class="label">[36]</div><div id="ref-00036" class="citations"><div class="citation"><div class="citation-content">D. Dittrich, E. Kenneally et al., "The Menlo Report: Ethical principles guiding information and communication technology research," US Department of Homeland Security, 2012.</div><div class="external-links"><div class="core-xlink-google-scholar"><a href="https://scholar.google.com/scholar?q=D.+Dittrich%2C+E.+Kenneally+et+al.%2C+%22The+Menlo+Report%3A+Ethical+principles+guiding+information+and+communication+technology+research%2C%22+US+Department+of+Homeland+Security%2C+2012.">Google Scholar</a></div></div></div></div></div><div role="listitem" data-has="label"><div class="label">[37]</div><div id="ref-00037" class="citations"><div class="citation"><div class="citation-content">C. Partridge and M. Allman, "Addressing Ethical Considerations in Network Measurement Papers," Communications of the ACM, vol. 59, no. 10, Oct. 2016.</div><div class="external-links"><div class="core-xlink-google-scholar"><a href="https://scholar.google.com/scholar?q=C.+Partridge+and+M.+Allman%2C+%22Addressing+Ethical+Considerations+in+Network+Measurement+Papers%2C%22+Communications+of+the+ACM%2C+vol.+59%2C+no.+10%2C+Oct.+2016.">Google Scholar</a></div></div></div></div></div><div role="listitem" data-has="label"><div class="label">[38]</div><div id="ref-00038" class="citations"><div class="citation"><div class="citation-content">M. Koster, G. Illyes, H. Zeller, and L. Sassman, "Robots Exclusion Protocol," RFC 9309, Sep. 2022. [Online]. Available: https://www.rfc-editor.org/info/rfc9309</div><div class="external-links"><div class="core-xlink-digital-library"><a href="/doi/10.17487/RFC9309">Digital Library</a></div><div class="core-xlink-google-scholar"><a href="https://scholar.google.com/scholar_lookup?doi=10.17487%2FRFC9309">Google Scholar</a></div></div></div></div></div><div role="listitem" data-has="label"><div class="label">[39]</div><div id="ref-00039" class="citations"><div class="citation"><div class="citation-content">S. Bauer, P. Sattler, J. Zirngibl, C. Schwarzenberg, and G. Carle. Tcp and quic measurement pipeline. [Online]. Available: https://github.com/tumi8/active-tcp-and-quic-measurements</div><div class="external-links"><div class="core-xlink-google-scholar"><a href="https://scholar.google.com/scholar?q=S.+Bauer%2C+P.+Sattler%2C+J.+Zirngibl%2C+C.+Schwarzenberg%2C+and+G.+Carle.+Tcp+and+quic+measurement+pipeline.+%5BOnline%5D.+Available%3A+https%3A%2F%2Fgithub.com%2Ftumi8%2Factive-tcp-and-quic-measurements">Google Scholar</a></div></div></div></div></div><div role="listitem" data-has="label"><div class="label">[40]</div><div id="ref-00040" class="citations"><div class="citation"><div class="citation-content">R. Fielding and J. Reschke, "Rfc 7230: Hypertext transfer protocol (http/1.1): Message syntax and routing," 2014.</div><div class="external-links"><div class="core-xlink-digital-library"><a href="/doi/10.17487/RFC7230">Digital Library</a></div><div class="core-xlink-google-scholar"><a href="https://scholar.google.com/scholar_lookup?doi=10.17487%2FRFC7230">Google Scholar</a></div></div></div></div></div><div role="listitem" data-has="label"><div class="label">[41]</div><div id="ref-00041" class="citations"><div class="citation"><div class="citation-content">D. M. (aka Roadmaster), "Forcediphttpsadapter," Website, https://github.com/Roadmaster/forcediphttpsadapter; Last accessed: 12 Mai 2023.</div><div class="external-links"><div class="core-xlink-google-scholar"><a href="https://scholar.google.com/scholar?q=D.+M.+%28aka+Roadmaster%29%2C+%22Forcediphttpsadapter%2C%22+Website%2C+https%3A%2F%2Fgithub.com%2FRoadmaster%2Fforcediphttpsadapter%3B+Last+accessed%3A+12+Mai+2023.">Google Scholar</a></div></div></div></div></div><div role="listitem" data-has="label"><div class="label">[42]</div><div id="ref-00042" class="citations"><div class="citation"><div class="citation-content">J. Lainé, "aioquic." [Online]. Available: https://github.com/aiortc/aioquic</div><div class="external-links"><div class="core-xlink-google-scholar"><a href="https://scholar.google.com/scholar?q=J.+Lain%C3%A9%2C+%22aioquic.%22+%5BOnline%5D.+Available%3A+https%3A%2F%2Fgithub.com%2Faiortc%2Faioquic">Google Scholar</a></div></div></div></div></div><div role="listitem" data-has="label"><div class="label">[43]</div><div id="ref-00043" class="citations"><div class="citation"><div class="citation-content">Cloudflare, "quiche." [Online]. Available: https://github.com/cloudflare/quiche</div><div class="external-links"><div class="core-xlink-google-scholar"><a href="https://scholar.google.com/scholar?q=Cloudflare%2C+%22quiche.%22+%5BOnline%5D.+Available%3A+https%3A%2F%2Fgithub.com%2Fcloudflare%2Fquiche">Google Scholar</a></div></div></div></div></div><div role="listitem" data-has="label"><div class="label">[44]</div><div id="ref-00044" class="citations"><div class="citation"><div class="citation-content">B. Jaeger, J. Zirngibl, M. Kempf, K. Ploch, and G. Carle, "QUIC on the Highway: Evaluating Performance on High-Rate Links," in International Federation for Information Processing (IFIP) Networking 2023 Conference (IFIP Networking 2023), Barcelona, Spain, Jun. 2023.</div><div class="external-links"><div class="core-xlink-google-scholar"><a href="https://scholar.google.com/scholar?q=B.+Jaeger%2C+J.+Zirngibl%2C+M.+Kempf%2C+K.+Ploch%2C+and+G.+Carle%2C+%22QUIC+on+the+Highway%3A+Evaluating+Performance+on+High-Rate+Links%2C%22+in+International+Federation+for+Information+Processing+%28IFIP%29+Networking+2023+Conference+%28IFIP+Networking+2023%29%2C+Barcelona%2C+Spain%2C+Jun.+2023.">Google Scholar</a></div></div></div></div></div><div role="listitem" data-has="label"><div class="label">[45]</div><div id="ref-00045" class="citations"><div class="citation"><div class="citation-content">Wireshark User's Guide - 7.5. TCP Analysis. [Online]. Available: https://www.wireshark.org/docs/wsug_html_chunked/ChAdvTCPAnalysis.html</div><div class="external-links"><div class="core-xlink-google-scholar"><a href="https://scholar.google.com/scholar?q=Wireshark+User%27s+Guide+-+7.5.+TCP+Analysis.+%5BOnline%5D.+Available%3A+https%3A%2F%2Fwww.wireshark.org%2Fdocs%2Fwsug_html_chunked%2FChAdvTCPAnalysis.html">Google Scholar</a></div></div></div></div></div><div role="listitem" data-has="label"><div class="label">[46]</div><div id="ref-00046" class="citations"><div class="citation"><div class="citation-content">M. Prince, "Introducing: I'm under attack mode," Website, https://blog.cloudflare.com/introducing-im-under-attack-mode; Last accessed: 12 Mai 2023.</div><div class="external-links"><div class="core-xlink-google-scholar"><a href="https://scholar.google.com/scholar?q=M.+Prince%2C+%22Introducing%3A+I%27m+under+attack+mode%2C%22+Website%2C+https%3A%2F%2Fblog.cloudflare.com%2Fintroducing-im-under-attack-mode%3B+Last+accessed%3A+12+Mai+2023.">Google Scholar</a></div></div></div></div></div><div role="listitem" data-has="label"><div class="label">[47]</div><div id="ref-00047" class="citations"><div class="citation"><div class="citation-content">About CrUX. [Online]. Available: https://developer.chrome.com/docs/crux/about/</div><div class="external-links"><div class="core-xlink-google-scholar"><a href="https://scholar.google.com/scholar?q=About+CrUX.+%5BOnline%5D.+Available%3A+https%3A%2F%2Fdeveloper.chrome.com%2Fdocs%2Fcrux%2Fabout%2F">Google Scholar</a></div></div></div></div></div><div role="listitem" data-has="label"><div class="label">[48]</div><div id="ref-00048" class="citations"><div class="citation"><div class="citation-content">J. Zirngibl, P. Buschmann, P. Sattler, B. Jaeger, J. Aulbach, and G. Carle, "It's over 9000: Analyzing early QUIC Deployments with the Standardization on the Horizon," in Proceedings of the 2021 Internet Measurement Conference. New York, NY, USA: ACM, Nov. 2021.</div><div class="external-links"><div class="core-xlink-digital-library"><a href="/doi/10.1145/3487552.3487826">Digital Library</a></div><div class="core-xlink-google-scholar"><a href="https://scholar.google.com/scholar_lookup?doi=10.1145%2F3487552.3487826">Google Scholar</a></div></div></div></div></div><div role="listitem" data-has="label"><div class="label">[49]</div><div id="ref-00049" class="citations"><div class="citation"><div class="citation-content">J. Zirngibl, P. Sattler, and G. Carle, "A First Look at SVCB and HTTPS DNS Resource Records in the Wild," in International Workshop on Traffic Measurements for Cybersecurity 2023, Jul. 2023.</div><div class="external-links"><div class="core-xlink-google-scholar"><a href="https://scholar.google.com/scholar?q=J.+Zirngibl%2C+P.+Sattler%2C+and+G.+Carle%2C+%22A+First+Look+at+SVCB+and+HTTPS+DNS+Resource+Records+in+the+Wild%2C%22+in+International+Workshop+on+Traffic+Measurements+for+Cybersecurity+2023%2C+Jul.+2023.">Google Scholar</a></div></div></div></div></div></div></section>
+
+
+
+
+
+
+
+
+
+    
+    
+        <div data-widget-def="ux3-layout-widget" data-widget-id="5eab360b-b0a7-47ce-b05a-6e2d026cb5d0" id="ACM_widgets">
+        
+
+
+
+        
+        <div>
+
+
+
+        
+        <div>
+
+
+
+
+
+
+
+
+
+    
+    
+        <div data-widget-def="UX3CitedByWidget" data-widget-id="fbd0b7aa-930a-4342-a3da-6e5f895c5500" class="cited-by__article-body">
+        
+
+
+
+        
+        <section class="cited-by"><div class="cited-by__wrapper"><div class="flex justify-between mb-2 align-items-c colored-block__title"><h2 class="cited-by__title left-bordered-title">Cited By</h2><a href="/action/ajaxShowCitedBy?doi=10.1145/3606464.3606474" target="_blank" title="View all cited by in new tab" class="downloadAll btn blue">View all<i class="icon-export"></i></a></div><div id="cited-by__content" data-source="" class="cited-by__content"></div><ul data-pageSize="3" data-more="Show More Cited By" data-total='3' class="rlist separator cited-by__list"><li class="citedByEntry"><span class="entryAuthor"><span class="comma-separator">Kempf M</span><span class="comma-separator">Gauder N</span><span class="comma-separator">Jaeger B</span><span class="comma-separator">Zirngibl J</span><span class="comma-separator">Carle G</span></span><span class="pub-date dot-after">(2024)</span><span>A Quantum of QUIC: Dissecting Cryptography with Post-Quantum Insights</span><span class="seriesTitle">2024 IFIP Networking Conference (IFIP Networking)</span><span class="doi">10.23919/IFIPNetworking62109.2024.10619916</span><span class="page-range">(195-203)</span><span class="pub-date">Online publication date: 3-Jun-2024</span><div class="extra-links pt-3"><a href="https://doi.org/10.23919/IFIPNetworking62109.2024.10619916" target="_blank" class="link">https://doi.org/10.23919/IFIPNetworking62109.2024.10619916</a></div></li><li class="citedByEntry"><span class="entryAuthor"><span class="comma-separator">Kumar S</span><span class="comma-separator">Kanagarathinam M</span><span class="comma-separator">Bhagavath A</span><span class="comma-separator">Saha R</span><span class="comma-separator">Kanakaraj V</span></span><span class="pub-date dot-after">(2024)</span><span>SMASH: Supervised ML-Based Adaptive Selection of HTTP Protocols</span><span class="seriesTitle">2024 IEEE International Conference on Communications Workshops (ICC Workshops)</span><span class="doi">10.1109/ICCWorkshops59551.2024.10615626</span><span class="page-range">(2005-2010)</span><span class="pub-date">Online publication date: 9-Jun-2024</span><div class="extra-links pt-3"><a href="https://doi.org/10.1109/ICCWorkshops59551.2024.10615626" target="_blank" class="link">https://doi.org/10.1109/ICCWorkshops59551.2024.10615626</a></div></li><li class="citedByEntry"><span class="entryAuthor"><span class="comma-separator">Zirngibl J</span><span class="comma-separator">Gebauer F</span><span class="comma-separator">Sattler P</span><span class="comma-separator">Sosnowski M</span><span class="comma-separator">Carle G</span></span><span class="pub-date dot-after">(2024)</span><span>QUIC Hunter: Finding QUIC Deployments and Identifying Server Libraries Across the Internet</span><span class="seriesTitle">Passive and Active Measurement</span><span class="doi">10.1007/978-3-031-56252-5_13</span><span class="page-range">(273-290)</span><span class="pub-date">Online publication date: 11-Mar-2024</span><div class="extra-links pt-3"><a href="https://dl.acm.org/doi/10.1007/978-3-031-56252-5_13" target="_blank" class="link">https://dl.acm.org/doi/10.1007/978-3-031-56252-5_13</a></div></li></ul></div></section>
+
+        </div>
+    
+
+</div>
+
+
+
+
+
+
+
+
+
+
+    
+    
+        <section data-widget-def="ux3-layout-widget" data-widget-id="39967302-8491-456d-8cd5-f2724d18d392" id="sec-terms">
+        
+
+
+
+        
+        <div>
+
+
+
+
+
+
+
+
+
+    
+    
+        <div data-widget-def="UX3TagWidget" data-widget-id="e2ef85cc-92e2-4a74-b049-e0a086481942" class="citation article__section article__index-terms">
+        
+
+
+
+        
+        
+
+
+
+        
+        <h2>Index Terms</h2>
+
+<ol class="rlist organizational-chart"><li><div id="organizational-chart__title">Evaluating the Benefits: Quantifying the Effects of TCP Options, QUIC, and CDNs on Throughput</div><ol class="rlist level-1  ch-1"><li><div data-background="#757575" style="background-color:#757575;box-shadow:none"><p><a href="/topic/ccs2012/10003033?ContentGroupKey=10.1145%2F3606464&amp;expand=all">Networks</a></p></div><ol class="rlist level-2 ch-2 hasNodes"><li><div data-background="#757575" style="background-color:#757575;box-shadow:none"><p><a href="/topic/ccs2012/10003033.10003039?ContentGroupKey=10.1145%2F3606464&amp;expand=all">Network protocols</a></p></div><ol class="rlist level-3 ch-1 hasNodes"><li><div data-background="#757575" style="background-color:#757575;box-shadow:none"><p><a href="/topic/ccs2012/10003033.10003039.10003048?ContentGroupKey=10.1145%2F3606464&amp;expand=all">Transport protocols</a></p></div><ol class="rlist level-4 ch-0"></ol></li></ol></li><li><div data-background="#757575" style="background-color:#757575;box-shadow:none"><p><a href="/topic/ccs2012/10003033.10003106?ContentGroupKey=10.1145%2F3606464&amp;expand=all">Network types</a></p></div><ol class="rlist level-4 ch-1 hasNodes"><li><div data-background="#757575" style="background-color:#757575;box-shadow:none"><p><a href="/topic/ccs2012/10003033.10003106.10010924?ContentGroupKey=10.1145%2F3606464&amp;expand=all">Public Internet</a></p></div><ol class="rlist level-5 ch-0"></ol></li></ol></li></ol></li></ol></li></ol>
+
+        </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+        <div data-widget-def="graphQueryWidget" data-widget-id="a0e1f283-de80-413e-bd95-25e0e7f29726" class="disclaimer">
+        
+
+
+
+        
+        
+
+        </div>
+    
+
+</div>
+
+        </section>
+    
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+        <section data-widget-def="ux3-layout-widget" data-widget-id="05703002-6a13-4f45-bf69-ef3358f44bf6" id="sec-recommendations">
+        
+
+
+
+        
+        <div>
+
+
+
+        
+        <h2>Recommendations</h2> 
+
+
+
+
+        
+        <div data-exp-type="" data-query-id="10.1145/3606464.3606474" class="recommended-articles__content"><ul class="rlist lot"><li class="grid-item"><div class="creative-work"><a href="/doi/10.1145/3646547.3689673" title="Poster: How much of the Web Cares about QUIC's Anti-ossification Features?"><h3 data-lines="2" class="creative-work__title truncate-text-css">Poster: How much of the Web Cares about QUIC's Anti-ossification Features?</h3></a><div class="creative-work__sub-title mb-3 mt-1">IMC '24: Proceedings of the 2024 ACM on Internet Measurement Conference  </div><div class="description"><div class="issue-item__abstract truncate-text" data-lines="4"> <p>QUICv2 and the "Greasing the QUIC Bit'' have features designed to prevent the ossification (aka slowed progress in evolution) of the QUIC protocol. Historically, network middleboxes can become reliant on, for example, specific values or uses of header ...</p><p></p><p></p></div></div><div class="readMore"><a href="/doi/10.1145/3646547.3689673" title="Read More" aria-hidden="true" tabindex="-1">Read More</a></div></div></li><li class="grid-item"><div class="creative-work"><a href="/doi/10.1145/2535372.2535402" title="Silent TCP connection closure for cellular networks"><h3 data-lines="2" class="creative-work__title truncate-text-css">Silent TCP connection closure for cellular networks</h3></a><div class="creative-work__sub-title mb-3 mt-1">CoNEXT '13: Proceedings of the ninth ACM conference on Emerging networking experiments and technologies  </div><div class="description"><div class="issue-item__abstract truncate-text" data-lines="4">
+		<p>FIN and RST packets that close TCP connections are often delayed by timeout. In cellular networks, delayed FIN/RST packets often incur significant energy consumption overhead for handsets. On the other hand, closing TCP connection immediately after its ...</p></div></div><div class="readMore"><a href="/doi/10.1145/2535372.2535402" title="Read More" aria-hidden="true" tabindex="-1">Read More</a></div></div></li><li class="grid-item"><div class="creative-work"><a href="/doi/10.1145/3618257.3624844" title="Does It Spin? On the Adoption and Use of QUIC's Spin Bit"><h3 data-lines="2" class="creative-work__title truncate-text-css">Does It Spin? On the Adoption and Use of QUIC's Spin Bit</h3></a><div class="creative-work__sub-title mb-3 mt-1">IMC '23: Proceedings of the 2023 ACM on Internet Measurement Conference  </div><div class="description"><div class="issue-item__abstract truncate-text" data-lines="4"> <p>Encrypted QUIC traffic complicates network management as traditional transport layer semantics can no longer be used for RTT or packet loss measurements. Addressing this challenge, QUIC includes an optional, carefully designed mechanism: the spin bit. ...</p><p></p></div></div><div class="readMore"><a href="/doi/10.1145/3618257.3624844" title="Read More" aria-hidden="true" tabindex="-1">Read More</a></div></div></li></ul></div>
+</div>
+
+        </section>
+    
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+        <section data-widget-def="ux3-layout-widget" data-widget-id="f58d89db-f506-4530-9812-61749ee9f921" id="sec-comments">
+        
+
+
+
+        
+        <div>
+
+
+
+        
+        <h2>Comments</h2>
+
+
+
+
+        
+        <div id="disqus_thread"></div><a href="https://dl.acm.org/doi/abs/10.1145/3606464.3606474?casa_token=6kQVTjhnJDsAAAAA%3AirF7MX4fGH8IW8stekS-S0mw-H0MaV_uI7VDtlM3qwUN4fAwBdCmpxojy92seO_a1m-X2VXYjarR7Q#disqus_thread" class="disqus-count hidden"></a><script>var disqus_config = function () {
+    this.page.url = window.location.href;
+    this.page.identifier = '10.1145/3606464.3606474';
+    this.page.remote_auth_s3 = '';
+    this.page.api_key = 'MmWj4FlWmXk20FJsmWMXbTJoZT7TVzTsc9Rw0yrJp3L1ZNXZuvmxF3F5rFIF8RqQ';
+};
+(function () {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://acm-prod.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+})();</script><noscript>Please enable JavaScript to view the<a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript><script id="dsq-count-scr" src="//acm-prod.disqus.com/count.js" async=""></script>
+</div>
+
+        </section>
+    
+
+</div>
+
+        </div>
+    
+
+</div></section><div class="core-collateral"><div id="core-collateral-info" role="tabpanel"><header><h2><i class="icon-Icon_Information" aria-hidden="true"></i>Information &amp; Contributors</h2></header><section id="tab-information" aria-labelledby="information" role="tabpanel"><h3>Information</h3><section class="core-self-citation"><h4>Published In</h4>
+
+
+
+        
+        <div class="cover-image"><div class="cover-image__image"><img src="/specs/products/acm/releasedAssets/images/Default_image_lazy-0687af31f0f1c8d4b7a22b686995ab9b.svg" data-src="/cms/asset/c5a86c23-5aee-489a-b5b8-75afa919388b/3606464.cover.jpg" alt="cover image ACM Conferences" height="171" width="132" class="lazy"/></div><div class="cover-image__details"><div class="book-meta">ANRW '23: Proceedings of the 2023 Applied Networking Research Workshop</div><div class="cover-date">July 2023</div><div class="cover-pages">62  pages</div><div class="cover-image__details-extra"><div class="flex-container"><span class="bold">ISBN:</span><span class="space">9798400702747</span></div><div class="flex-container"><span class="bold">DOI:</span><span class="space">10.1145/3606464</span></div></div><div class="pb-dropzone" data-pb-dropzone="metadataDisplayExtra" title="metadataDisplayExtra"></div></div></div>
+<div role="paragraph" class="core-copyright">Copyright © 2023 ACM.</div><div class="core-license">Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than the author(s) must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="bbebdec9d6d2c8c8d2d4d5c8fbdad8d695d4c9dc">[email&#160;protected]</a>.</div></section><section class="core-sponsors"><h4>Sponsors</h4><ul><li>Internet Society: Internet Society</li><li><a href="/sig/sigcomm">SIGCOMM: ACM Special Interest Group on Data Communication</a></li></ul></section><section class="core-in-cooperation"><h4>In-Cooperation</h4><ul><li>IRTF: Internet Research Task Force</li></ul></section><section class="core-publisher"><h4>Publisher</h4><div class="section__content"><div class="publisher__details"><p class="publisher__name">Association for Computing Machinery</p><p class="publisher__address">New York, NY, United States</p></div></div></section><section id="core-history" class="core-history"><h4>Publication History</h4><div><b class="core-label">Published</b>: 22 July 2023</div></section><section class="core-permissions"><h4>Permissions</h4><div>Request permissions for this article.</div><div><a class="btn" href="https://marketplace.copyright.com/rs-ui-web/mp/search/all/10.1145%2F3606464.3606474">Request Permissions</a></div></section><section class="core-collateral-crossmark"><h4>Check for updates</h4><a data-target="crossmark" href="#" title="Check for updates on crossmark" data-doi="10.1145/3606464.3606474" data-id="article-info-crossmark" class="crossmark__link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" height="36px" role="presentation"><rect x="5" y="5" width="90" height="90" rx="2" ry="2" class="cls-1"></rect><polygon points="35.95 65.11 64.05 46.38 64.05 23.91 35.95 23.91 35.95 65.11" class="cls-2"></polygon><polygon points="64.05 65.11 35.95 46.38 35.95 23.91 64.05 23.91 64.05 65.11" class="cls-3"></polygon><path d="M50,19A31,31,0,1,0,81,50,31,31,0,0,0,50,19Zm0,54.41A23.41,23.41,0,1,1,73.41,50,23.41,23.41,0,0,1,50,73.41Z" class="cls-4"></path><path d="M67.18,65.86a23.38,23.38,0,0,1-38.9-24.57l-6.49-4.1A31,31,0,0,0,73.69,70Z" class="cls-5"></path><defs><style>.cls-1{stroke:#948f8f;stroke-miterlimit:10;stroke-width:0.75px;fill:url(#no_text_crossmark);}
+.cls-2{fill:#c72914;}
+.cls-3{fill:#ef3340;}
+.cls-4{fill:#3eb1c8;}
+.cls-5{fill:#ffc72c;}</style><linearGradient id="no_text_crossmark" x1="50" y1="15.18" x2="50" y2="94.72" gradientUnits="userSpaceOnUse"><stop stop-color="#fff"></stop><stop offset="1" stop-color="#c4c4c4"></stop></linearGradient></defs></svg></a></section><section property="keywords"><h4>Author Tags</h4><ol><li><a href="/keyword/CDNs?expand=all" alt="Search on this keyword">CDNs</a></li><li><a href="/keyword/Internet+measurements?expand=all" alt="Search on this keyword">Internet measurements</a></li><li><a href="/keyword/QUIC?expand=all" alt="Search on this keyword">QUIC</a></li><li><a href="/keyword/TCP+options?expand=all" alt="Search on this keyword">TCP options</a></li><li><a href="/keyword/performance+measurements?expand=all" alt="Search on this keyword">performance measurements</a></li></ol></section><section class="core-qualifiers"><h4>Qualifiers</h4><ul><li>Research-article</li><li>Research</li><li>Refereed limited</li></ul></section><section class="core-funding"><h4>Funding Sources</h4><ul><li>German Federal Ministry of Education and Research</li></ul></section><section class="core-conference"><h4>Conference</h4><div class="core-conference-left"><span class="core-conference-code">ANRW '23</span><div class="core-conference-sponsors"><span class="core-conference-sponsors-label">Sponsor:</span><ul class="core-conference-sponsors-list truncate-list" data-lines="2"><li class="core-sponsors-list-item">Internet Society</li><li class="core-sponsors-list-item"><a href="/sig/sigcomm">SIGCOMM</a></li></ul></div></div><div class="core-conference-right"><a href="https://irtf.org/anrw/2023/">ANRW '23: Applied Networking Research Workshop</a><div class="core-conference-calender"><i class="icon-calender3"></i><span class="core-conference-date">July 24, 2023</span></div><div class="core-conference-map"><i class="icon-navigator"></i>CA, San Francisco, USA</div></div></section>
+
+
+
+        
+        <div class="acceptance-rates__section"><h4 aria-expanded="true">Acceptance Rates</h4><div class="accordion-tabbed__content"><div class="acceptance-rates__heading"><div class="acceptance-rates__heading-overall">Overall Acceptance Rate 34 of 58 submissions, 59%</div></div></div></div>
+
+
+
+
+        
+        
+
+
+
+
+
+
+
+
+</section><section id="tab-contributors" aria-labelledby="contributors" role="tabpanel"><h3>Contributors</h3>
+
+
+
+
+
+
+
+
+
+    
+    
+        <div data-widget-def="acmPublicationContributorsWidget" data-widget-id="774172a5-8222-4087-8d6e-7a1a17ded31e" class="expandable-accordion">
+        
+
+
+
+        
+        <div class="publication-contribs-contianer"><input id="ContribsAjax" type="hidden" data-ajax="/pb/widgets/getContribs?widgetId=774172a5-8222-4087-8d6e-7a1a17ded31e&amp;pbContext=%3Btaxonomy%3Ataxonomy%3Aconference-collections%3Bwgroup%3Astring%3AACM+Publication+Websites%3BgroupTopic%3Atopic%3Aacm-pubtype%26gt%3Bproceeding%3Bctype%3Astring%3ABook+Content%3Bissue%3Aissue%3Adoi%5C%3A10.1145%2F3606464%3Bpage%3Astring%3AArticle%2FChapter+View%3BsubPage%3Astring%3AAbstract%3Btopic%3Atopic%3Aconference-collections%26gt%3Bcomm%3Barticle%3Aarticle%3Adoi%5C%3A10.1145%2F3606464.3606474%3Bcsubtype%3Astring%3AConference+Proceedings%3Bwebsite%3Awebsite%3Adl-site%3Bjournal%3Ajournal%3Aacmconferences%3BpageGroup%3Astring%3APublication+Pages"/><div class="loader"><img src="/specs/products/acm/releasedAssets/images/loader-7e60691fbe777356dc81ff6d223a82a6.gif"/></div></div>
+
+        </div>
+    
+
+<section><h4 class="left-bordered-title">Other Metrics</h4><div class="otherMetrics__section__content"><a href="#tab-metrics-inner" data-tab="pill-bibliometrics__content" data-label="Bibliometrics &amp; Citations" class="btn btn--inverse tab-link stretched">View Article Metrics</a></div></section></section></div><div id="core-collateral-metrics" role="tabpanel"><header><h2><i class="icon-metric" aria-hidden="true"></i>Bibliometrics &amp; Citations</h2></header><section id="tab-metrics-inner" aria-labelledby="metrics-inner" role="tabpanel"><h3>Bibliometrics</h3><section>
+
+
+
+        
+            <h4 class="">
+                Article Metrics
+            </h4>
+        
+        <div class="pill-bibliometrics__content"><div class="section__content"><ul class="rlist--inline article-metrics"><li><div class="article-metric citation"><div class="metric-value"><span>3</span></div>Total Citations</div><a href="#tab-citations" class="primary-blue-color tab-link slide-active pill-content">View Citations</a></li><li><div class="article-metric download"><div class="metric-value"><span>229</span></div>Total Downloads</div></li></ul><ul class="rlist metrics__list"><li><span class="metric-name">Downloads (Last 12 months)</span><span class="metric-value">111</span></li><li><span class="metric-name">Downloads (Last 6 weeks)</span><span class="metric-value">14</span></li></ul><div class="metric-update"><span class="metric-update__date">Reflects downloads up to 15 Mar 2025</span></div></div></div>
+</section><section></section><section><h4 class="left-bordered-title">Other Metrics</h4><div class="otherMetrics__section__content"><a href="#tab-contributors" data-tab="pill-authors__content" data-label="Information &amp; Authors" class="btn btn--inverse tab-link stretched">View Author Metrics</a></div></section></section><section id="tab-citations" aria-labelledby="citations" role="tabpanel"><h3>Citations</h3><section></section><section>
+
+
+
+        
+        <section class="cited-by"><div class="cited-by__wrapper"><div class="flex justify-between mb-2 align-items-c colored-block__title"><h2 class="cited-by__title left-bordered-title">Cited By</h2><a href="/action/ajaxShowCitedBy?doi=10.1145/3606464.3606474" target="_blank" title="View all cited by in new tab" class="downloadAll btn blue">View all<i class="icon-export"></i></a></div><div id="cited-by__content" data-source="" class="cited-by__content"></div><ul data-pageSize="10" data-more="Show More Cited By" data-total='3' class="rlist separator cited-by__list"><li class="citedByEntry"><span class="entryAuthor"><span class="comma-separator">Kempf M</span><span class="comma-separator">Gauder N</span><span class="comma-separator">Jaeger B</span><span class="comma-separator">Zirngibl J</span><span class="comma-separator">Carle G</span></span><span class="pub-date dot-after">(2024)</span><span>A Quantum of QUIC: Dissecting Cryptography with Post-Quantum Insights</span><span class="seriesTitle">2024 IFIP Networking Conference (IFIP Networking)</span><span class="doi">10.23919/IFIPNetworking62109.2024.10619916</span><span class="page-range">(195-203)</span><span class="pub-date">Online publication date: 3-Jun-2024</span><div class="extra-links pt-3"><a href="https://doi.org/10.23919/IFIPNetworking62109.2024.10619916" target="_blank" class="link">https://doi.org/10.23919/IFIPNetworking62109.2024.10619916</a></div></li><li class="citedByEntry"><span class="entryAuthor"><span class="comma-separator">Kumar S</span><span class="comma-separator">Kanagarathinam M</span><span class="comma-separator">Bhagavath A</span><span class="comma-separator">Saha R</span><span class="comma-separator">Kanakaraj V</span></span><span class="pub-date dot-after">(2024)</span><span>SMASH: Supervised ML-Based Adaptive Selection of HTTP Protocols</span><span class="seriesTitle">2024 IEEE International Conference on Communications Workshops (ICC Workshops)</span><span class="doi">10.1109/ICCWorkshops59551.2024.10615626</span><span class="page-range">(2005-2010)</span><span class="pub-date">Online publication date: 9-Jun-2024</span><div class="extra-links pt-3"><a href="https://doi.org/10.1109/ICCWorkshops59551.2024.10615626" target="_blank" class="link">https://doi.org/10.1109/ICCWorkshops59551.2024.10615626</a></div></li><li class="citedByEntry"><span class="entryAuthor"><span class="comma-separator">Zirngibl J</span><span class="comma-separator">Gebauer F</span><span class="comma-separator">Sattler P</span><span class="comma-separator">Sosnowski M</span><span class="comma-separator">Carle G</span></span><span class="pub-date dot-after">(2024)</span><span>QUIC Hunter: Finding QUIC Deployments and Identifying Server Libraries Across the Internet</span><span class="seriesTitle">Passive and Active Measurement</span><span class="doi">10.1007/978-3-031-56252-5_13</span><span class="page-range">(273-290)</span><span class="pub-date">Online publication date: 11-Mar-2024</span><div class="extra-links pt-3"><a href="https://dl.acm.org/doi/10.1007/978-3-031-56252-5_13" target="_blank" class="link">https://dl.acm.org/doi/10.1007/978-3-031-56252-5_13</a></div></li></ul></div></section>
+</section></section></div><div id="core-collateral-fulltext-options" role="tabpanel"><header><h2><i class="icon-eye" aria-hidden="true"></i>View Options</h2></header><div tabindex="0" class="section--wrapper"><section>
+
+
+
+        
+        <div class="get__access"><div class="mb-4"><h4>Login options</h4><div class="get__access__login pt-3 pb-4"><p class="info--text">Check if you have access through your login credentials or your institution to get full access on this article.</p><a title="Sign in" href="/action/showLogin?redirectUri=%2Fdoi%2Fabs%2F10.1145%2F3606464.3606474%3Fcasa_token%3D6kQVTjhnJDsAAAAA%253AirF7MX4fGH8IW8stekS-S0mw-H0MaV_uI7VDtlM3qwUN4fAwBdCmpxojy92seO_a1m-X2VXYjarR7Q" class="btn big btn--inverse">Sign in</a></div></div><div><h4>Full Access</h4><div class="get__access__full__access py-3"><a href="/action/publisherEcommerceHelper?doi=10.1145/3606464.3606474&amp;redirectUri=https://dl.acm.org/doi/abs/10.1145/3606464.3606474?casa_token=6kQVTjhnJDsAAAAA%3AirF7MX4fGH8IW8stekS-S0mw-H0MaV_uI7VDtlM3qwUN4fAwBdCmpxojy92seO_a1m-X2VXYjarR7Q" title="Get this Publication" class="btn blue big">Get this Publication</a></div></div></div>
+</section><section></section></div><!-- Its needed to duplicate this for PB check Collateral.js as well--><div tabindex="-1" class="section--wrapper"><h3>View options</h3><section class="format--pdf"><h4> <abbr title="Portable Document Format">PDF</abbr></h4><p>View or Download as a PDF file.</p><a href="https://dl.acm.org/doi/pdf/10.1145/3606464.3606474" class="btn btn--pdf red" aria-label="View PDF" title="View PDF"><i aria-hidden="true" class="icon-pdf-file"></i><span>PDF</span></a></section><section class="format--epdf"><h4> <abbr title="Electronic Reader">eReader</abbr></h4><p>View online with <abbr title="Electronic Reader">eReader</abbr>.</p><a href="/doi/epdf/10.1145/3606464.3606474" class="btn btn--eReader blue" aria-label="View online with eReader" title="View online with eReader"><i aria-hidden="true" class="icon-eReader"></i><span>eReader</span></a></section></div></div><div id="core-collateral-figures" role="tabpanel"><header><h2><i class="icon-Icon_Images" aria-hidden="true"></i>Figures</h2></header><!-- There is no content. --></div><div id="core-collateral-tables" role="tabpanel"><header><h2><i class="icon-table" aria-hidden="true"></i>Tables</h2></header><!-- There is no content. --></div><div id="core-collateral-media" role="tabpanel"><header><h2><i class="icon-play-circle-filled" aria-hidden="true"></i>Media</h2></header><!-- There is no content. --></div><div id="core-collateral-share" role="tabpanel"><header><h2><i class="icon-Icon_Share" aria-hidden="true"></i>Share</h2></header><h3>Share</h3><div class="section--wrapper"><section><h4>Share this Publication link</h4><div id="share-self"><p data-id="article-share-self-link" class="share-self__source"></p><button data-id="article-share-access" aria-label="Copy the content Link" class="share-self__action btn btn--inverse"><i aria-hidden="true" class="icon-pages"></i><span>Copy Link</span></button><div aria-live="polite" class="share-self__status"><p class="share-self__success"><i aria-hidden="true" class="icon-check_circle"></i><span>Copied!</span></p><p class="share-self__failed"><i aria-hidden="true" class="icon-x_btnclose"></i><span>Copying failed.</span></p></div></div></section><section><h4>Share on social media</h4><div class="share-buttons a2a a2a_kit"><a href="#" aria-label="Share on X" data-id="article-share-twitter" rel="nofollow noopener" role="link" target="_blank" title="Share on X" class="btn btn--twitter a2a_button_twitter"><i aria-hidden="true" class="icon-x"></i><span>X</span></a><a href="#" aria-label="Share on LinkedIn" data-id="article-share-linkedin" rel="nofollow noopener" role="link" target="_blank" title="Share on LinkedIn" class="btn btn--linkedin a2a_button_linkedin"><i aria-hidden="true" class="icon-linkedin"></i><span>LinkedIn</span></a><a href="#" aria-label="Share on Reddit" data-id="article-share-reddit" rel="nofollow noopener" role="link" target="_blank" title="Share on Reddit" class="btn btn--reddit a2a_button_reddit"><i aria-hidden="true" class="icon-reddit-filled"></i><span>Reddit</span></a><a href="#" aria-label="Share on Facebook" data-id="article-share-facebook" rel="nofollow noopener" role="link" target="_blank" title="Share on Facebook" class="btn btn--facebook a2a_button_facebook"><i aria-hidden="true" class="icon-Icon_Facebook"></i><span>Facebook</span></a><a href="#" aria-label="Share on email" data-id="article-share-email" rel="nofollow noopener" role="link" target="_blank" title="Share on email" class="btn btn--email a2a_button_email"><i aria-hidden="true" class="icon-Icon_mail"></i><span>email</span></a></div></section></div></div></div><div class="contributors-with-details" style="display:none"><section class="core-authors"><h4>Affiliations</h4><div id="artseq-00001" property="author" typeof="Person" data-doi="10.1145/contrib-99659296631"><div class="heading"><img src="/pb-assets/icons/DOs/default-profile-1543932446943.svg" class="core-profile-image" role="presentation" /><div property="name"><span property="givenName">Simon</span> <span property="familyName">Bauer</span></div></div><div class="content"><div class="affiliations"><div property="affiliation" typeof="Organization"><span property="name">Technical University of Munich</span></div></div><div class="core-orcid-link"><a href="https://orcid.org/0000-0003-1967-5609" target="_blank" aria-label="ORCID identifier">https://orcid.org/0000-0003-1967-5609</a></div><div class="core-author-link"><a href="/profile/99659296631" class="profile-link">View Profile</a></div></div></div><div id="artseq-00002" property="author" typeof="Person" data-doi="10.1145/contrib-99659474214"><div class="heading"><img src="/pb-assets/icons/DOs/default-profile-1543932446943.svg" class="core-profile-image" role="presentation" /><div property="name"><span property="givenName">Patrick</span> <span property="familyName">Sattler</span></div></div><div class="content"><div class="affiliations"><div property="affiliation" typeof="Organization"><span property="name">Technical University of Munich</span></div></div><div class="core-orcid-link"><a href="https://orcid.org/0000-0001-9375-3113" target="_blank" aria-label="ORCID identifier">https://orcid.org/0000-0001-9375-3113</a></div><div class="core-author-link"><a href="/profile/99659474214" class="profile-link">View Profile</a></div></div></div><div id="artseq-00003" property="author" typeof="Person" data-doi="10.1145/contrib-99659905327"><div class="heading"><img src="/pb-assets/icons/DOs/default-profile-1543932446943.svg" class="core-profile-image" role="presentation" /><div property="name"><span property="givenName">Johannes</span> <span property="familyName">Zirngibl</span></div></div><div class="content"><div class="affiliations"><div property="affiliation" typeof="Organization"><span property="name">Technical University of Munich</span></div></div><div class="core-orcid-link"><a href="https://orcid.org/0000-0002-2918-016X" target="_blank" aria-label="ORCID identifier">https://orcid.org/0000-0002-2918-016X</a></div><div class="core-author-link"><a href="/profile/99659905327" class="profile-link">View Profile</a></div></div></div><div id="artseq-00004" property="author" typeof="Person" data-doi="10.1145/contrib-99660962350"><div class="heading"><img src="/pb-assets/icons/DOs/default-profile-1543932446943.svg" class="core-profile-image" role="presentation" /><div property="name"><span property="givenName">Christoph</span> <span property="familyName">Schwarzenberg</span></div></div><div class="content"><div class="affiliations"><div property="affiliation" typeof="Organization"><span property="name">Technical University of Munich</span></div></div><div class="core-orcid-link"><a href="https://orcid.org/0000-0001-5993-5925" target="_blank" aria-label="ORCID identifier">https://orcid.org/0000-0001-5993-5925</a></div><div class="core-author-link"><a href="/profile/99660962350" class="profile-link">View Profile</a></div></div></div><div id="artseq-00005" property="author" typeof="Person" data-doi="10.1145/contrib-81100529257"><div class="heading"><img src="/pb-assets/icons/DOs/default-profile-1543932446943.svg" class="core-profile-image" role="presentation" /><div property="name"><span property="givenName">Georg</span> <span property="familyName">Carle</span></div></div><div class="content"><div class="affiliations"><div property="affiliation" typeof="Organization"><span property="name">Technical University of Munich</span></div></div><div class="core-orcid-link"><a href="https://orcid.org/0000-0002-2347-1839" target="_blank" aria-label="ORCID identifier">https://orcid.org/0000-0002-2347-1839</a></div><div class="core-author-link"><a href="/profile/81100529257" class="profile-link">View Profile</a></div></div></div></section></div></article><div data-extent="article-wrapper"><div class="core-container"></div><div class="after-credits"><div class="core-container"><a href="/doi/pdf/10.1145/3606464.3606474?download=true" id="downloadPdfUrl" data-doi="10.1145/3606464.3606474"><span>Download PDF</span></a></div></div></div><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script id="axel-publication-metadata" type="application/json">{"doi":"10.1145/3606464.3606474"}
+</script><script type="text/javascript" data-ot-ignore="data-ot-ignore" defer="defer" src="https://static.addtoany.com/menu/page.js" class="optanon-category-C0004 ot-vscat-C0004"></script><div role="navigation" aria-label="Sticky Navigation" class="st-header-acm"><div class="st-header__track"><div id="progress-tracker" class="st-header__tracker"></div></div></div><template id="figure_nav_template"><nav><a href="#" title="Open in viewer" class="open-in-viewer"><i aria-hidden="true" class="icon-fullscreen"></i></a></nav></template><template id="fv_panel_template" data-shareSocial="Share on social media"><div class="fv__panel js--hidden"><div class="fv__panel__text"><div class="fv__panel__contentTitle"></div><div class="fv__panel__contentText"></div></div></div></template>
+<template id="fv_directory_template" data-overlay="View figure"><div class="fv__directory"><div class="fv__header"><nav class="tab__nav"></nav><a href="#" title="Close figure viewer" class="fv__close"><i aria-hidden="true" class="icon-close_thin"></i></a></div><div class="fv__content tab__content"></div></div></template><template id="fv_directory_tabItem_template" data-figures="Figures" data-others="Others" data-tables="Tables"><button role="tab" data-toggle="tab" class="tab__nav__item"></button></template>
+<template id="fv_lightbox_template" data-sr-back="Go to figure location within the article" data-sr-closeAlt="Close" data-sr-download="Toggle download panel" data-sr-download-pptx="Download PPT" data-sr-info="Toggle information panel" data-sr-panel="Close panel" data-sr-share="Toggle share panel" data-sr-zoom="Zoom" data-text-close="Back to chapter" data-text-nav-figures="All figures" data-text-nav-others="All others" data-text-nav-tables="All tables" data-text-viewAll="View all material" data-title-back="Back to chapter" data-title-closeAlt="Close" data-title-download="Download" data-title-download-pptx="Download PPT" data-title-info="Info" data-title-share="Share" data-title-zoom="Zoom"></template>
+<template id="fv_toolbar_template"><div class="fv__toolbar__info"><p class="fv__toolbar__contentText"></p></div></template><template id="toCitationLink" data-citation="Citation" data-footnote="Footnote"><div class="to-citation__wrapper"><a class="to-citation"><i aria-hidden="true" class="icon-subdirectory_arrow_left"></i><span>Go to</span></a></div></template><template id="toCitationButton" data-citation="Citation" data-footnote="Footnote"><div class="to-citation__wrapper"><button class="to-citation"><i aria-hidden="true" class="icon-subdirectory_arrow_left"></i><span>Go to</span></button></div></template><template id="toCitationAccordion" data-collapse-citation="Hide Citations" data-expand-citation="Show Citations" data-collapse-footnote="Hide Footnotes" data-expand-footnote="Show Footnotes"><div class="to-citation__wrapper"><button aria-controls="aria-controls" aria-expanded="false" aria-label="Toggle citations menu" class="to-citation__toggle"><i aria-hidden="true" class="icon-plus-light"></i><span data-expand-title="data-expand-title" data-collapsed-title="data-collapsed-title" class="accordion__toggle__title"></span></button><div role="menu" aria-label="links" class="to-citation__accordion no-separator"><ul></ul></div></div></template><template id="toCitationAccordionItem"><li><a class="to-citation"><i aria-hidden="true" class="icon-subdirectory_arrow_left"></i><span></span></a></li></template><template id="citations_truncate_template"><div class="citations-truncation"><button data-label-expand="Show all references" data-label-collapse="Show fewer references" data-label-remaining="references remaining" class="btn btn--inverse"><span>Show all references</span></button></div></template><template id="collateral_texts_template" data-references="References" data-figure="Go to Figure" data-media="Go to Media" data-more="More" data-original="Go to original" data-table="Go to Table" data-inViewer="Open in Viewer" data-allInViewer="Open all in viewer"><span>Request permissions</span></template><template id="collapsible_authors_template"><button aria-expanded="false" data-expandable="all" data-label-expand="Expand All" data-label-collapse="Collapse All" class="collateral-contributors-control"><span>Expand All</span></button></template>
+<template id="collapsible_tables_collapse_template"><div class="collapsible-figure-btn__wrapper expanded"><button aria-expanded="true" class="btn collapsible-figure-btn btn--inverse"><i aria-hidden="true" class="icon-arrow-up"></i><span class="text-uppercase">Collapse</span></button></div></template>
+<template id="collapsible_tables_expand_template"><div class="collapsible-figure-btn__wrapper collapsed"><button aria-expanded="false" class="btn collapsible-figure-btn btn--inverse"><i aria-hidden="true" class="icon-arrow-down"></i><span class="text-uppercase">Expand Table</span></button></div></template><template id="authorsAffiliationsLink"><a href="#tab-contributors" class="to-authors-affiliations">Authors Info & Affiliations</a></template>
+
+
+
+
+        
+        <div class="separated-block--dashed align-center"><a href="/doi/proceedings/10.1145/3606464" class="btn btn--inverse big">View Table of Conten</a></div>
+</main>
+
+        </div>
+    
+
+
+
+
+
+        
+        <footer class="footer">
+
+
+
+        
+        <h2 class="sr-only" tabindex="0">Footer</h2>
+
+
+
+
+        
+        <div class="back-to-top clearfix">
+    <i class="icon-arrow_u_p"></i>
+</div>
+
+
+
+
+        
+        <div class="footer-top">
+
+
+
+
+
+
+
+
+
+    
+    
+        <div data-widget-def="ux3-layout-widget" data-widget-id="81a18a14-d709-41fd-9bb6-25a7fc1e13df" class="container">
+        
+
+
+
+        
+        <div class="row sitemap">
+
+
+
+        
+        <div class="col-sm-2 col-xs-6 sitemap__column">
+
+
+
+
+
+
+
+
+
+    
+    
+        <div data-widget-def="UX3HTMLWidget" data-widget-id="5b00ef28-f63b-4518-bd06-da82035f86ca" class="sitemap__data">
+        
+
+
+
+        
+        <h3 style="font-size: .875rem; margin-bottom: 18px;" tabindex="0">Categories</h3>
+<ul class="rlist">
+    <li><a href="/journals" title="Browse a listing of ACM’s Journals">Journals</a></li>
+    <li><a href="/magazines" title="Browse ACM's Magazines">Magazines</a></li>
+    <li><a href="/acmbooks" title="Browse new Releases of ACM Books">Books</a></li>
+    <li><a href="/proceedings" title="Browse the ACM Proceedings">Proceedings</a></li>
+    <li><a href="/sigs" title="Browse the Special Interest Groups">SIGs</a></li>
+    <li><a href="/conferences" title="Browse the Conferences">Conferences</a></li>
+    <li><a href="/collections" title="Browse the Special Collections">Collections</a></li>
+    <li><a href="/people" title="Discover ACM’s community of authors">People</a></li>
+</ul>
+
+        </div>
+    
+
+</div><div class="col-sm-4 col-xs-6 sitemap__column">
+
+
+
+
+
+
+
+
+
+    
+    
+        <div data-widget-def="UX3HTMLWidget" data-widget-id="731f98d3-e996-490d-a071-e9b966b32e2d" class="sitemap__data">
+        
+
+
+
+        
+        <h3 style="font-size: .875rem; margin-bottom: 18px;" tabindex="0">About</h3>
+<ul class="rlist">
+    <li><a href="/about">About ACM Digital Library</a></li>
+    <li><a href="/about/dlboard" title="ACM DL Board - Governance and Support Staff">ACM Digital Library Board</a></li>
+    <li><a href="/about/access" title="Accessing the DL">Subscription Information</a></li>
+    <li><a href="https://www.acm.org/publications/authors/information-for-authors" title="Information for Authors">Author Guidelines</a></li>
+    <li><a href="/about/access" title="Accessing the DL">Using ACM Digital Library</a></li>
+    <li><a href="/about/content#sec2">All Holdings within the ACM Digital Library</a></li>
+    <li><a href="/ccs" title="Classify publications using ACM's Computing Classification System">ACM Computing Classification System</a></li>
+     <li><a href="/about/accessibility" title="Digital Library Accessibility">Accessibility Statement</a></li>
+</ul>
+
+        </div>
+    
+
+</div><div class="col-sm-3 col-xs-6 sitemap__column">
+
+
+
+
+
+
+
+
+
+    
+    
+        <div data-widget-def="UX3HTMLWidget" data-widget-id="d4ed040d-22e8-481c-a7ef-0cac141f5246" class="sitemap__data">
+        
+
+
+
+        
+        <h3 style="font-size: .875rem; margin-bottom: 18px;" tabindex="0">Join</h3>
+<ul class="rlist">
+    <li><a href="https://www.acm.org/membership/join">Join ACM</a></li>
+    <li><a href="https://www.acm.org/special-interest-groups/join">Join SIGs</a></li>
+    <li><a href="https://www.acm.org/publications/subscribe">Subscribe to Publications</a></li>
+    <li><a href="https://libraries.acm.org/">Institutions and Libraries</a></li>
+</ul>
+
+        </div>
+    
+
+</div><div class="col-sm-3 col-xs-6 sitemap__column">
+
+
+
+
+
+
+
+
+
+    
+    
+        <div data-widget-def="UX3HTMLWidget" data-widget-id="4a649bf1-cf3f-472c-b764-dc3ab0cf4310" class="sitemap__data">
+        
+
+
+
+        
+        <h3 style="font-size: .875rem; margin-bottom: 18px;" tabindex="0">Connect</h3>
+<ul class="rlist social-media__connect">
+    <li><a href="/cdn-cgi/l/email-protection#583c34752c3d393518302976393b3576372a3f"><i class="icon-Icon_mail" aria-hidden="true"></i><span>Contact us via email</span></a></li>
+    <li><a href="https://www.facebook.com/AssociationForComputingMachinery/"><i class="icon-facebook" aria-hidden="true"></i><span>ACM on Facebook</span></a></li>
+    <li><a href="https://twitter.com/acmdl"><i class="icon-x" aria-hidden="true"></i><span>ACM DL on X</span></a></li>
+    <li><a href="https://www.linkedin.com/company/association-for-computing-machinery/"><i class="icon-linkedin" aria-hidden="true"></i><span>ACM on Linkedin</span></a></li>
+    <!--li><a href="#" title="icon-Rss"><i class="icon-Rss" aria-hidden="true"></i><span>RSS</span></a></li-->
+    <li><a onclick="srv.openModal(true,'02b075ed48492ef0e7598ddf9762f5ef668d7320')"><i class="icon-Icon_Information" aria-hidden="true"></i><span>Send Feedback</span></a></li>
+    <li><a onclick="srv.openModal(true,'02b075ed48492ef0e7598ddf9762f5ef668d7320')"><i class="icon-Icon_Information" aria-hidden="true"></i><span>Submit a Bug Report</span></a></li>
+</ul>
+
+        </div>
+    
+
+</div>
+</div>
+
+        </div>
+    
+
+</div>
+
+
+
+
+
+
+
+
+
+
+    
+    
+        <div data-widget-def="ux3-layout-widget" data-widget-id="6e6da9b7-371e-4ea0-827e-8de5915b8cd5" class="footer-bottom text-onDark">
+        
+
+
+
+        
+        <div class="container"><div class="row"><div class="col-md-8 col-sm-6 footer__copyright-wrapper">
+
+
+
+        
+        <div class="copyright">The ACM Digital Library is published by the Association for Computing Machinery. Copyright © 2025 ACM, Inc.</div>
+<ul class="rlist--inline">
+    <li><a class="link-nocolor-nounderline" href="https://libraries.acm.org/digital-library/policies#anchor3">Terms of Usage</a></li>
+    <li><a class="link-nocolor-nounderline" href="https://www.acm.org/about-acm/privacy-policy">Privacy Policy</a></li>
+    <li><a class="link-nocolor-nounderline" href="https://www.acm.org/code-of-ethics">Code of Ethics</a></li>
+</ul>
+</div><div class="col-md-4 col-sm-6 footer__logos-wrapper">
+
+
+
+        
+        <div class="logos">
+
+
+
+
+
+
+
+
+
+    
+    
+        <div data-widget-def="ux3-general-image" data-widget-id="42d543b3-ff9d-4f92-bf03-6d1fa00da8c6" class="footer__logo1">
+        
+
+
+
+        
+        <a href="/" title=""><img id="" alt="ACM Digital Library home" src="/specs/products/acm/releasedAssets/images/acm-logo-dl-8437178134fce530bc785276fc316cbf.png" loading="eager"/></a>
+
+        </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+        <div data-widget-def="ux3-general-image" data-widget-id="5a0bc5df-cd95-408f-8ae5-8b1f40746519" class="footer__logo2">
+        
+
+
+
+        
+        <a href="https://www.acm.org" title="external site link"><img id="" alt="ACM Association for Computing Machinery corporate logo" src="/specs/products/acm/releasedAssets/images/acm-logo-3-10aed79f3a6c95ddb67053b599f029af.png" loading="eager"/></a>
+
+        </div>
+    
+
+</div>
+</div></div></div>
+
+        </div>
+    
+
+
+
+
+
+        
+        <!-- Mopinion Pastea.se  start --><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="text/javascript" nonce="ea690fb252804b4f9ed098be8fcc0899">(function(){var id="7zt4vp6rxi2bbpxuy9yzabob4fy2enwmumr";var js=document.createElement("script");var pbBtn=document.querySelector('.admin-bar-disclosure');if(!window.PB){js.setAttribute("src","//deploy.mopinion.com/js/pastease.js");document.getElementsByTagName("head")[0].appendChild(js);var t=setInterval(function(){try{new Pastease.load(id);clearInterval(t)}catch(e){}},50)}})();
+    </script><!-- Mopinion Pastea.se end -->
+</footer>
+
+
+
+
+        
+        <script type="text/javascript" nonce="ea690fb252804b4f9ed098be8fcc0899">
+(function(h,o,t,j,a,r){
+    h.hj=h.hj||function()
+    
+    {(h.hj.q=h.hj.q||[]).push(arguments)}
+    ;
+    h._hjSettings={hjid:1290436,hjsv:6};
+    a=o.getElementsByTagName('head')[0];
+    r=o.createElement('script');r.async=1;
+    r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+    a.appendChild(r);
+})(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+</script>
+
+
+
+
+        
+        <script type="text/javascript" nonce="ea690fb252804b4f9ed098be8fcc0899">
+    (function (w, d) {
+    var b = d.getElementsByTagName('body')[0];
+    var s = d.createElement("script");
+    var v = !("IntersectionObserver" in w) ? "8.17.0" : "10.19.0";
+    s.async = true; // This includes the script as async. See the "recipes" section for more information about async loading of LazyLoad.
+    s.src = "https://cdn.jsdelivr.net/npm/vanilla-lazyload@" + v + "/dist/lazyload.min.js";
+    w.lazyLoadOptions = {elements_selector: ".lazy", "class_loaded": "image-lazy-loaded"};
+    b.appendChild(s);
+}(window, document));
+</script>
+
+
+
+
+        
+        <div role="region" class="affs-popup"><input id="deleteCookie" type="hidden" name="deleteCookie" value="true"/></div>
+
+
+
+
+        
+        <div id="exportDownloadNotReady" role="region" class="searchCiteExport-popup hidden"><div class="searchCiteExport-popup__header"><i aria-hidden="true" class="icon-info"></i><span aria-label="Your Search Results Download Request" class="searchCiteExport-popup__title">Your Search Results Download Request</span><i aria-hidden="true" tabindex="0" class="icon-cancel-bold"> </i></div><div aria-label="Search Results Popup Body" class="searchCiteExport-popup__body clearfix"><p>We are preparing your search results for download ...</p><p>We will inform you here when the file is ready.</p><a href="#" disabled="disabled" class="btn blue pull-right">Download now!</a></div></div><div id="exportDownloadReady" role="region" class="searchCiteExport-popup hidden"><div class="searchCiteExport-popup__header"><i aria-hidden="true" class="icon-info"></i><span aria-label="Your Search Results Download Request" class="searchCiteExport-popup__title">Your Search Results Download Request</span><i aria-hidden="true" tabindex="0" class="icon-cancel-bold"></i></div><div aria-label="Search Results Popup Body" class="searchCiteExport-popup__body clearfix"><div class="csl-all-response hidden"></div><p>Your file of search results citations is now ready.</p><a href="#" class="btn blue searchCiteExport-popup__close pull-right">Download now!</a></div></div><div id="exportDownloadExpired" role="region" class="searchCiteExport-popup hidden"><div class="searchCiteExport-popup__header"><i aria-hidden="true" class="icon-info"></i><span aria-label="Your Search Results Download Request" class="searchCiteExport-popup__title">Your Search Results Download Request</span><i aria-hidden="true" tabindex="0" class="icon-cancel-bold"></i></div><div aria-label="Search Results Popup Body" class="searchCiteExport-popup__body clearfix"><p>Your search export query has expired. Please try again.</p></div></div>
+
+
+
+
+        
+        
+
+
+
+    
+
+    
+
+    
+        
+    
+
+
+
+
+
+
+        
+        
+        </div>
+    </div>
+
+
+
+    <script nonce="ea690fb252804b4f9ed098be8fcc0899">if (typeof define !== 'undefined' && define.amd)
+    define.amd = false</script><script src="/products/acm/releasedAssets/js/main.bundle-e5081de439e84da13dc4.js" nonce="ea690fb252804b4f9ed098be8fcc0899"></script><script nonce="ea690fb252804b4f9ed098be8fcc0899">(function (w, d) {
+    var b = d.getElementsByTagName('body')[0];
+    var s = d.createElement("script");
+    var v = !("IntersectionObserver" in w) ? "8.17.0" : "10.19.0";
+    s.async = true; // This includes the script as async. See the "recipes" section for more information about async loading of LazyLoad.
+    s.src = "https://cdn.jsdelivr.net/npm/vanilla-lazyload@" + v + "/dist/lazyload.min.js";
+    w.lazyLoadOptions = {elements_selector: ".lazy", "class_loaded": "image-lazy-loaded"};
+    b.appendChild(s);
+}(window, document));</script>
+    <script type="text/javascript" src="/wro/1118363~product.js" nonce="ea690fb252804b4f9ed098be8fcc0899"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <script type="text/javascript" nonce="ea690fb252804b4f9ed098be8fcc0899">
+        $(document).ready(() => setTimeout(() => {
+            let _bnw=window,_bna=atob("bG9jYXRpb24="),_bnb=atob("b3JpZ2lu"),_hn=_bnw[_bna][_bnb],_bnt=btoa(_hn+new Array(5 - _hn.length % 4).join(" "));
+            $.get("/resource/lodash?t="+_bnt);
+        },4000));
+    </script>
+
+
+
+
+
+
+
+
+    
+
+    
+    
+
+    
+    
+    
+    
+        
+            
+                <script type="text/javascript" src="/wro/1118363~article-metrics.js" nonce="ea690fb252804b4f9ed098be8fcc0899"></script>
+            
+            
+            
+        
+    
+
+
+
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9225e9fc6de49593',t:'MTc0MjMxMzMyMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

@@ -1,4 +1,10 @@
-version: '3'
+version: '3.8'
+
+# Enable BuildKit features
+x-build-args: &build-args
+  DOCKER_BUILDKIT: 1
+  COMPOSE_DOCKER_CLI_BUILD: 1
+
 services:
 
   client:
@@ -6,33 +12,59 @@ services:
     build:
       context: .
       dockerfile: client.Dockerfile
+      args:
+        <<: *build-args
+        BUILDKIT_INLINE_CACHE: 1
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+        reservations:
+          memory: 512M
+    stop_grace_period: 10s  # Give time for graceful shutdown
     networks:
       quic-net:
         ipv4_address: 172.16.238.10
     depends_on:
       - server
+    working_dir: /app  # Explicitly set working directory
     volumes:
-      - ./certs:/app/certs
+      - ./certs:/app/certs:rw
+      - ./qlogs:/app/qlogs:rw
+      - /etc/localtime:/etc/localtime:ro  # Sync container time with host
 
   server:
     container_name: quic-server
     build:
       context: .
       dockerfile: server.Dockerfile
+      args:
+        <<: *build-args
+        BUILDKIT_INLINE_CACHE: 1
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+        reservations:
+          memory: 512M
+    stop_grace_period: 10s  # Give time for graceful shutdown
     ports:
       - 8080:8080
     networks:
       quic-net:
         ipv4_address: 172.16.238.11
+    working_dir: /app  # Explicitly set working directory
     volumes:
-      - ./certs:/app/certs
+      - ./certs:/app/certs:rw
+      - ./qlogs:/app/qlogs:rw
+      - /etc/localtime:/etc/localtime:ro  # Sync container time with host
 
   tcpdump:
     image: nicolaka/netshoot
     command: tcpdump -i any -w /tmp/capture/Connection_Migration.pcap 'udp port 8080'
     network_mode: "container:quic-client"
     volumes:
-      - ../capture:/tmp/capture
+      - ./capture:/tmp/capture:rw
     depends_on:
       - client
       - server
