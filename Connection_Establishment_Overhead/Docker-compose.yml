@@ -13,6 +13,8 @@ services:
       - server
     volumes:
       - ./certs:/app/certs  # Mount certs folder
+      - ./qlogs:/app/qlogs  # Mount qlogs folder
+      - ./capture:/app/capture  # Mount capture folder
 
   server:
     container_name: quic-server
@@ -26,13 +28,15 @@ services:
         ipv4_address: 172.16.238.11
     volumes:
       - ./certs:/app/certs  # Mount certs folder
+      - ./qlogs:/app/qlogs  # Mount qlogs folder
+      - ./capture:/app/capture  # Mount capture folder
 
   tcpdump:
     image: nicolaka/netshoot
     command: tcpdump -i any -w /tmp/capture/connection_establishment_overhead.pcap 'udp port 8080'
     network_mode: "container:quic-client"
     volumes:
-      - ../capture:/tmp/capture
+      - ./capture:/tmp/capture
     depends_on:
       - client
       - server

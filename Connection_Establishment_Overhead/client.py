@@ -2,51 +2,101 @@ import asyncio
 import logging
 import os
 import ssl
-from aioquic.asyncio import QuicConnectionProtocol, connect
+import time
+
+from aioquic.asyncio import connect
 from aioquic.quic.configuration import QuicConfiguration
-from aioquic.quic.events import QuicEvent, StreamDataReceived
+from aioquic.quic.events import ConnectionTerminated, HandshakeCompleted, StreamDataReceived
+from aioquic.quic.logger import QuicFileLogger
+from aioquic.tls import SessionTicket
 
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s %(levelname)s [%(name)s] %(message)s',
+    datefmt='%H:%M:%S'
+)
 logger = logging.getLogger("client")
-logging.basicConfig(level=logging.INFO)
 
-# Set the SSL keylog file environment variable
-os.environ['SSLKEYLOGFILE'] = '/app/certs/ssl_keylog.txt'
+# Create directories for logs and certs
+os.makedirs("./qlogs", exist_ok=True)
+os.makedirs("./certs", exist_ok=True)
 
-
-class QuicClientProtocol(QuicConnectionProtocol):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-    def quic_event_received(self, event: QuicEvent) -> None:
-        if isinstance(event, StreamDataReceived):
-            logger.info(f"Received response: {event.data.decode()}")
-
-
-async def run_client(host: str, port: int) -> None:
+async def run_client(host, port):
+    """Create and run a QUIC client connection"""
+    # Create QUIC configuration
     configuration = QuicConfiguration(
         alpn_protocols=["quic-demo"],
         is_client=True,
-        max_datagram_frame_size=65536,
-        secrets_log_file=open("/app/certs/ssl_keylog.txt", "a"),
-        verify_mode=ssl.CERT_NONE,  # Don't verify self-signed cert
+        verify_mode=ssl.CERT_NONE,
+        quic_logger=QuicFileLogger("./qlogs")
     )
-
-    # Allow self-signed certificates
-    configuration.validate_certificates = False
-
+    
+    # Load certificate
+    configuration.load_verify_locations("certs/ssl_cert.pem")
+    
+    # Connect to the server
     async with connect(
         host,
         port,
         configuration=configuration,
-        create_protocol=QuicClientProtocol,
+        wait_connected=True
     ) as client:
-        logger.info("QUIC connection established")
-        # Wait briefly to simulate idle time
-        await asyncio.sleep(1)
+        # Send message
+        message = f"Hello from QUIC client at {time.time()}"
+        
+        # Send data on a new stream
+        stream_id = client._quic.get_next_available_stream_id()
+        client._quic.send_stream_data(stream_id, message.encode())
+        logger.info(f"Sent message: {message}")
+        
+        # Wait for the response and events
+        response_received = False
+        
+        # Try for 5 seconds
+        start_time = time.time()
+        while time.time() - start_time < 5:
+            # Process events from QUIC
+            event = client._quic.next_event()
+            while event is not None:
+                if isinstance(event, HandshakeCompleted):
+                    logger.info(f"Handshake completed")
+                
+                elif isinstance(event, StreamDataReceived):
+                    logger.info(f"Received response: {event.data.decode()}")
+                    response_received = True
+                
+                elif isinstance(event, ConnectionTerminated):
+                    logger.info(f"Connection terminated: {event.error_code}")
+                
+                event = client._quic.next_event()
+            
+            # Exit if we got a response
+            if response_received:
+                break
+                
+            # Allow time for network IO and event processing
+            await asyncio.sleep(0.1)
+        
+        # Close the connection gracefully
+        client._quic.close()
+        await asyncio.sleep(0.5)
 
+async def main():
+    # Configure SSL key logging for Wireshark
+    os.environ["SSLKEYLOGFILE"] = "ssl-keys.log"
+    logger.info(f"SSL key logging enabled to {os.environ.get('SSLKEYLOGFILE')}")
+    
+    # Single connection to server
+    logger.info("===== QUIC CONNECTION =====")
+    await run_client("quic-server", 8080)
+    
+    logger.info("Client finished")
 
 if __name__ == "__main__":
     try:
-        asyncio.run(run_client("quic-server", 8080))  # Use the server's container name
+        asyncio.run(main())
     except KeyboardInterrupt:
-        pass
+        logger.info("Client stopped by user")
+    except Exception as e:
+        logger.error(f"Error: {e}", exc_info=True)
