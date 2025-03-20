@@ -15,6 +15,7 @@ services:
       - ./certs:/app/certs  # Mount certs folder
       - ./qlogs:/app/qlogs  # Mount qlogs folder
       - ./capture:/app/capture  # Mount capture folder
+      - ./session-tickets:/app/session-tickets  # Add volume for session tickets
 
   server:
     container_name: quic-server
@@ -30,6 +31,7 @@ services:
       - ./certs:/app/certs  # Mount certs folder
       - ./qlogs:/app/qlogs  # Mount qlogs folder
       - ./capture:/app/capture  # Mount capture folder
+      - ./ssl-keys.log:/app/ssl-keys.log  # Add volume for ssl-keys.log
 
   tcpdump:
     image: nicolaka/netshoot
