@@ -24,6 +24,9 @@ logging.basicConfig(
 
 logger = logging.getLogger("client")
 
+# Set the SSL keylog file environment variable
+os.environ['SSLKEYLOGFILE'] = '/app/certs/ssl_keylog.txt'
+
 # Global variable to store the most recently received session ticket
 saved_session_ticket = None
 
@@ -83,7 +86,8 @@ async def run_client(host, port, *, use_saved_ticket=True):
         alpn_protocols=["quic-demo"],
         is_client=True,
         verify_mode=ssl.CERT_NONE,
-        quic_logger=QuicFileLogger("./qlogs")
+        quic_logger=QuicFileLogger("./qlogs"),
+        secrets_log_file=open("/app/certs/ssl_keylog.txt", "a")
     )
 
     # Load certificate
@@ -160,9 +164,8 @@ async def run_client(host, port, *, use_saved_ticket=True):
 
 async def main():
     # Configure SSL key logging for Wireshark
-    if "SSLKEYLOGFILE" in os.environ:
-        logging.info("SSL key logging enabled to %s", os.environ["SSLKEYLOGFILE"])
-        
+    logging.info("SSL key logging enabled to %s", os.environ["SSLKEYLOGFILE"])
+    
     # First connection (1-RTT)
     logger.info("\n===== FIRST CONNECTION (1-RTT) =====")
     await run_client("quic-server", 8080, use_saved_ticket=False)
