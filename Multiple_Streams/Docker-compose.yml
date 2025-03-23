@@ -10,12 +10,15 @@ services:
         BUILDKIT_INLINE_CACHE: 1
     environment:
       - NUM_STREAMS=${NUM_STREAMS:-3}  # Default to 3 if not set
+      - PYTHONMALLOC=malloc  # Use system malloc
+      - PYTHONUNBUFFERED=1   # Disable output buffering
     deploy:
       resources:
         limits:
-          memory: 1G
+          memory: 4G
+          cpus: '2'
         reservations:
-          memory: 512M
+          memory: 1G
     networks:
       quic-net:
         ipv4_address: 172.16.238.10
@@ -32,12 +35,16 @@ services:
       dockerfile: server.Dockerfile
       args:
         BUILDKIT_INLINE_CACHE: 1
+    environment:
+      - PYTHONMALLOC=malloc
+      - PYTHONUNBUFFERED=1
     deploy:
       resources:
         limits:
-          memory: 1G
+          memory: 4G
+          cpus: '2'
         reservations:
-          memory: 512M
+          memory: 1G
     ports:
       - 8080:8080
     networks:

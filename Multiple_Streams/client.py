@@ -51,17 +51,38 @@ class ThroughputTester:
         self.start_time = time.time()
         self.test_duration = 5  # Test duration in seconds
         self.message_sizes = [1024, 4096, 16384, 65527]  # 1KB, 4KB, 16KB, Max QUIC
+        self.gc_enabled = True  # Enable garbage collection control
         
     async def run_size_test(self, size: int, streams: list):
         """Run throughput test with a specific message size across all streams concurrently"""
+        # Force garbage collection before test
+        if self.gc_enabled:
+            import gc
+            gc.collect()
+            
         start_time = time.time()
         tasks = [self.send_messages(stream, size) for stream in streams]
-        results = await asyncio.gather(*tasks)
+        stream_results = await asyncio.gather(*tasks)
         
-        # Aggregate results for this message size
-        total_messages = sum(r['messages_sent'] for r in results)
-        total_bytes = sum(r['bytes_sent'] for r in results)
+        # Calculate totals
+        total_messages = sum(r['messages_sent'] for r in stream_results)
+        total_bytes = sum(r['bytes_sent'] for r in stream_results)
         duration = time.time() - start_time
+        
+        # Calculate per-stream metrics
+        per_stream_results = []
+        for result in stream_results:
+            stream_duration = duration  # Use same duration for consistency
+            messages = result['messages_sent']
+            bytes_sent = result['bytes_sent']
+            per_stream_results.append({
+                'stream_id': result['stream_id'],
+                'messages_sent': messages,
+                'bytes_sent': bytes_sent,
+                'messages_per_second': messages / stream_duration,
+                'bytes_per_second': bytes_sent / stream_duration,
+                'mbits_per_second': (bytes_sent * 8 / 1_000_000) / stream_duration
+            })
         
         return {
             'size': size,
@@ -70,7 +91,7 @@ class ThroughputTester:
             'total_bytes': total_bytes,
             'total_throughput_mbps': (total_bytes * 8 / 1_000_000) / duration,
             'messages_per_second': total_messages / duration,
-            'per_stream_results': results
+            'per_stream_results': per_stream_results
         }
     
     async def send_messages(self, stream_info: dict, message_size: int):
@@ -86,6 +107,7 @@ class ThroughputTester:
         
         while time.time() < end_time:
             try:
+                # Reuse message object to reduce memory allocations
                 message = f"{messages_sent:010d}".encode() + base_message[:message_size-10]
                 async with stream_info['lock']:
                     writer.write(message)
@@ -93,9 +115,14 @@ class ThroughputTester:
                     messages_sent += 1
                     bytes_sent += len(message)
                 
-                # Add a tiny sleep to prevent overwhelming the system
-                if messages_sent % 100 == 0:
-                    await asyncio.sleep(0.001)
+                # Adaptive sleep based on system load
+                if messages_sent % 50 == 0:  # Increased from 100 to reduce memory pressure
+                    await asyncio.sleep(0.002)  # Increased sleep time slightly
+                
+                # Force garbage collection periodically
+                if self.gc_enabled and messages_sent % 1000 == 0:
+                    import gc
+                    gc.collect()
                     
             except Exception as e:
                 logger.error(f"Error sending message on stream {stream_id}: {e}")
@@ -108,9 +135,14 @@ class ThroughputTester:
         }
     
     def save_aggregate_results(self, all_results: list):
+        """Save the aggregate results to a JSON file"""
+        first_result = all_results[0] if all_results else {}
+        per_stream_results = first_result.get('per_stream_results', [])
+        num_streams = len(per_stream_results)
+        
         aggregate_results = {
             'test_duration': self.test_duration,
-            'number_of_streams': len(all_results[0]['per_stream_results']) if all_results else 0,
+            'number_of_streams': num_streams,
             'message_size_results': all_results,
             'total_test_duration': time.time() - self.start_time
         }
@@ -141,19 +173,29 @@ async def run_client(host: str, port: int, num_streams: int) -> None:
         protocol._sender_lock = asyncio.Lock()
         logger.info("Connection established with server.")
 
-        # Create all streams first
+        # Create streams in batches to reduce memory pressure
         streams = []
+        batch_size = 10
         for i in range(1, num_streams + 1):
-            reader, writer = await protocol.create_stream(is_unidirectional=False)
-            stream_id = writer.get_extra_info("stream_id")
-            streams.append({
-                'stream_id': stream_id,
-                'writer': writer,
-                'reader': reader,
-                'lock': asyncio.Lock(),
-                'queue_name': f'queue{i}'
-            })
-            logger.info(f"Created stream {stream_id} for queue{i}")
+            try:
+                reader, writer = await protocol.create_stream(is_unidirectional=False)
+                stream_id = writer.get_extra_info("stream_id")
+                streams.append({
+                    'stream_id': stream_id,
+                    'writer': writer,
+                    'reader': reader,
+                    'lock': asyncio.Lock(),
+                    'queue_name': f'queue{i}'
+                })
+                logger.info(f"Created stream {stream_id} for queue{i}")
+                
+                # Add small delay between batches of stream creation
+                if i % batch_size == 0:
+                    await asyncio.sleep(0.1)
+                    
+            except Exception as e:
+                logger.error(f"Error creating stream {i}: {e}")
+                continue
 
         # Run tests for each message size across all streams concurrently
         all_results = []
@@ -164,7 +206,8 @@ async def run_client(host: str, port: int, num_streams: int) -> None:
             logger.info(f"Completed test for {size} bytes:")
             logger.info(f"Total throughput: {result['total_throughput_mbps']:.2f} Mbps")
             logger.info(f"Total messages/sec: {result['messages_per_second']:.2f}")
-            await asyncio.sleep(1)  # Short pause between size tests
+            # Add delay between tests
+            await asyncio.sleep(1)
 
         # Save final results
         throughput_tester.save_aggregate_results(all_results)

@@ -170,8 +170,6 @@ async def handle_stream(reader: asyncio.StreamReader, writer: asyncio.StreamWrit
 async def shutdown(signal, loop):
     """Cleanup tasks tied to the service's shutdown."""
     logger.info(f"Received exit signal {signal.name}...")
-    logger.info("Saving final metrics...")
-    metrics_manager.save_performance_metrics()
     tasks = [t for t in asyncio.all_tasks() if t is not asyncio.current_task()]
     [task.cancel() for task in tasks]
     logger.info(f"Cancelling {len(tasks)} outstanding tasks")
@@ -209,7 +207,6 @@ async def main():
     try:
         await asyncio.Future()  # run forever
     finally:
-        metrics_manager.save_performance_metrics()
         server.close()
 
 if __name__ == "__main__":
@@ -217,4 +214,3 @@ if __name__ == "__main__":
         asyncio.run(main())
     except KeyboardInterrupt:
         logger.info("Received keyboard interrupt")
-        metrics_manager.save_performance_metrics()

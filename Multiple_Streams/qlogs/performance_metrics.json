@@ -1,0 +1,1797 @@
+{
+  "test_1": {
+    "test_duration": 5,
+    "number_of_streams": 1,
+    "message_size_results": [
+      {
+        "size": 1024,
+        "duration": 5.034610748291016,
+        "total_messages": 26000,
+        "total_bytes": 26364000,
+        "total_throughput_mbps": 41.89241443771864,
+        "messages_per_second": 5164.2522728943095,
+        "per_stream_results": [
+          {
+            "stream_id": 0,
+            "messages_sent": 26000,
+            "bytes_sent": 26364000,
+            "messages_per_second": 5164.2522728943095,
+            "bytes_per_second": 5236551.804714831,
+            "mbits_per_second": 41.89241443771864
+          }
+        ]
+      },
+      {
+        "size": 4096,
+        "duration": 5.200447082519531,
+        "total_messages": 16825,
+        "total_bytes": 68746950,
+        "total_throughput_mbps": 105.75544588246167,
+        "messages_per_second": 3235.2987604766786,
+        "per_stream_results": [
+          {
+            "stream_id": 0,
+            "messages_sent": 16825,
+            "bytes_sent": 68746950,
+            "messages_per_second": 3235.2987604766786,
+            "bytes_per_second": 13219430.73530771,
+            "mbits_per_second": 105.75544588246167
+          }
+        ]
+      },
+      {
+        "size": 16384,
+        "duration": 5.056037664413452,
+        "total_messages": 13000,
+        "total_bytes": 212862000,
+        "total_throughput_mbps": 336.80445301776683,
+        "messages_per_second": 2571.1833777464794,
+        "per_stream_results": [
+          {
+            "stream_id": 0,
+            "messages_sent": 13000,
+            "bytes_sent": 212862000,
+            "messages_per_second": 2571.1833777464794,
+            "bytes_per_second": 42100556.627220854,
+            "mbits_per_second": 336.80445301776683
+          }
+        ]
+      },
+      {
+        "size": 65527,
+        "duration": 5.988964557647705,
+        "total_messages": 1078,
+        "total_bytes": 70627326,
+        "total_throughput_mbps": 94.34328798598254,
+        "messages_per_second": 179.99772575435105,
+        "per_stream_results": [
+          {
+            "stream_id": 0,
+            "messages_sent": 1078,
+            "bytes_sent": 70627326,
+            "messages_per_second": 179.99772575435105,
+            "bytes_per_second": 11792910.998247819,
+            "mbits_per_second": 94.34328798598254
+          }
+        ]
+      }
+    ],
+    "total_test_duration": 26.10679817199707
+  },
+  "test_3": {
+    "test_duration": 5,
+    "number_of_streams": 3,
+    "message_size_results": [
+      {
+        "size": "1024",
+        "duration": 5.20831036567688,
+        "total_messages": 57050,
+        "total_bytes": 57848700,
+        "total_throughput_mbps": 88.85599503628183,
+        "messages_per_second": 10953.64830328918,
+        "per_stream_results": [
+          {
+            "stream_id": 0,
+            "messages_received": 19050,
+            "bytes_received": 19316700,
+            "duration_seconds": 5.20831036567688,
+            "messages_per_second": 3657.616129319174,
+            "bytes_per_second": 3708822.7551296423,
+            "mbits_per_second": 29.67058204103714
+          },
+          {
+            "stream_id": 4,
+            "messages_received": 19000,
+            "bytes_received": 19266000,
+            "duration_seconds": 5.20831036567688,
+            "messages_per_second": 3648.016086985003,
+            "bytes_per_second": 3699088.3122027926,
+            "mbits_per_second": 29.592706497622338
+          },
+          {
+            "stream_id": 8,
+            "messages_received": 19000,
+            "bytes_received": 19266000,
+            "duration_seconds": 5.20831036567688,
+            "messages_per_second": 3648.016086985003,
+            "bytes_per_second": 3699088.3122027926,
+            "mbits_per_second": 29.592706497622338
+          }
+        ]
+      },
+      {
+        "size": "4096",
+        "duration": 5.156984806060791,
+        "total_messages": 30100,
+        "total_bytes": 122988600,
+        "total_throughput_mbps": 190.79148708052284,
+        "messages_per_second": 5836.74397578692,
+        "per_stream_results": [
+          {
+            "stream_id": 0,
+            "messages_received": 10050,
+            "bytes_received": 41064300,
+            "duration_seconds": 5.156984806060791,
+            "messages_per_second": 1948.8131879288553,
+            "bytes_per_second": 7962850.685877303,
+            "mbits_per_second": 63.70280548701843
+          },
+          {
+            "stream_id": 4,
+            "messages_received": 10050,
+            "bytes_received": 41064300,
+            "duration_seconds": 5.156984806060791,
+            "messages_per_second": 1948.8131879288553,
+            "bytes_per_second": 7962850.685877303,
+            "mbits_per_second": 63.70280548701843
+          },
+          {
+            "stream_id": 8,
+            "messages_received": 10000,
+            "bytes_received": 40860000,
+            "duration_seconds": 5.156984806060791,
+            "messages_per_second": 1939.1175999292093,
+            "bytes_per_second": 7923234.513310749,
+            "mbits_per_second": 63.385876106485995
+          }
+        ]
+      },
+      {
+        "size": "16384",
+        "duration": 5.208669662475586,
+        "total_messages": 21050,
+        "total_bytes": 344672700,
+        "total_throughput_mbps": 529.3830821840728,
+        "messages_per_second": 4041.3390297428305,
+        "per_stream_results": [
+          {
+            "stream_id": 0,
+            "messages_received": 7050,
+            "bytes_received": 115436700,
+            "duration_seconds": 5.208669662475586,
+            "messages_per_second": 1353.5125966597127,
+            "bytes_per_second": 22162415.257706136,
+            "mbits_per_second": 177.2993220616491
+          },
+          {
+            "stream_id": 4,
+            "messages_received": 7000,
+            "bytes_received": 114618000,
+            "duration_seconds": 5.208669662475586,
+            "messages_per_second": 1343.9132165415588,
+            "bytes_per_second": 22005235.00765148,
+            "mbits_per_second": 176.04188006121186
+          },
+          {
+            "stream_id": 8,
+            "messages_received": 7000,
+            "bytes_received": 114618000,
+            "duration_seconds": 5.208669662475586,
+            "messages_per_second": 1343.9132165415588,
+            "bytes_per_second": 22005235.00765148,
+            "mbits_per_second": 176.04188006121186
+          }
+        ]
+      },
+      {
+        "size": "65527",
+        "duration": 5.217213153839111,
+        "total_messages": 11585,
+        "total_bytes": 759014445,
+        "total_throughput_mbps": 1163.8618896626458,
+        "messages_per_second": 2220.534154613775,
+        "per_stream_results": [
+          {
+            "stream_id": 0,
+            "messages_received": 3885,
+            "bytes_received": 254533545,
+            "duration_seconds": 5.217213153839111,
+            "messages_per_second": 744.650426471689,
+            "bytes_per_second": 48787261.99114565,
+            "mbits_per_second": 390.2980959291652
+          },
+          {
+            "stream_id": 4,
+            "messages_received": 3850,
+            "bytes_received": 252240450,
+            "duration_seconds": 5.217213153839111,
+            "messages_per_second": 737.9418640710431,
+            "bytes_per_second": 48347737.108342536,
+            "mbits_per_second": 386.7818968667403
+          },
+          {
+            "stream_id": 8,
+            "messages_received": 3850,
+            "bytes_received": 252240450,
+            "duration_seconds": 5.217213153839111,
+            "messages_per_second": 737.9418640710431,
+            "bytes_per_second": 48347737.108342536,
+            "mbits_per_second": 386.7818968667403
+          }
+        ]
+      }
+    ],
+    "total_test_duration": 25.906620264053345
+  },
+  "test_5": {
+    "test_duration": 5,
+    "number_of_streams": 5,
+    "message_size_results": [
+      {
+        "size": 1024,
+        "duration": 5.092847108840942,
+        "total_messages": 90100,
+        "total_bytes": 91361400,
+        "total_throughput_mbps": 143.51328134928838,
+        "messages_per_second": 17691.47945627322,
+        "per_stream_results": [
+          {
+            "stream_id": 0,
+            "messages_sent": 18050,
+            "bytes_sent": 18302700,
+            "messages_per_second": 3544.186505945967,
+            "bytes_per_second": 3593805.1170292106,
+            "mbits_per_second": 28.750440936233687
+          },
+          {
+            "stream_id": 4,
+            "messages_sent": 18050,
+            "bytes_sent": 18302700,
+            "messages_per_second": 3544.186505945967,
+            "bytes_per_second": 3593805.1170292106,
+            "mbits_per_second": 28.750440936233687
+          },
+          {
+            "stream_id": 8,
+            "messages_sent": 18000,
+            "bytes_sent": 18252000,
+            "messages_per_second": 3534.3688147937623,
+            "bytes_per_second": 3583849.9782008748,
+            "mbits_per_second": 28.670799825607
+          },
+          {
+            "stream_id": 12,
+            "messages_sent": 18000,
+            "bytes_sent": 18252000,
+            "messages_per_second": 3534.3688147937623,
+            "bytes_per_second": 3583849.9782008748,
+            "mbits_per_second": 28.670799825607
+          },
+          {
+            "stream_id": 16,
+            "messages_sent": 18000,
+            "bytes_sent": 18252000,
+            "messages_per_second": 3534.3688147937623,
+            "bytes_per_second": 3583849.9782008748,
+            "mbits_per_second": 28.670799825607
+          }
+        ]
+      },
+      {
+        "size": 4096,
+        "duration": 5.0122551918029785,
+        "total_messages": 56250,
+        "total_bytes": 229837500,
+        "total_throughput_mbps": 366.8408589824003,
+        "messages_per_second": 11222.493238570738,
+        "per_stream_results": [
+          {
+            "stream_id": 0,
+            "messages_sent": 11250,
+            "bytes_sent": 45967500,
+            "messages_per_second": 2244.4986477141474,
+            "bytes_per_second": 9171021.474560006,
+            "mbits_per_second": 73.36817179648006
+          },
+          {
+            "stream_id": 4,
+            "messages_sent": 11250,
+            "bytes_sent": 45967500,
+            "messages_per_second": 2244.4986477141474,
+            "bytes_per_second": 9171021.474560006,
+            "mbits_per_second": 73.36817179648006
+          },
+          {
+            "stream_id": 8,
+            "messages_sent": 11250,
+            "bytes_sent": 45967500,
+            "messages_per_second": 2244.4986477141474,
+            "bytes_per_second": 9171021.474560006,
+            "mbits_per_second": 73.36817179648006
+          },
+          {
+            "stream_id": 12,
+            "messages_sent": 11250,
+            "bytes_sent": 45967500,
+            "messages_per_second": 2244.4986477141474,
+            "bytes_per_second": 9171021.474560006,
+            "mbits_per_second": 73.36817179648006
+          },
+          {
+            "stream_id": 16,
+            "messages_sent": 11250,
+            "bytes_sent": 45967500,
+            "messages_per_second": 2244.4986477141474,
+            "bytes_per_second": 9171021.474560006,
+            "mbits_per_second": 73.36817179648006
+          }
+        ]
+      },
+      {
+        "size": 16384,
+        "duration": 5.022277116775513,
+        "total_messages": 34604,
+        "total_bytes": 566605896,
+        "total_throughput_mbps": 902.5481992738496,
+        "messages_per_second": 6890.101680055649,
+        "per_stream_results": [
+          {
+            "stream_id": 0,
+            "messages_sent": 6950,
+            "bytes_sent": 113799300,
+            "messages_per_second": 1383.8344317531719,
+            "bytes_per_second": 22658904.985526435,
+            "mbits_per_second": 181.2712398842115
+          },
+          {
+            "stream_id": 4,
+            "messages_sent": 6950,
+            "bytes_sent": 113799300,
+            "messages_per_second": 1383.8344317531719,
+            "bytes_per_second": 22658904.985526435,
+            "mbits_per_second": 181.2712398842115
+          },
+          {
+            "stream_id": 8,
+            "messages_sent": 6904,
+            "bytes_sent": 113046096,
+            "messages_per_second": 1374.6752398307767,
+            "bytes_per_second": 22508932.376989137,
+            "mbits_per_second": 180.07145901591312
+          },
+          {
+            "stream_id": 12,
+            "messages_sent": 6900,
+            "bytes_sent": 112980600,
+            "messages_per_second": 1373.8787883592643,
+            "bytes_per_second": 22495891.28059459,
+            "mbits_per_second": 179.96713024475673
+          },
+          {
+            "stream_id": 16,
+            "messages_sent": 6900,
+            "bytes_sent": 112980600,
+            "messages_per_second": 1373.8787883592643,
+            "bytes_per_second": 22495891.28059459,
+            "mbits_per_second": 179.96713024475673
+          }
+        ]
+      },
+      {
+        "size": 65527,
+        "duration": 5.097008228302002,
+        "total_messages": 10308,
+        "total_bytes": 675349236,
+        "total_throughput_mbps": 1059.9931657948032,
+        "messages_per_second": 2022.3628329189432,
+        "per_stream_results": [
+          {
+            "stream_id": 0,
+            "messages_sent": 2055,
+            "bytes_sent": 134637435,
+            "messages_per_second": 403.1776893333749,
+            "bytes_per_second": 26414992.672054723,
+            "mbits_per_second": 211.31994137643778
+          },
+          {
+            "stream_id": 4,
+            "messages_sent": 2053,
+            "bytes_sent": 134506401,
+            "messages_per_second": 402.78530228779493,
+            "bytes_per_second": 26389284.64998946,
+            "mbits_per_second": 211.1142771999157
+          },
+          {
+            "stream_id": 8,
+            "messages_sent": 2050,
+            "bytes_sent": 134309850,
+            "messages_per_second": 402.19672171942506,
+            "bytes_per_second": 26350722.61689157,
+            "mbits_per_second": 210.8057809351326
+          },
+          {
+            "stream_id": 12,
+            "messages_sent": 2050,
+            "bytes_sent": 134309850,
+            "messages_per_second": 402.19672171942506,
+            "bytes_per_second": 26350722.61689157,
+            "mbits_per_second": 210.8057809351326
+          },
+          {
+            "stream_id": 16,
+            "messages_sent": 2100,
+            "bytes_sent": 137585700,
+            "messages_per_second": 412.0063978589232,
+            "bytes_per_second": 26993423.168523073,
+            "mbits_per_second": 215.94738534818458
+          }
+        ]
+      }
+    ],
+    "total_test_duration": 24.617326021194458
+  },
+  "test_10": {
+    "test_duration": 5,
+    "number_of_streams": 10,
+    "message_size_results": [
+      {
+        "size": "1024",
+        "duration": 5.111880779266357,
+        "total_messages": 73500,
+        "total_bytes": 74529000,
+        "total_throughput_mbps": 116.6365229835367,
+        "messages_per_second": 14378.269598562216,
+        "per_stream_results": [
+          {
+            "stream_id": 0,
+            "messages_received": 7400,
+            "bytes_received": 7503600,
+            "duration_seconds": 5.111880779266357,
+            "messages_per_second": 1447.6080956375565,
+            "bytes_per_second": 1467874.6089764822,
+            "mbits_per_second": 11.742996871811858
+          },
+          {
+            "stream_id": 4,
+            "messages_received": 7400,
+            "bytes_received": 7503600,
+            "duration_seconds": 5.111880779266357,
+            "messages_per_second": 1447.6080956375565,
+            "bytes_per_second": 1467874.6089764822,
+            "mbits_per_second": 11.742996871811858
+          },
+          {
+            "stream_id": 8,
+            "messages_received": 7400,
+            "bytes_received": 7503600,
+            "duration_seconds": 5.111880779266357,
+            "messages_per_second": 1447.6080956375565,
+            "bytes_per_second": 1467874.6089764822,
+            "mbits_per_second": 11.742996871811858
+          },
+          {
+            "stream_id": 12,
+            "messages_received": 7400,
+            "bytes_received": 7503600,
+            "duration_seconds": 5.111880779266357,
+            "messages_per_second": 1447.6080956375565,
+            "bytes_per_second": 1467874.6089764822,
+            "mbits_per_second": 11.742996871811858
+          },
+          {
+            "stream_id": 16,
+            "messages_received": 7400,
+            "bytes_received": 7503600,
+            "duration_seconds": 5.111880779266357,
+            "messages_per_second": 1447.6080956375565,
+            "bytes_per_second": 1467874.6089764822,
+            "mbits_per_second": 11.742996871811858
+          },
+          {
+            "stream_id": 20,
+            "messages_received": 7300,
+            "bytes_received": 7402200,
+            "duration_seconds": 5.111880779266357,
+            "messages_per_second": 1428.045824074887,
+            "bytes_per_second": 1448038.4656119351,
+            "mbits_per_second": 11.584307724895481
+          },
+          {
+            "stream_id": 24,
+            "messages_received": 7300,
+            "bytes_received": 7402200,
+            "duration_seconds": 5.111880779266357,
+            "messages_per_second": 1428.045824074887,
+            "bytes_per_second": 1448038.4656119351,
+            "mbits_per_second": 11.584307724895481
+          },
+          {
+            "stream_id": 28,
+            "messages_received": 7300,
+            "bytes_received": 7402200,
+            "duration_seconds": 5.111880779266357,
+            "messages_per_second": 1428.045824074887,
+            "bytes_per_second": 1448038.4656119351,
+            "mbits_per_second": 11.584307724895481
+          },
+          {
+            "stream_id": 32,
+            "messages_received": 7300,
+            "bytes_received": 7402200,
+            "duration_seconds": 5.111880779266357,
+            "messages_per_second": 1428.045824074887,
+            "bytes_per_second": 1448038.4656119351,
+            "mbits_per_second": 11.584307724895481
+          },
+          {
+            "stream_id": 36,
+            "messages_received": 7300,
+            "bytes_received": 7402200,
+            "duration_seconds": 5.111880779266357,
+            "messages_per_second": 1428.045824074887,
+            "bytes_per_second": 1448038.4656119351,
+            "mbits_per_second": 11.584307724895481
+          }
+        ]
+      },
+      {
+        "size": "4096",
+        "duration": 5.160548210144043,
+        "total_messages": 54909,
+        "total_bytes": 224358174,
+        "total_throughput_mbps": 347.80517861878496,
+        "messages_per_second": 10640.1486361596,
+        "per_stream_results": [
+          {
+            "stream_id": 0,
+            "messages_received": 5200,
+            "bytes_received": 21247200,
+            "duration_seconds": 5.160548210144043,
+            "messages_per_second": 1007.6448834986963,
+            "bytes_per_second": 4117236.9939756733,
+            "mbits_per_second": 32.93789595180539
+          },
+          {
+            "stream_id": 4,
+            "messages_received": 5209,
+            "bytes_received": 21283974,
+            "duration_seconds": 5.160548210144043,
+            "messages_per_second": 1009.388884258598,
+            "bytes_per_second": 4124362.9810806313,
+            "mbits_per_second": 32.99490384864505
+          },
+          {
+            "stream_id": 8,
+            "messages_received": 5300,
+            "bytes_received": 21655800,
+            "duration_seconds": 5.160548210144043,
+            "messages_per_second": 1027.022669719825,
+            "bytes_per_second": 4196414.628475205,
+            "mbits_per_second": 33.57131702780164
+          },
+          {
+            "stream_id": 12,
+            "messages_received": 5300,
+            "bytes_received": 21655800,
+            "duration_seconds": 5.160548210144043,
+            "messages_per_second": 1027.022669719825,
+            "bytes_per_second": 4196414.628475205,
+            "mbits_per_second": 33.57131702780164
+          },
+          {
+            "stream_id": 16,
+            "messages_received": 5400,
+            "bytes_received": 22064400,
+            "duration_seconds": 5.160548210144043,
+            "messages_per_second": 1046.4004559409539,
+            "bytes_per_second": 4275592.262974737,
+            "mbits_per_second": 34.2047381037979
+          },
+          {
+            "stream_id": 20,
+            "messages_received": 5400,
+            "bytes_received": 22064400,
+            "duration_seconds": 5.160548210144043,
+            "messages_per_second": 1046.4004559409539,
+            "bytes_per_second": 4275592.262974737,
+            "mbits_per_second": 34.2047381037979
+          },
+          {
+            "stream_id": 24,
+            "messages_received": 5600,
+            "bytes_received": 22881600,
+            "duration_seconds": 5.160548210144043,
+            "messages_per_second": 1085.1560283832114,
+            "bytes_per_second": 4433947.531973802,
+            "mbits_per_second": 35.471580255790414
+          },
+          {
+            "stream_id": 28,
+            "messages_received": 5800,
+            "bytes_received": 23698800,
+            "duration_seconds": 5.160548210144043,
+            "messages_per_second": 1123.911600825469,
+            "bytes_per_second": 4592302.800972866,
+            "mbits_per_second": 36.73842240778293
+          },
+          {
+            "stream_id": 32,
+            "messages_received": 5800,
+            "bytes_received": 23698800,
+            "duration_seconds": 5.160548210144043,
+            "messages_per_second": 1123.911600825469,
+            "bytes_per_second": 4592302.800972866,
+            "mbits_per_second": 36.73842240778293
+          },
+          {
+            "stream_id": 36,
+            "messages_received": 5900,
+            "bytes_received": 24107400,
+            "duration_seconds": 5.160548210144043,
+            "messages_per_second": 1143.2893870465978,
+            "bytes_per_second": 4671480.435472398,
+            "mbits_per_second": 37.37184348377919
+          }
+        ]
+      },
+      {
+        "size": "16384",
+        "duration": 5.297114849090576,
+        "total_messages": 22193,
+        "total_bytes": 363388182,
+        "total_throughput_mbps": 548.8092176251569,
+        "messages_per_second": 4189.639196478845,
+        "per_stream_results": [
+          {
+            "stream_id": 0,
+            "messages_received": 2200,
+            "bytes_received": 36022800,
+            "duration_seconds": 5.297114849090576,
+            "messages_per_second": 415.3204268126643,
+            "bytes_per_second": 6800456.6686305655,
+            "mbits_per_second": 54.40365334904452
+          },
+          {
+            "stream_id": 4,
+            "messages_received": 2200,
+            "bytes_received": 36022800,
+            "duration_seconds": 5.297114849090576,
+            "messages_per_second": 415.3204268126643,
+            "bytes_per_second": 6800456.6686305655,
+            "mbits_per_second": 54.40365334904452
+          },
+          {
+            "stream_id": 8,
+            "messages_received": 2200,
+            "bytes_received": 36022800,
+            "duration_seconds": 5.297114849090576,
+            "messages_per_second": 415.3204268126643,
+            "bytes_per_second": 6800456.6686305655,
+            "mbits_per_second": 54.40365334904452
+          },
+          {
+            "stream_id": 12,
+            "messages_received": 2200,
+            "bytes_received": 36022800,
+            "duration_seconds": 5.297114849090576,
+            "messages_per_second": 415.3204268126643,
+            "bytes_per_second": 6800456.6686305655,
+            "mbits_per_second": 54.40365334904452
+          },
+          {
+            "stream_id": 16,
+            "messages_received": 2157,
+            "bytes_received": 35318718,
+            "duration_seconds": 5.297114849090576,
+            "messages_per_second": 407.2028002885986,
+            "bytes_per_second": 6667538.6519255135,
+            "mbits_per_second": 53.340309215404105
+          },
+          {
+            "stream_id": 20,
+            "messages_received": 2100,
+            "bytes_received": 34385400,
+            "duration_seconds": 5.297114849090576,
+            "messages_per_second": 396.44222559390687,
+            "bytes_per_second": 6491345.00187463,
+            "mbits_per_second": 51.93076001499704
+          },
+          {
+            "stream_id": 24,
+            "messages_received": 2100,
+            "bytes_received": 34385400,
+            "duration_seconds": 5.297114849090576,
+            "messages_per_second": 396.44222559390687,
+            "bytes_per_second": 6491345.00187463,
+            "mbits_per_second": 51.93076001499704
+          },
+          {
+            "stream_id": 28,
+            "messages_received": 2100,
+            "bytes_received": 34385400,
+            "duration_seconds": 5.297114849090576,
+            "messages_per_second": 396.44222559390687,
+            "bytes_per_second": 6491345.00187463,
+            "mbits_per_second": 51.93076001499704
+          },
+          {
+            "stream_id": 32,
+            "messages_received": 2400,
+            "bytes_received": 39297600,
+            "duration_seconds": 5.297114849090576,
+            "messages_per_second": 453.07682925017923,
+            "bytes_per_second": 7418680.002142435,
+            "mbits_per_second": 59.349440017139486
+          },
+          {
+            "stream_id": 36,
+            "messages_received": 2536,
+            "bytes_received": 41524464,
+            "duration_seconds": 5.297114849090576,
+            "messages_per_second": 478.7511829076894,
+            "bytes_per_second": 7839071.8689305065,
+            "mbits_per_second": 62.712574951444054
+          }
+        ]
+      },
+      {
+        "size": "65527",
+        "duration": 6.96245551109314,
+        "total_messages": 7597,
+        "total_bytes": 497732649,
+        "total_throughput_mbps": 571.904723219528,
+        "messages_per_second": 1091.1380313878994,
+        "per_stream_results": [
+          {
+            "stream_id": 0,
+            "messages_received": 700,
+            "bytes_received": 45861900,
+            "duration_seconds": 6.96245551109314,
+            "messages_per_second": 100.53924206549028,
+            "bytes_per_second": 6587029.522404727,
+            "mbits_per_second": 52.69623617923781
+          },
+          {
+            "stream_id": 4,
+            "messages_received": 800,
+            "bytes_received": 52413600,
+            "duration_seconds": 6.96245551109314,
+            "messages_per_second": 114.90199093198889,
+            "bytes_per_second": 7528033.7398911165,
+            "mbits_per_second": 60.22426991912893
+          },
+          {
+            "stream_id": 8,
+            "messages_received": 800,
+            "bytes_received": 52413600,
+            "duration_seconds": 6.96245551109314,
+            "messages_per_second": 114.90199093198889,
+            "bytes_per_second": 7528033.7398911165,
+            "mbits_per_second": 60.22426991912893
+          },
+          {
+            "stream_id": 12,
+            "messages_received": 800,
+            "bytes_received": 52413600,
+            "duration_seconds": 6.96245551109314,
+            "messages_per_second": 114.90199093198889,
+            "bytes_per_second": 7528033.7398911165,
+            "mbits_per_second": 60.22426991912893
+          },
+          {
+            "stream_id": 16,
+            "messages_received": 800,
+            "bytes_received": 52413600,
+            "duration_seconds": 6.96245551109314,
+            "messages_per_second": 114.90199093198889,
+            "bytes_per_second": 7528033.7398911165,
+            "mbits_per_second": 60.22426991912893
+          },
+          {
+            "stream_id": 20,
+            "messages_received": 800,
+            "bytes_received": 52413600,
+            "duration_seconds": 6.96245551109314,
+            "messages_per_second": 114.90199093198889,
+            "bytes_per_second": 7528033.7398911165,
+            "mbits_per_second": 60.22426991912893
+          },
+          {
+            "stream_id": 24,
+            "messages_received": 797,
+            "bytes_received": 52217049,
+            "duration_seconds": 6.96245551109314,
+            "messages_per_second": 114.47110846599394,
+            "bytes_per_second": 7499803.613366525,
+            "mbits_per_second": 59.9984289069322
+          },
+          {
+            "stream_id": 28,
+            "messages_received": 700,
+            "bytes_received": 45861900,
+            "duration_seconds": 6.96245551109314,
+            "messages_per_second": 100.53924206549028,
+            "bytes_per_second": 6587029.522404727,
+            "mbits_per_second": 52.69623617923781
+          },
+          {
+            "stream_id": 32,
+            "messages_received": 700,
+            "bytes_received": 45861900,
+            "duration_seconds": 6.96245551109314,
+            "messages_per_second": 100.53924206549028,
+            "bytes_per_second": 6587029.522404727,
+            "mbits_per_second": 52.69623617923781
+          },
+          {
+            "stream_id": 36,
+            "messages_received": 700,
+            "bytes_received": 45861900,
+            "duration_seconds": 6.96245551109314,
+            "messages_per_second": 100.53924206549028,
+            "bytes_per_second": 6587029.522404727,
+            "mbits_per_second": 52.69623617923781
+          }
+        ]
+      }
+    ],
+    "total_test_duration": 26.738018035888672
+  },
+  "test_25": {
+    "test_duration": 5,
+    "number_of_streams": 25,
+    "message_size_results": [
+      {
+        "size": "1024",
+        "duration": 5.101378917694092,
+        "total_messages": 209958,
+        "total_bytes": 212897412,
+        "total_throughput_mbps": 333.86645522302535,
+        "messages_per_second": 41157.107399288136,
+        "per_stream_results": [
+          {
+            "stream_id": 0,
+            "messages_received": 8300,
+            "bytes_received": 8416200,
+            "duration_seconds": 5.101378917694092,
+            "messages_per_second": 1627.0110756155589,
+            "bytes_per_second": 1649789.2306741767,
+            "mbits_per_second": 13.198313845393413
+          },
+          {
+            "stream_id": 4,
+            "messages_received": 8400,
+            "bytes_received": 8517600,
+            "duration_seconds": 5.101378917694092,
+            "messages_per_second": 1646.6136186952644,
+            "bytes_per_second": 1669666.209356998,
+            "mbits_per_second": 13.357329674855984
+          },
+          {
+            "stream_id": 8,
+            "messages_received": 8400,
+            "bytes_received": 8517600,
+            "duration_seconds": 5.101378917694092,
+            "messages_per_second": 1646.6136186952644,
+            "bytes_per_second": 1669666.209356998,
+            "mbits_per_second": 13.357329674855984
+          },
+          {
+            "stream_id": 12,
+            "messages_received": 8400,
+            "bytes_received": 8517600,
+            "duration_seconds": 5.101378917694092,
+            "messages_per_second": 1646.6136186952644,
+            "bytes_per_second": 1669666.209356998,
+            "mbits_per_second": 13.357329674855984
+          },
+          {
+            "stream_id": 16,
+            "messages_received": 8400,
+            "bytes_received": 8517600,
+            "duration_seconds": 5.101378917694092,
+            "messages_per_second": 1646.6136186952644,
+            "bytes_per_second": 1669666.209356998,
+            "mbits_per_second": 13.357329674855984
+          },
+          {
+            "stream_id": 20,
+            "messages_received": 8400,
+            "bytes_received": 8517600,
+            "duration_seconds": 5.101378917694092,
+            "messages_per_second": 1646.6136186952644,
+            "bytes_per_second": 1669666.209356998,
+            "mbits_per_second": 13.357329674855984
+          },
+          {
+            "stream_id": 24,
+            "messages_received": 8400,
+            "bytes_received": 8517600,
+            "duration_seconds": 5.101378917694092,
+            "messages_per_second": 1646.6136186952644,
+            "bytes_per_second": 1669666.209356998,
+            "mbits_per_second": 13.357329674855984
+          },
+          {
+            "stream_id": 28,
+            "messages_received": 8400,
+            "bytes_received": 8517600,
+            "duration_seconds": 5.101378917694092,
+            "messages_per_second": 1646.6136186952644,
+            "bytes_per_second": 1669666.209356998,
+            "mbits_per_second": 13.357329674855984
+          },
+          {
+            "stream_id": 32,
+            "messages_received": 8400,
+            "bytes_received": 8517600,
+            "duration_seconds": 5.101378917694092,
+            "messages_per_second": 1646.6136186952644,
+            "bytes_per_second": 1669666.209356998,
+            "mbits_per_second": 13.357329674855984
+          },
+          {
+            "stream_id": 36,
+            "messages_received": 8400,
+            "bytes_received": 8517600,
+            "duration_seconds": 5.101378917694092,
+            "messages_per_second": 1646.6136186952644,
+            "bytes_per_second": 1669666.209356998,
+            "mbits_per_second": 13.357329674855984
+          },
+          {
+            "stream_id": 40,
+            "messages_received": 8400,
+            "bytes_received": 8517600,
+            "duration_seconds": 5.101378917694092,
+            "messages_per_second": 1646.6136186952644,
+            "bytes_per_second": 1669666.209356998,
+            "mbits_per_second": 13.357329674855984
+          },
+          {
+            "stream_id": 44,
+            "messages_received": 8400,
+            "bytes_received": 8517600,
+            "duration_seconds": 5.101378917694092,
+            "messages_per_second": 1646.6136186952644,
+            "bytes_per_second": 1669666.209356998,
+            "mbits_per_second": 13.357329674855984
+          },
+          {
+            "stream_id": 48,
+            "messages_received": 8400,
+            "bytes_received": 8517600,
+            "duration_seconds": 5.101378917694092,
+            "messages_per_second": 1646.6136186952644,
+            "bytes_per_second": 1669666.209356998,
+            "mbits_per_second": 13.357329674855984
+          },
+          {
+            "stream_id": 52,
+            "messages_received": 8400,
+            "bytes_received": 8517600,
+            "duration_seconds": 5.101378917694092,
+            "messages_per_second": 1646.6136186952644,
+            "bytes_per_second": 1669666.209356998,
+            "mbits_per_second": 13.357329674855984
+          },
+          {
+            "stream_id": 56,
+            "messages_received": 8400,
+            "bytes_received": 8517600,
+            "duration_seconds": 5.101378917694092,
+            "messages_per_second": 1646.6136186952644,
+            "bytes_per_second": 1669666.209356998,
+            "mbits_per_second": 13.357329674855984
+          },
+          {
+            "stream_id": 60,
+            "messages_received": 8400,
+            "bytes_received": 8517600,
+            "duration_seconds": 5.101378917694092,
+            "messages_per_second": 1646.6136186952644,
+            "bytes_per_second": 1669666.209356998,
+            "mbits_per_second": 13.357329674855984
+          },
+          {
+            "stream_id": 64,
+            "messages_received": 8400,
+            "bytes_received": 8517600,
+            "duration_seconds": 5.101378917694092,
+            "messages_per_second": 1646.6136186952644,
+            "bytes_per_second": 1669666.209356998,
+            "mbits_per_second": 13.357329674855984
+          },
+          {
+            "stream_id": 68,
+            "messages_received": 8400,
+            "bytes_received": 8517600,
+            "duration_seconds": 5.101378917694092,
+            "messages_per_second": 1646.6136186952644,
+            "bytes_per_second": 1669666.209356998,
+            "mbits_per_second": 13.357329674855984
+          },
+          {
+            "stream_id": 72,
+            "messages_received": 8400,
+            "bytes_received": 8517600,
+            "duration_seconds": 5.101378917694092,
+            "messages_per_second": 1646.6136186952644,
+            "bytes_per_second": 1669666.209356998,
+            "mbits_per_second": 13.357329674855984
+          },
+          {
+            "stream_id": 76,
+            "messages_received": 8400,
+            "bytes_received": 8517600,
+            "duration_seconds": 5.101378917694092,
+            "messages_per_second": 1646.6136186952644,
+            "bytes_per_second": 1669666.209356998,
+            "mbits_per_second": 13.357329674855984
+          },
+          {
+            "stream_id": 80,
+            "messages_received": 8400,
+            "bytes_received": 8517600,
+            "duration_seconds": 5.101378917694092,
+            "messages_per_second": 1646.6136186952644,
+            "bytes_per_second": 1669666.209356998,
+            "mbits_per_second": 13.357329674855984
+          },
+          {
+            "stream_id": 84,
+            "messages_received": 8400,
+            "bytes_received": 8517600,
+            "duration_seconds": 5.101378917694092,
+            "messages_per_second": 1646.6136186952644,
+            "bytes_per_second": 1669666.209356998,
+            "mbits_per_second": 13.357329674855984
+          },
+          {
+            "stream_id": 88,
+            "messages_received": 8400,
+            "bytes_received": 8517600,
+            "duration_seconds": 5.101378917694092,
+            "messages_per_second": 1646.6136186952644,
+            "bytes_per_second": 1669666.209356998,
+            "mbits_per_second": 13.357329674855984
+          },
+          {
+            "stream_id": 92,
+            "messages_received": 8400,
+            "bytes_received": 8517600,
+            "duration_seconds": 5.101378917694092,
+            "messages_per_second": 1646.6136186952644,
+            "bytes_per_second": 1669666.209356998,
+            "mbits_per_second": 13.357329674855984
+          },
+          {
+            "stream_id": 96,
+            "messages_received": 8458,
+            "bytes_received": 8576412,
+            "duration_seconds": 5.101378917694092,
+            "messages_per_second": 1657.9830936814935,
+            "bytes_per_second": 1681194.8569930345,
+            "mbits_per_second": 13.449558855944275
+          }
+        ]
+      },
+      {
+        "size": "4096",
+        "duration": 5.454763889312744,
+        "total_messages": 79292,
+        "total_bytes": 323987112,
+        "total_throughput_mbps": 475.1620690820695,
+        "messages_per_second": 14536.284541179315,
+        "per_stream_results": [
+          {
+            "stream_id": 0,
+            "messages_received": 2900,
+            "bytes_received": 11849400,
+            "duration_seconds": 5.454763889312744,
+            "messages_per_second": 531.6453761970945,
+            "bytes_per_second": 2172303.007141328,
+            "mbits_per_second": 17.378424057130623
+          },
+          {
+            "stream_id": 4,
+            "messages_received": 2900,
+            "bytes_received": 11849400,
+            "duration_seconds": 5.454763889312744,
+            "messages_per_second": 531.6453761970945,
+            "bytes_per_second": 2172303.007141328,
+            "mbits_per_second": 17.378424057130623
+          },
+          {
+            "stream_id": 8,
+            "messages_received": 2900,
+            "bytes_received": 11849400,
+            "duration_seconds": 5.454763889312744,
+            "messages_per_second": 531.6453761970945,
+            "bytes_per_second": 2172303.007141328,
+            "mbits_per_second": 17.378424057130623
+          },
+          {
+            "stream_id": 12,
+            "messages_received": 2900,
+            "bytes_received": 11849400,
+            "duration_seconds": 5.454763889312744,
+            "messages_per_second": 531.6453761970945,
+            "bytes_per_second": 2172303.007141328,
+            "mbits_per_second": 17.378424057130623
+          },
+          {
+            "stream_id": 16,
+            "messages_received": 2900,
+            "bytes_received": 11849400,
+            "duration_seconds": 5.454763889312744,
+            "messages_per_second": 531.6453761970945,
+            "bytes_per_second": 2172303.007141328,
+            "mbits_per_second": 17.378424057130623
+          },
+          {
+            "stream_id": 20,
+            "messages_received": 2900,
+            "bytes_received": 11849400,
+            "duration_seconds": 5.454763889312744,
+            "messages_per_second": 531.6453761970945,
+            "bytes_per_second": 2172303.007141328,
+            "mbits_per_second": 17.378424057130623
+          },
+          {
+            "stream_id": 24,
+            "messages_received": 2900,
+            "bytes_received": 11849400,
+            "duration_seconds": 5.454763889312744,
+            "messages_per_second": 531.6453761970945,
+            "bytes_per_second": 2172303.007141328,
+            "mbits_per_second": 17.378424057130623
+          },
+          {
+            "stream_id": 28,
+            "messages_received": 3000,
+            "bytes_received": 12258000,
+            "duration_seconds": 5.454763889312744,
+            "messages_per_second": 549.9779753763046,
+            "bytes_per_second": 2247210.007387581,
+            "mbits_per_second": 17.977680059100646
+          },
+          {
+            "stream_id": 32,
+            "messages_received": 3000,
+            "bytes_received": 12258000,
+            "duration_seconds": 5.454763889312744,
+            "messages_per_second": 549.9779753763046,
+            "bytes_per_second": 2247210.007387581,
+            "mbits_per_second": 17.977680059100646
+          },
+          {
+            "stream_id": 36,
+            "messages_received": 3000,
+            "bytes_received": 12258000,
+            "duration_seconds": 5.454763889312744,
+            "messages_per_second": 549.9779753763046,
+            "bytes_per_second": 2247210.007387581,
+            "mbits_per_second": 17.977680059100646
+          },
+          {
+            "stream_id": 40,
+            "messages_received": 3100,
+            "bytes_received": 12666600,
+            "duration_seconds": 5.454763889312744,
+            "messages_per_second": 568.3105745555148,
+            "bytes_per_second": 2322117.007633833,
+            "mbits_per_second": 18.57693606107067
+          },
+          {
+            "stream_id": 44,
+            "messages_received": 3200,
+            "bytes_received": 13075200,
+            "duration_seconds": 5.454763889312744,
+            "messages_per_second": 586.6431737347249,
+            "bytes_per_second": 2397024.007880086,
+            "mbits_per_second": 19.176192063040688
+          },
+          {
+            "stream_id": 48,
+            "messages_received": 3200,
+            "bytes_received": 13075200,
+            "duration_seconds": 5.454763889312744,
+            "messages_per_second": 586.6431737347249,
+            "bytes_per_second": 2397024.007880086,
+            "mbits_per_second": 19.176192063040688
+          },
+          {
+            "stream_id": 52,
+            "messages_received": 3222,
+            "bytes_received": 13165092,
+            "duration_seconds": 5.454763889312744,
+            "messages_per_second": 590.6763455541511,
+            "bytes_per_second": 2413503.5479342616,
+            "mbits_per_second": 19.308028383474092
+          },
+          {
+            "stream_id": 56,
+            "messages_received": 3300,
+            "bytes_received": 13483800,
+            "duration_seconds": 5.454763889312744,
+            "messages_per_second": 604.9757729139351,
+            "bytes_per_second": 2471931.008126339,
+            "mbits_per_second": 19.77544806501071
+          },
+          {
+            "stream_id": 60,
+            "messages_received": 3300,
+            "bytes_received": 13483800,
+            "duration_seconds": 5.454763889312744,
+            "messages_per_second": 604.9757729139351,
+            "bytes_per_second": 2471931.008126339,
+            "mbits_per_second": 19.77544806501071
+          },
+          {
+            "stream_id": 64,
+            "messages_received": 3400,
+            "bytes_received": 13892400,
+            "duration_seconds": 5.454763889312744,
+            "messages_per_second": 623.3083720931452,
+            "bytes_per_second": 2546838.0083725913,
+            "mbits_per_second": 20.374704066980733
+          },
+          {
+            "stream_id": 68,
+            "messages_received": 3435,
+            "bytes_received": 14035410,
+            "duration_seconds": 5.454763889312744,
+            "messages_per_second": 629.7247818058688,
+            "bytes_per_second": 2573055.45845878,
+            "mbits_per_second": 20.58444366767024
+          },
+          {
+            "stream_id": 72,
+            "messages_received": 3400,
+            "bytes_received": 13892400,
+            "duration_seconds": 5.454763889312744,
+            "messages_per_second": 623.3083720931452,
+            "bytes_per_second": 2546838.0083725913,
+            "mbits_per_second": 20.374704066980733
+          },
+          {
+            "stream_id": 76,
+            "messages_received": 3400,
+            "bytes_received": 13892400,
+            "duration_seconds": 5.454763889312744,
+            "messages_per_second": 623.3083720931452,
+            "bytes_per_second": 2546838.0083725913,
+            "mbits_per_second": 20.374704066980733
+          },
+          {
+            "stream_id": 80,
+            "messages_received": 3400,
+            "bytes_received": 13892400,
+            "duration_seconds": 5.454763889312744,
+            "messages_per_second": 623.3083720931452,
+            "bytes_per_second": 2546838.0083725913,
+            "mbits_per_second": 20.374704066980733
+          },
+          {
+            "stream_id": 84,
+            "messages_received": 3435,
+            "bytes_received": 14035410,
+            "duration_seconds": 5.454763889312744,
+            "messages_per_second": 629.7247818058688,
+            "bytes_per_second": 2573055.45845878,
+            "mbits_per_second": 20.58444366767024
+          },
+          {
+            "stream_id": 88,
+            "messages_received": 3400,
+            "bytes_received": 13892400,
+            "duration_seconds": 5.454763889312744,
+            "messages_per_second": 623.3083720931452,
+            "bytes_per_second": 2546838.0083725913,
+            "mbits_per_second": 20.374704066980733
+          },
+          {
+            "stream_id": 92,
+            "messages_received": 3400,
+            "bytes_received": 13892400,
+            "duration_seconds": 5.454763889312744,
+            "messages_per_second": 623.3083720931452,
+            "bytes_per_second": 2546838.0083725913,
+            "mbits_per_second": 20.374704066980733
+          },
+          {
+            "stream_id": 96,
+            "messages_received": 3400,
+            "bytes_received": 13892400,
+            "duration_seconds": 5.454763889312744,
+            "messages_per_second": 623.3083720931452,
+            "bytes_per_second": 2546838.0083725913,
+            "mbits_per_second": 20.374704066980733
+          }
+        ]
+      },
+      {
+        "size": "16384",
+        "duration": 6.294612646102905,
+        "total_messages": 33988,
+        "total_bytes": 556519512,
+        "total_throughput_mbps": 707.2962779935951,
+        "messages_per_second": 5399.537971735642,
+        "per_stream_results": [
+          {
+            "stream_id": 0,
+            "messages_received": 1200,
+            "bytes_received": 19648800,
+            "duration_seconds": 6.294612646102905,
+            "messages_per_second": 190.6392128422611,
+            "bytes_per_second": 3121526.471079183,
+            "mbits_per_second": 24.972211768633464
+          },
+          {
+            "stream_id": 4,
+            "messages_received": 1200,
+            "bytes_received": 19648800,
+            "duration_seconds": 6.294612646102905,
+            "messages_per_second": 190.6392128422611,
+            "bytes_per_second": 3121526.471079183,
+            "mbits_per_second": 24.972211768633464
+          },
+          {
+            "stream_id": 8,
+            "messages_received": 1200,
+            "bytes_received": 19648800,
+            "duration_seconds": 6.294612646102905,
+            "messages_per_second": 190.6392128422611,
+            "bytes_per_second": 3121526.471079183,
+            "mbits_per_second": 24.972211768633464
+          },
+          {
+            "stream_id": 12,
+            "messages_received": 1200,
+            "bytes_received": 19648800,
+            "duration_seconds": 6.294612646102905,
+            "messages_per_second": 190.6392128422611,
+            "bytes_per_second": 3121526.471079183,
+            "mbits_per_second": 24.972211768633464
+          },
+          {
+            "stream_id": 16,
+            "messages_received": 1200,
+            "bytes_received": 19648800,
+            "duration_seconds": 6.294612646102905,
+            "messages_per_second": 190.6392128422611,
+            "bytes_per_second": 3121526.471079183,
+            "mbits_per_second": 24.972211768633464
+          },
+          {
+            "stream_id": 20,
+            "messages_received": 1200,
+            "bytes_received": 19648800,
+            "duration_seconds": 6.294612646102905,
+            "messages_per_second": 190.6392128422611,
+            "bytes_per_second": 3121526.471079183,
+            "mbits_per_second": 24.972211768633464
+          },
+          {
+            "stream_id": 24,
+            "messages_received": 1200,
+            "bytes_received": 19648800,
+            "duration_seconds": 6.294612646102905,
+            "messages_per_second": 190.6392128422611,
+            "bytes_per_second": 3121526.471079183,
+            "mbits_per_second": 24.972211768633464
+          },
+          {
+            "stream_id": 28,
+            "messages_received": 1200,
+            "bytes_received": 19648800,
+            "duration_seconds": 6.294612646102905,
+            "messages_per_second": 190.6392128422611,
+            "bytes_per_second": 3121526.471079183,
+            "mbits_per_second": 24.972211768633464
+          },
+          {
+            "stream_id": 32,
+            "messages_received": 1200,
+            "bytes_received": 19648800,
+            "duration_seconds": 6.294612646102905,
+            "messages_per_second": 190.6392128422611,
+            "bytes_per_second": 3121526.471079183,
+            "mbits_per_second": 24.972211768633464
+          },
+          {
+            "stream_id": 36,
+            "messages_received": 1200,
+            "bytes_received": 19648800,
+            "duration_seconds": 6.294612646102905,
+            "messages_per_second": 190.6392128422611,
+            "bytes_per_second": 3121526.471079183,
+            "mbits_per_second": 24.972211768633464
+          },
+          {
+            "stream_id": 40,
+            "messages_received": 1200,
+            "bytes_received": 19648800,
+            "duration_seconds": 6.294612646102905,
+            "messages_per_second": 190.6392128422611,
+            "bytes_per_second": 3121526.471079183,
+            "mbits_per_second": 24.972211768633464
+          },
+          {
+            "stream_id": 44,
+            "messages_received": 1300,
+            "bytes_received": 21286200,
+            "duration_seconds": 6.294612646102905,
+            "messages_per_second": 206.5258139124495,
+            "bytes_per_second": 3381653.677002448,
+            "mbits_per_second": 27.053229416019587
+          },
+          {
+            "stream_id": 48,
+            "messages_received": 1300,
+            "bytes_received": 21286200,
+            "duration_seconds": 6.294612646102905,
+            "messages_per_second": 206.5258139124495,
+            "bytes_per_second": 3381653.677002448,
+            "mbits_per_second": 27.053229416019587
+          },
+          {
+            "stream_id": 52,
+            "messages_received": 1300,
+            "bytes_received": 21286200,
+            "duration_seconds": 6.294612646102905,
+            "messages_per_second": 206.5258139124495,
+            "bytes_per_second": 3381653.677002448,
+            "mbits_per_second": 27.053229416019587
+          },
+          {
+            "stream_id": 56,
+            "messages_received": 1400,
+            "bytes_received": 22923600,
+            "duration_seconds": 6.294612646102905,
+            "messages_per_second": 222.41241498263793,
+            "bytes_per_second": 3641780.8829257134,
+            "mbits_per_second": 29.13424706340571
+          },
+          {
+            "stream_id": 60,
+            "messages_received": 1400,
+            "bytes_received": 22923600,
+            "duration_seconds": 6.294612646102905,
+            "messages_per_second": 222.41241498263793,
+            "bytes_per_second": 3641780.8829257134,
+            "mbits_per_second": 29.13424706340571
+          },
+          {
+            "stream_id": 64,
+            "messages_received": 1424,
+            "bytes_received": 23316576,
+            "duration_seconds": 6.294612646102905,
+            "messages_per_second": 226.22519923948315,
+            "bytes_per_second": 3704211.412347297,
+            "mbits_per_second": 29.63369129877838
+          },
+          {
+            "stream_id": 68,
+            "messages_received": 1400,
+            "bytes_received": 22923600,
+            "duration_seconds": 6.294612646102905,
+            "messages_per_second": 222.41241498263793,
+            "bytes_per_second": 3641780.8829257134,
+            "mbits_per_second": 29.13424706340571
+          },
+          {
+            "stream_id": 72,
+            "messages_received": 1400,
+            "bytes_received": 22923600,
+            "duration_seconds": 6.294612646102905,
+            "messages_per_second": 222.41241498263793,
+            "bytes_per_second": 3641780.8829257134,
+            "mbits_per_second": 29.13424706340571
+          },
+          {
+            "stream_id": 76,
+            "messages_received": 1400,
+            "bytes_received": 22923600,
+            "duration_seconds": 6.294612646102905,
+            "messages_per_second": 222.41241498263793,
+            "bytes_per_second": 3641780.8829257134,
+            "mbits_per_second": 29.13424706340571
+          },
+          {
+            "stream_id": 80,
+            "messages_received": 1600,
+            "bytes_received": 26198400,
+            "duration_seconds": 6.294612646102905,
+            "messages_per_second": 254.18561712301477,
+            "bytes_per_second": 4162035.294772244,
+            "mbits_per_second": 33.296282358177955
+          },
+          {
+            "stream_id": 84,
+            "messages_received": 1764,
+            "bytes_received": 28883736,
+            "duration_seconds": 6.294612646102905,
+            "messages_per_second": 280.2396428781238,
+            "bytes_per_second": 4588643.912486399,
+            "mbits_per_second": 36.70915129989119
+          },
+          {
+            "stream_id": 88,
+            "messages_received": 1700,
+            "bytes_received": 27835800,
+            "duration_seconds": 6.294612646102905,
+            "messages_per_second": 270.0722181932032,
+            "bytes_per_second": 4422162.500695509,
+            "mbits_per_second": 35.377300005564074
+          },
+          {
+            "stream_id": 92,
+            "messages_received": 1700,
+            "bytes_received": 27835800,
+            "duration_seconds": 6.294612646102905,
+            "messages_per_second": 270.0722181932032,
+            "bytes_per_second": 4422162.500695509,
+            "mbits_per_second": 35.377300005564074
+          },
+          {
+            "stream_id": 96,
+            "messages_received": 1700,
+            "bytes_received": 27835800,
+            "duration_seconds": 6.294612646102905,
+            "messages_per_second": 270.0722181932032,
+            "bytes_per_second": 4422162.500695509,
+            "mbits_per_second": 35.377300005564074
+          }
+        ]
+      },
+      {
+        "size": "65527",
+        "duration": 20.97416877746582,
+        "total_messages": 5795,
+        "total_bytes": 379671015,
+        "total_throughput_mbps": 144.81470766380409,
+        "messages_per_second": 276.2922364878659,
+        "per_stream_results": [
+          {
+            "stream_id": 0,
+            "messages_received": 100,
+            "bytes_received": 6551700,
+            "duration_seconds": 20.97416877746582,
+            "messages_per_second": 4.767769395821673,
+            "bytes_per_second": 312369.9475060485,
+            "mbits_per_second": 2.498959580048388
+          },
+          {
+            "stream_id": 4,
+            "messages_received": 100,
+            "bytes_received": 6551700,
+            "duration_seconds": 20.97416877746582,
+            "messages_per_second": 4.767769395821673,
+            "bytes_per_second": 312369.9475060485,
+            "mbits_per_second": 2.498959580048388
+          },
+          {
+            "stream_id": 8,
+            "messages_received": 100,
+            "bytes_received": 6551700,
+            "duration_seconds": 20.97416877746582,
+            "messages_per_second": 4.767769395821673,
+            "bytes_per_second": 312369.9475060485,
+            "mbits_per_second": 2.498959580048388
+          },
+          {
+            "stream_id": 12,
+            "messages_received": 100,
+            "bytes_received": 6551700,
+            "duration_seconds": 20.97416877746582,
+            "messages_per_second": 4.767769395821673,
+            "bytes_per_second": 312369.9475060485,
+            "mbits_per_second": 2.498959580048388
+          },
+          {
+            "stream_id": 16,
+            "messages_received": 100,
+            "bytes_received": 6551700,
+            "duration_seconds": 20.97416877746582,
+            "messages_per_second": 4.767769395821673,
+            "bytes_per_second": 312369.9475060485,
+            "mbits_per_second": 2.498959580048388
+          },
+          {
+            "stream_id": 20,
+            "messages_received": 100,
+            "bytes_received": 6551700,
+            "duration_seconds": 20.97416877746582,
+            "messages_per_second": 4.767769395821673,
+            "bytes_per_second": 312369.9475060485,
+            "mbits_per_second": 2.498959580048388
+          },
+          {
+            "stream_id": 24,
+            "messages_received": 100,
+            "bytes_received": 6551700,
+            "duration_seconds": 20.97416877746582,
+            "messages_per_second": 4.767769395821673,
+            "bytes_per_second": 312369.9475060485,
+            "mbits_per_second": 2.498959580048388
+          },
+          {
+            "stream_id": 28,
+            "messages_received": 100,
+            "bytes_received": 6551700,
+            "duration_seconds": 20.97416877746582,
+            "messages_per_second": 4.767769395821673,
+            "bytes_per_second": 312369.9475060485,
+            "mbits_per_second": 2.498959580048388
+          },
+          {
+            "stream_id": 32,
+            "messages_received": 100,
+            "bytes_received": 6551700,
+            "duration_seconds": 20.97416877746582,
+            "messages_per_second": 4.767769395821673,
+            "bytes_per_second": 312369.9475060485,
+            "mbits_per_second": 2.498959580048388
+          },
+          {
+            "stream_id": 36,
+            "messages_received": 100,
+            "bytes_received": 6551700,
+            "duration_seconds": 20.97416877746582,
+            "messages_per_second": 4.767769395821673,
+            "bytes_per_second": 312369.9475060485,
+            "mbits_per_second": 2.498959580048388
+          },
+          {
+            "stream_id": 40,
+            "messages_received": 100,
+            "bytes_received": 6551700,
+            "duration_seconds": 20.97416877746582,
+            "messages_per_second": 4.767769395821673,
+            "bytes_per_second": 312369.9475060485,
+            "mbits_per_second": 2.498959580048388
+          },
+          {
+            "stream_id": 44,
+            "messages_received": 100,
+            "bytes_received": 6551700,
+            "duration_seconds": 20.97416877746582,
+            "messages_per_second": 4.767769395821673,
+            "bytes_per_second": 312369.9475060485,
+            "mbits_per_second": 2.498959580048388
+          },
+          {
+            "stream_id": 48,
+            "messages_received": 100,
+            "bytes_received": 6551700,
+            "duration_seconds": 20.97416877746582,
+            "messages_per_second": 4.767769395821673,
+            "bytes_per_second": 312369.9475060485,
+            "mbits_per_second": 2.498959580048388
+          },
+          {
+            "stream_id": 52,
+            "messages_received": 100,
+            "bytes_received": 6551700,
+            "duration_seconds": 20.97416877746582,
+            "messages_per_second": 4.767769395821673,
+            "bytes_per_second": 312369.9475060485,
+            "mbits_per_second": 2.498959580048388
+          },
+          {
+            "stream_id": 56,
+            "messages_received": 100,
+            "bytes_received": 6551700,
+            "duration_seconds": 20.97416877746582,
+            "messages_per_second": 4.767769395821673,
+            "bytes_per_second": 312369.9475060485,
+            "mbits_per_second": 2.498959580048388
+          },
+          {
+            "stream_id": 60,
+            "messages_received": 100,
+            "bytes_received": 6551700,
+            "duration_seconds": 20.97416877746582,
+            "messages_per_second": 4.767769395821673,
+            "bytes_per_second": 312369.9475060485,
+            "mbits_per_second": 2.498959580048388
+          },
+          {
+            "stream_id": 64,
+            "messages_received": 100,
+            "bytes_received": 6551700,
+            "duration_seconds": 20.97416877746582,
+            "messages_per_second": 4.767769395821673,
+            "bytes_per_second": 312369.9475060485,
+            "mbits_per_second": 2.498959580048388
+          },
+          {
+            "stream_id": 68,
+            "messages_received": 100,
+            "bytes_received": 6551700,
+            "duration_seconds": 20.97416877746582,
+            "messages_per_second": 4.767769395821673,
+            "bytes_per_second": 312369.9475060485,
+            "mbits_per_second": 2.498959580048388
+          },
+          {
+            "stream_id": 72,
+            "messages_received": 100,
+            "bytes_received": 6551700,
+            "duration_seconds": 20.97416877746582,
+            "messages_per_second": 4.767769395821673,
+            "bytes_per_second": 312369.9475060485,
+            "mbits_per_second": 2.498959580048388
+          },
+          {
+            "stream_id": 76,
+            "messages_received": 100,
+            "bytes_received": 6551700,
+            "duration_seconds": 20.97416877746582,
+            "messages_per_second": 4.767769395821673,
+            "bytes_per_second": 312369.9475060485,
+            "mbits_per_second": 2.498959580048388
+          },
+          {
+            "stream_id": 80,
+            "messages_received": 100,
+            "bytes_received": 6551700,
+            "duration_seconds": 20.97416877746582,
+            "messages_per_second": 4.767769395821673,
+            "bytes_per_second": 312369.9475060485,
+            "mbits_per_second": 2.498959580048388
+          },
+          {
+            "stream_id": 84,
+            "messages_received": 100,
+            "bytes_received": 6551700,
+            "duration_seconds": 20.97416877746582,
+            "messages_per_second": 4.767769395821673,
+            "bytes_per_second": 312369.9475060485,
+            "mbits_per_second": 2.498959580048388
+          },
+          {
+            "stream_id": 88,
+            "messages_received": 383,
+            "bytes_received": 25093011,
+            "duration_seconds": 20.97416877746582,
+            "messages_per_second": 18.260556785997004,
+            "bytes_per_second": 1196376.8989481658,
+            "mbits_per_second": 9.571015191585326
+          },
+          {
+            "stream_id": 92,
+            "messages_received": 1100,
+            "bytes_received": 72068700,
+            "duration_seconds": 20.97416877746582,
+            "messages_per_second": 52.445463354038395,
+            "bytes_per_second": 3436069.4225665336,
+            "mbits_per_second": 27.488555380532272
+          },
+          {
+            "stream_id": 96,
+            "messages_received": 2112,
+            "bytes_received": 138371904,
+            "duration_seconds": 20.97416877746582,
+            "messages_per_second": 100.69528963975372,
+            "bytes_per_second": 6597253.291327745,
+            "mbits_per_second": 52.778026330621955
+          }
+        ]
+      }
+    ],
+    "total_test_duration": 42.77921175956726
+  }
+}
