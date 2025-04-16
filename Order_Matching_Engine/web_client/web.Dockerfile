@@ -8,12 +8,12 @@ RUN pip install --no-cache-dir -r requirements.txt && \
 
 # Set up application
 WORKDIR /app
-COPY web_server/web_server.py .
-COPY web_server/templates templates/
-COPY web_server/static static/
+COPY web_client/web_client.py .
+COPY web_client/templates templates/
+COPY web_client/static static/
 
 # Create sessions directory
 RUN mkdir -p /tmp/flask_sessions && \
     chmod 777 /tmp/flask_sessions
 
-CMD ["python", "web_server.py"]
+CMD ["python", "web_client.py"]

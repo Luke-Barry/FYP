@@ -85,7 +85,7 @@ services:
     container_name: quic-web-trader1
     build:
       context: .
-      dockerfile: ./web_server/web.Dockerfile
+      dockerfile: ./web_client/web.Dockerfile
       cache_from:
         - quic-web-trader1
     networks:
@@ -106,7 +106,7 @@ services:
     container_name: quic-web-trader2
     build:
       context: .
-      dockerfile: ./web_server/web.Dockerfile
+      dockerfile: ./web_client/web.Dockerfile
       cache_from:
         - quic-web-trader2
     networks:
